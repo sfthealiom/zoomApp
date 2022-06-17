@@ -1,0 +1,607 @@
+{
+  "segments": [
+    {
+      "text": "Okay, I want to talk about my allergies. So I have dermatographia since last year.",
+      "start": 0.009,
+      "end": 6.357
+    },
+    {
+      "text": "six seven months uh and it's like a skin writing uh for that i've been taking some medications which are like amoxicillin uh penicillin and paracetamol",
+      "start": 6.37,
+      "end": 15.875
+    },
+    {
+      "text": "Okay. And also like our issue of condition art failure. No. Okay.",
+      "start": 17.968,
+      "end": 27.284999999999997
+    },
+    {
+      "text": "ignition stone, type 2 diabetic.",
+      "start": 27.292,
+      "end": 39.612
+    },
+    {
+      "text": "Okay. So type two diabetic, that's what I said.",
+      "start": 43.666,
+      "end": 50.953
+    },
+    {
+      "text": "I'm sexy.",
+      "start": 52.796,
+      "end": 53.615
+    }
+  ],
+  "ai_preds": {
+    "entities": {
+      "symptoms": [
+        {
+          "text": "allergies",
+          "code": "HE:5015010",
+          "code_value": "allergic rhinitis",
+          "code_type": "symptom",
+          "confidence": 1.0000000000067897,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "taking penicillin",
+          "code": "HE:6077322",
+          "code_value": "taking penicillin",
+          "code_type": "symptom",
+          "confidence": 1.0000000000147768,
+          "source": ["ai_suggestions"]
+        }
+      ],
+      "diagnoses": [
+        {
+          "text": "type 2 diabetic",
+          "code": "ICD10CM:E11.37X3",
+          "code_value": "Type 2 diabetes mellitus with diabetic macular edema, resolved following treatment, bilateral",
+          "code_type": "diagnosis",
+          "confidence": 0.999909090919579,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "type 2 diabetic",
+          "code": "ICD10CM:E11.37X3",
+          "code_value": "Type 2 diabetes mellitus with diabetic macular edema, resolved following treatment, bilateral",
+          "code_type": "diagnosis",
+          "confidence": 0.999909090919579,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "type 2 diabetic",
+          "code": "ICD10CM:E11.37X3",
+          "code_value": "Type 2 diabetes mellitus with diabetic macular edema, resolved following treatment, bilateral",
+          "code_type": "diagnosis",
+          "confidence": 0.999909090919579,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "allergies",
+          "code": "ICD10CM:J30.2",
+          "code_value": "Other seasonal allergic rhinitis",
+          "code_type": "diagnosis",
+          "confidence": 1.0000000000067897,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "dermatographia",
+          "code": "ICD10CM:L50.3",
+          "code_value": "Dermatographic urticaria",
+          "code_type": "diagnosis",
+          "confidence": 0.9993008681401797,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "diabetic",
+          "code": "ICD10CM:E11.65",
+          "code_value": "Type 2 diabetes mellitus with hyperglycemia",
+          "code_type": "diagnosis",
+          "confidence": 0.9999999998491373,
+          "source": ["ai_suggestions"]
+        }
+      ],
+      "medications": [
+        {
+          "text": "penicillin",
+          "code": "NDC:00781185220",
+          "code_value": "AMOXICILLIN 875 mg / CLAVULANATE POTASSIUM 125 mg ORAL TABLET, FILM COATED [Amoxicillin and Clavulanate Potassium]",
+          "code_type": "medication",
+          "confidence": 0.9999999999543527,
+          "source": ["ai_suggestions"]
+        },
+        {
+          "text": "paracetamol",
+          "code": "NDC:55649010501",
+          "code_value": "PARACETAMOL",
+          "code_type": "medication",
+          "confidence": 0.9999999998194069,
+          "source": ["ai_suggestions"]
+        }
+      ],
+      "procedures": [],
+      "procedures_done": []
+    },
+    "summaries": {
+      "subjectiveClinicalSummary": [
+        "The patient wants to discuss their allergies.",
+        "They have been experiencing dermatographia for the past six to seven months.",
+        "They have been taking medications such as amoxicillin, penicillin, and paracetamol.",
+        "They mention an issue with congestive heart failure.",
+        "They state that they have type 2 diabetes."
+      ],
+      "objectiveClinicalSummary": [
+        "No specific objective information is provided in the conversation."
+      ],
+      "clinicalAssessment": [
+        "Dermatographia: The patient has been experiencing this condition for the past several months.",
+        "Allergies: The patient's allergies are not specified in the conversation.",
+        "Congestive Heart Failure: The patient mentions this issue but does not provide any specific details.",
+        "Type 2 Diabetes: The patient confirms that they have type 2 diabetes."
+      ],
+      "carePlanSuggested": [
+        "No specific plan is discussed in the conversation.",
+        "Further evaluation and management of the allergies, dermatographia, congestive heart failure, and type 2 diabetes may be necessary."
+      ]
+    }
+  },
+  "meta": [
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk1.wav",
+      "duration": 6.361,
+      "received_at": 1708860139.6661456
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk2.wav",
+      "duration": 10.728,
+      "received_at": 1708860150.546036
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk3.wav",
+      "duration": 10.194,
+      "received_at": 1708860162.203038
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk4.wav",
+      "duration": 12.33,
+      "received_at": 1708860173.4290996
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk5.wav",
+      "duration": 11.331,
+      "received_at": 1708860184.413548
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk6.wav",
+      "duration": 10.797,
+      "received_at": 1708860196.1789558
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk7.wav",
+      "duration": 11.912,
+      "received_at": 1708860206.9871755
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk8.wav",
+      "duration": 10.797,
+      "received_at": 1708860218.0214913
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk9.wav",
+      "duration": 10.983,
+      "received_at": 1708860228.7898834
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk10.wav",
+      "duration": 10.89,
+      "received_at": 1708860239.641891
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk11.wav",
+      "duration": 10.797,
+      "received_at": 1708860250.4514787
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk12.wav",
+      "duration": 10.774,
+      "received_at": 1708860261.242635
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk13.wav",
+      "duration": 10.797,
+      "received_at": 1708860272.021729
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk14.wav",
+      "duration": 10.658,
+      "received_at": 1708860282.8572824
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk15.wav",
+      "duration": 10.519,
+      "received_at": 1708860294.5987659
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk16.wav",
+      "duration": 12.167,
+      "received_at": 1708860305.4396846
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk17.wav",
+      "duration": 10.797,
+      "received_at": 1708860316.4435287
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk18.wav",
+      "duration": 11.076,
+      "received_at": 1708860327.2652335
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk19.wav",
+      "duration": 10.82,
+      "received_at": 1708860338.3151886
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk20.wav",
+      "duration": 10.774,
+      "received_at": 1708860349.1840365
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk21.wav",
+      "duration": 11.215,
+      "received_at": 1708860360.1287746
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk22.wav",
+      "duration": 10.82,
+      "received_at": 1708860371.5627239
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk23.wav",
+      "duration": 11.494,
+      "received_at": 1708860382.930465
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk24.wav",
+      "duration": 11.355,
+      "received_at": 1708860393.756816
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk25.wav",
+      "duration": 10.519,
+      "received_at": 1708860404.7665076
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk26.wav",
+      "duration": 11.331,
+      "received_at": 1708860415.5819638
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk27.wav",
+      "duration": 9.822,
+      "received_at": 1708860426.38792
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk28.wav",
+      "duration": 10.658,
+      "received_at": 1708860437.2601168
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk29.wav",
+      "duration": 12.028,
+      "received_at": 1708860448.095471
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk30.wav",
+      "duration": 10.797,
+      "received_at": 1708860458.8810542
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk31.wav",
+      "duration": 10.797,
+      "received_at": 1708860469.673616
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk32.wav",
+      "duration": 10.774,
+      "received_at": 1708860480.4770205
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk33.wav",
+      "duration": 10.124,
+      "received_at": 1708860491.729083
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk34.wav",
+      "duration": 11.633,
+      "received_at": 1708860503.1564832
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk35.wav",
+      "duration": 11.076,
+      "received_at": 1708860514.0781722
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk36.wav",
+      "duration": 11.633,
+      "received_at": 1708860525.3190415
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk37.wav",
+      "duration": 10.937,
+      "received_at": 1708860536.2443342
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk38.wav",
+      "duration": 11.122,
+      "received_at": 1708860547.0203881
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk39.wav",
+      "duration": 10.17,
+      "received_at": 1708860558.791163
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk40.wav",
+      "duration": 12.307,
+      "received_at": 1708860570.1155667
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk41.wav",
+      "duration": 11.471,
+      "received_at": 1708860580.978128
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk42.wav",
+      "duration": 10.913,
+      "received_at": 1708860591.838781
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk43.wav",
+      "duration": 10.797,
+      "received_at": 1708860602.639533
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk44.wav",
+      "duration": 10.797,
+      "received_at": 1708860613.4638753
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk45.wav",
+      "duration": 10.495,
+      "received_at": 1708860624.9954083
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk46.wav",
+      "duration": 11.912,
+      "received_at": 1708860635.9346642
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk47.wav",
+      "duration": 10.635,
+      "received_at": 1708860647.2631228
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk48.wav",
+      "duration": 11.633,
+      "received_at": 1708860658.178415
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk49.wav",
+      "duration": 10.495,
+      "received_at": 1708860669.8464828
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk50.wav",
+      "duration": 11.61,
+      "received_at": 1708860680.7452884
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk51.wav",
+      "duration": 10.797,
+      "received_at": 1708860691.9254365
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk52.wav",
+      "duration": 10.379,
+      "received_at": 1708860702.9216428
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk53.wav",
+      "duration": 12.33,
+      "received_at": 1708860713.9489586
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk54.wav",
+      "duration": 10.379,
+      "received_at": 1708860725.021329
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk55.wav",
+      "duration": 10.797,
+      "received_at": 1708860736.009173
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk56.wav",
+      "duration": 11.076,
+      "received_at": 1708860747.5776467
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk57.wav",
+      "duration": 11.494,
+      "received_at": 1708860759.4161384
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk58.wav",
+      "duration": 12.725,
+      "received_at": 1708860770.438748
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk59.wav",
+      "duration": 10.937,
+      "received_at": 1708860781.226753
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk60.wav",
+      "duration": 10.937,
+      "received_at": 1708860792.1670554
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk61.wav",
+      "duration": 10.937,
+      "received_at": 1708860803.3591554
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk62.wav",
+      "duration": 11.146,
+      "received_at": 1708860814.2604227
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk63.wav",
+      "duration": 11.006,
+      "received_at": 1708860825.3576493
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk64.wav",
+      "duration": 10.797,
+      "received_at": 1708860836.2368731
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk65.wav",
+      "duration": 11.076,
+      "received_at": 1708860847.4104292
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk66.wav",
+      "duration": 10.937,
+      "received_at": 1708860858.34708
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk67.wav",
+      "duration": 11.215,
+      "received_at": 1708860870.9516122
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk68.wav",
+      "duration": 12.376,
+      "received_at": 1708860882.139289
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk69.wav",
+      "duration": 11.169,
+      "received_at": 1708860893.2477844
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk70.wav",
+      "duration": 11.378,
+      "received_at": 1708860904.2638657
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk71.wav",
+      "duration": 11.076,
+      "received_at": 1708860915.2467828
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk72.wav",
+      "duration": 10.937,
+      "received_at": 1708860926.6590064
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk73.wav",
+      "duration": 11.192,
+      "received_at": 1708860937.7921805
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk74.wav",
+      "duration": 10.542,
+      "received_at": 1708860948.7496026
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk75.wav",
+      "duration": 11.772,
+      "received_at": 1708860959.7664914
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk76.wav",
+      "duration": 10.937,
+      "received_at": 1708860970.6715312
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk77.wav",
+      "duration": 9.845,
+      "received_at": 1708860982.1136975
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk78.wav",
+      "duration": 12.492,
+      "received_at": 1708860993.1167562
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk79.wav",
+      "duration": 10.937,
+      "received_at": 1708861003.9737866
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk80.wav",
+      "duration": 10.82,
+      "received_at": 1708861015.3931367
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk81.wav",
+      "duration": 10.681,
+      "received_at": 1708861026.7113216
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk82.wav",
+      "duration": 10.542,
+      "received_at": 1708861037.631224
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk83.wav",
+      "duration": 12.469,
+      "received_at": 1708861048.6438847
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk84.wav",
+      "duration": 10.96,
+      "received_at": 1708861059.7805352
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk85.wav",
+      "duration": 11.238,
+      "received_at": 1708861070.6267786
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk86.wav",
+      "duration": 10.797,
+      "received_at": 1708861082.4740334
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk87.wav",
+      "duration": 11.215,
+      "received_at": 1708861093.3575044
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk88.wav",
+      "duration": 11.494,
+      "received_at": 1708861104.6943212
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk89.wav",
+      "duration": 11.355,
+      "received_at": 1708861116.058997
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk90.wav",
+      "duration": 10.658,
+      "received_at": 1708861127.4550505
+    },
+    {
+      "audio_path": "../carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766/carereq__5c9dac4b8b4e4f81bbc0a2ea11fe316e__1708860120766_chunk91.wav",
+      "duration": 10.519,
+      "received_at": 1708861241.4460113
+    }
+  ],
+  "success": true,
+  "transcript": "Okay, I want to talk about my allergies. So I have dermatographia since last year. six seven months uh and it's like a skin writing uh for that i've been taking some medications which are like amoxicillin uh penicillin and paracetamol Okay. And also like our issue of condition art failure. No. Okay. ignition stone, type 2 diabetic. Okay. So type two diabetic, that's what I said. I'm sexy."
+}

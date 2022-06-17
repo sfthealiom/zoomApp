@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* change me to set your light font */
+@font-face {
+  font-family: "My-Light";
+  src: url("./assets/fonts/my-light.otf");
+}
+
+/* change me to set your regular font */
+@font-face {
+  font-family: "My-Regular";
+  src: url("./assets//fonts/my-regular.otf");
+}
+
+/* change me to set your bold font */
+@font-face {
+  font-family: "My-Bold";
+  src: url("./assets//fonts/my-bold.otf");
+}
+
+/* change me to set your extra bold font */
+@font-face {
+  font-family: "My-ExtraBold";
+  src: url("./assets/fonts/my-extraBold.otf");
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 100vh;
+}
