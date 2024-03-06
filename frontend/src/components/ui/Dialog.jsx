@@ -3,7 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { cn } from "../../components/lib/utils";
+import { cn } from "../lib/utils";
 
 const Dialog = DialogPrimitive.Root;
 

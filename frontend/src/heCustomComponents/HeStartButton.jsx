@@ -17,9 +17,7 @@ const HeStartButton = ({
     <Button
       className={`h-[150px] w-[250px] md:h-[200px] md:w-[300px] flex flex-col items-center gap-2 rounded-2xl ${customClass}`}
       style={{ backgroundColor: bgColor }}
-      onClick={() => {
-        navigateTo ? navigate(navigateTo) : null;
-      }}
+      onClick={() => (navigateTo ? navigate(navigateTo) : null)}
     >
       <span style={{ backgroundColor: bgColor, color: fontColor }}>{icon}</span>
       <h1

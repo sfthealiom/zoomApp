@@ -7,16 +7,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components/ui/Form";
-import { Input } from "../components/ui/Input";
+} from "@/components copy/ui/Form";
+import { Input } from "@/components copy/ui/Input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/Select";
-import { isObjectEmpty, getLabels } from "../reduxFolder/CommonFunctions";
+} from "@/components copy/ui/Select";
+import { isObjectEmpty, getLabels } from "@/reduxFolder/CommonFunctions";
 
 const HePhoneNumber = ({
   form,

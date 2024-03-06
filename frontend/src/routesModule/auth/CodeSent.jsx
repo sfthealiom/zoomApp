@@ -73,9 +73,7 @@ const CodeSent = () => {
       phoneNumber: phoneNumber,
       password: password,
     };
-    // dispatch(verifyOTP(updatedData, toast, navigate, orgId));
-    navigate("/start-new-consultation");
-    toast.success("Verified!");
+    dispatch(verifyOTP(updatedData, toast, navigate, orgId));
   };
 
   return loader ? (

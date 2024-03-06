@@ -18,10 +18,11 @@ import { toast } from "sonner";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
+import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
+  const { loader, labelData, appLanguage, currentUserData } = useSelector(
     (state) => state.authReducer
   );
   const navigate = useNavigate();
@@ -57,22 +58,19 @@ const StartNewConsultation = () => {
             <HeButton
               title={`Start New Consultation Recording `}
               className={`w-full flex-row-reverse h-12`}
-              titleClass={`text-lg`}
+              titleClass={`text-sm md:text-base`}
               icon={
                 <FontAwesomeIcon icon={faMicrophoneLines} className="h-5 w-5" />
               }
               onPress={() => {
-                const promise = new Promise((resolve) =>
-                  setTimeout(() => resolve(), 2000)
+                dispatch(
+                  guestUserSignUp(
+                    Date.now(),
+                    companyMetaData?.organizationId,
+                    toast,
+                    navigate
+                  )
                 );
-                toast.promise(promise, {
-                  loading: "Starting...",
-                  success: () => {
-                    navigate("/consultation-screen");
-                    return `Consultation started!`;
-                  },
-                  error: "Something went wrong, Please try again!",
-                });
               }}
             />
           </div>

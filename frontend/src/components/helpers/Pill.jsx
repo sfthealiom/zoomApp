@@ -1,17 +1,26 @@
 import React from "react";
 import { companyMetaData } from "../../assets/myCompanyData";
 
-const Pill = ({ code, name, icon, pillColor, textColor }) => {
+const Pill = ({
+  code,
+  name,
+  icon,
+  pillColor,
+  textColor,
+  className,
+  onPress,
+}) => {
   return (
     <div
-      className="w-full h-fit rounded-md flex flex-col lg:flex-row gap-1  lg:gap-4 items-start justify-between px-4 py-2 text-sm"
+      className={`w-full h-fit rounded-md flex flex-col lg:flex-row gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm ${className}`}
       style={{
         backgroundColor: pillColor || companyMetaData?.accentOneLight,
       }}
+      onClick={onPress}
     >
       <h1
         title={name}
-        className="font-semibold truncate"
+        className="font-semibold text-wrap"
         style={{
           color: textColor || "black",
         }}

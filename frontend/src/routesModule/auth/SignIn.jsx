@@ -37,7 +37,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserToken } from "../../reduxFolder/CommonActions";
 
-const SignUp = () => {
+const SignIn = () => {
   const dispatch = useDispatch();
   const { loader, labelData, appLanguage } = useSelector(
     (state) => state.authReducer
@@ -72,88 +72,85 @@ const SignUp = () => {
   return loader ? (
     <LoaderSpin />
   ) : (
-    <div className="w-full">
-      <div className="w-full flex items-center justify-center my-10 md:my-20">
-        <div className="w-full max-w-xs md:max-w-xl flex flex-col items-center">
-          <div className="text-center">
-            <HeHeading1 title={"Welcome back!"} />
-            <HeInfoText
-              message={
-                "Sign in to start using the Copilot and generate transcription effortlessly."
-              }
-              className={"text-xs md:text-sm mt-2 md:mt-4"}
+    <section className="w-full flex items-center justify-center">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleAccountCreation)}
+          className="w-full max-w-xs md:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4"
+        >
+          <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
+            <div className="text-center">
+              <HeHeading1 title={"Welcome back!"} />
+              <HeInfoText
+                message={
+                  "Sign in to start using the app and take clinical encounters effortlessly."
+                }
+                className={"text-xs md:text-sm mt-2 md:mt-4"}
+              />
+            </div>
+            <div className="flex flex-col gap-2 md:gap-4 mt-5">
+              <HeTextInput
+                form={form}
+                type="email"
+                fieldName={"email"}
+                labelName={"Email"}
+                placeholder={"john.doe@company.com"}
+                required={true}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel className="text-slate-500">
+                      Password <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <div className="flex items-center border-b border-slate-500">
+                      <FormControl>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          className="w-full border-none"
+                          placeholder="************"
+                          {...field}
+                        />
+                      </FormControl>
+                      {showPassword ? (
+                        <FontAwesomeIcon
+                          icon={faEye}
+                          className="h-5 w-5 cursor-pointer select-none"
+                          onClick={() => {
+                            setShowPassword(!showPassword);
+                          }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faEyeSlash}
+                          className="h-5 w-5 cursor-pointer select-none"
+                          onClick={() => {
+                            setShowPassword(!showPassword);
+                          }}
+                        />
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex self-center mt-8 md:mt-16 gap-2 items-center">
+            <HeBack navigateTo={"/welcome"} />
+            <HeFormSubmitButton
+              title={"Continue"}
+              className={"w-fit self-center"}
+              icon={<FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />}
             />
           </div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleAccountCreation)}
-              className="flex flex-col gap-2 justify-between w-full h-full"
-            >
-              <div className="flex flex-col gap-2 md:gap-4 mt-5 border border-slate-300 rounded-xl shadow-md p-4 md:p-8">
-                <HeTextInput
-                  form={form}
-                  type="email"
-                  fieldName={"email"}
-                  labelName={"Email"}
-                  placeholder={"john.doe@company.com"}
-                  required={true}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel className="text-slate-500">
-                        Password <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <div className="flex items-center border-b border-slate-500">
-                        <FormControl>
-                          <Input
-                            type={showPassword ? "text" : "password"}
-                            className="w-full border-none"
-                            placeholder="************"
-                            {...field}
-                          />
-                        </FormControl>
-                        {showPassword ? (
-                          <FontAwesomeIcon
-                            icon={faEye}
-                            className="h-5 w-5 cursor-pointer select-none"
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        ) : (
-                          <FontAwesomeIcon
-                            icon={faEyeSlash}
-                            className="h-5 w-5 cursor-pointer select-none"
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        )}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex self-center mt-8 md:mt-16 gap-2 items-center">
-                <HeBack navigateTo={"/welcome"} />
-                <HeFormSubmitButton
-                  title={"Continue"}
-                  className={"w-fit self-center"}
-                  icon={
-                    <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-                  }
-                />
-              </div>
-            </form>
-          </Form>
-        </div>
-      </div>
-    </div>
+        </form>
+      </Form>
+    </section>
   );
 };
 
-export default SignUp;
+export default SignIn;

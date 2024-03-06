@@ -12,7 +12,7 @@ const HeBack = ({ navigateTo }) => {
     <Button
       type="button"
       variant="outline"
-      className="flex gap-2 justify-center items-center w-fit bg-transparent border-2"
+      className="flex gap-2 justify-center items-center w-fit bg-white"
       onClick={() => {
         navigate(navigateTo);
       }}

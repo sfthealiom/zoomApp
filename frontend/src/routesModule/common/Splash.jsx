@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { companyMetaData } from "../../assets/myCompanyData";
 
 /** shadcn imports */
+import { toast } from "sonner";
 
 /** redux states */
 import { useDispatch } from "react-redux";
@@ -51,6 +52,7 @@ const Splash = () => {
           const currentUserUid = sessionStorage.getItem("currentUserUid");
           const organizationId = sessionStorage.getItem("organizationId");
           const jwtToken = sessionStorage.getItem("jwtToken");
+          const patientUid = sessionStorage.getItem("patientUid");
 
           if (currentUserUid && jwtToken) {
             dispatch(
@@ -58,6 +60,7 @@ const Splash = () => {
                 currentUserUid,
                 organizationId,
                 jwtToken,
+                patientUid,
                 toast,
                 navigate
               )

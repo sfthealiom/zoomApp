@@ -1,11 +1,16 @@
 /** library imports */
-import React from "react";
+import React, { useState } from "react";
 
 /** custom imports */
 import { companyMetaData } from "../../../assets/myCompanyData";
-import { HeHeading2, HeHeading3 } from "../../../heCustomComponents";
+import {
+  HeHeading2,
+  HeHeading3,
+  HePopupMessage,
+} from "../../../heCustomComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faInfoCircle,
   faPlus,
   faWandMagicSparkles,
   faXmark,
@@ -19,17 +24,19 @@ import { Input } from "../../../components/ui/Input";
 const Diagnosis = () => {
   let diagnoses = data?.ai_preds?.entities?.diagnoses;
 
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-8 md:gap-12">
       {/* relevant previous diagnoses */}
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <HeHeading2
             title={"Relevant Previous Diagnoses"}
             className={`md:text-[18px]`}
           />
         </div>
-        <div className="w-full h-[200px] overflow-scroll flex flex-col gap-2 scrollbar bg-gray-200 p-2 rounded-md">
+        <div className="w-full h-fit max-h-[200px] overflow-y-scroll flex flex-col gap-2 scrollbar p-2 rounded-md">
           {diagnoses.length > 0
             ? diagnoses?.map((item, index) => {
                 return (
@@ -45,17 +52,17 @@ const Diagnosis = () => {
               })
             : null}
         </div>
-      </div>
+      </div> */}
 
       {/* all previous diagnoses */}
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <HeHeading2
             title={"All Previous Diagnoses"}
             className={`md:text-[18px]`}
           />
         </div>
-        <div className="w-full h-[200px] overflow-scroll flex flex-col gap-2 scrollbar bg-gray-200 p-2 rounded-md">
+        <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar bg-gray-100 p-2 rounded-md">
           {diagnoses.length > 0
             ? diagnoses?.map((item, index) => {
                 return (
@@ -69,14 +76,15 @@ const Diagnosis = () => {
                         style={{ color: companyMetaData?.accentOne }}
                       />
                     }
+                    pillColor={companyMetaData?.accentWhite}
                   />
                 );
               })
             : null}
         </div>
-      </div>
+      </div> */}
 
-      {/* all previous diagnoses */}
+      {/* differential diagnoses */}
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <HeHeading2
@@ -84,7 +92,7 @@ const Diagnosis = () => {
             className={`md:text-[18px]`}
           />
         </div>
-        <div className="w-full h-[200px] overflow-scroll flex flex-col gap-2 scrollbar bg-gray-200 p-2 rounded-md">
+        <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
           {diagnoses.length > 0
             ? diagnoses?.map((item, index) => {
                 return (
@@ -116,7 +124,7 @@ const Diagnosis = () => {
               className={`md:text-[18px]`}
             />
           </div>
-          <div className="w-full h-[200px] overflow-scroll flex flex-col gap-2 scrollbar px-2 pb-2">
+          <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar px-2 pb-2">
             {diagnoses.length > 0
               ? diagnoses?.map((item, index) => {
                   return (
@@ -124,7 +132,7 @@ const Diagnosis = () => {
                       key={index}
                       code={item?.code}
                       name={item?.code_value}
-                      icon={<FontAwesomeIcon icon={faXmark} />}
+                      icon={<FontAwesomeIcon icon={faPlus} />}
                       pillColor={companyMetaData?.accentWhite}
                       textColor={companyMetaData?.aiDark}
                     />
@@ -138,23 +146,38 @@ const Diagnosis = () => {
 
       {/* working diagnoses */}
       <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
+        <div className="relative flex justify-between items-center">
           <HeHeading2
             title={"Working Diagnoses"}
             className={`md:text-[18px]`}
           />
+          <div className="relative flex items-center gap-2">
+            {showPopup && (
+              <HePopupMessage
+                setShowPopup={setShowPopup}
+                message={`Select your patient's working diagnoses from the previously selected previous diagnoses and differential diagnoses.`}
+                className={`absolute top-1/2 right-full min-w-[280px] select-none`}
+                style={{
+                  backgroundColor: companyMetaData?.primaryLight,
+                }}
+              />
+            )}
+            <FontAwesomeIcon
+              icon={faInfoCircle}
+              className="h-5 w-5 cursor-pointer"
+              onClick={() => setShowPopup(!showPopup)}
+            />
+          </div>
         </div>
-        <div className="w-full h-[200px] overflow-scroll flex flex-col gap-2 scrollbar bg-gray-200 p-2 rounded-md">
+        <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
           {diagnoses.length > 0
             ? diagnoses?.map((item, index) => {
                 return (
-                  <div>
-                    <CheckboxPill
-                      key={index}
-                      code={item?.code}
-                      name={item?.code_value}
-                    />
-                  </div>
+                  <CheckboxPill
+                    key={index}
+                    code={item?.code}
+                    name={item?.code_value}
+                  />
                 );
               })
             : null}

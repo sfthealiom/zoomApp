@@ -34,7 +34,7 @@ const HeRadioButtonTrueFalse = ({
             >
               <FormItem
                 className={
-                  "flex items-center space-x-3 space-y-0 border border-slate-300 rounded-md w-1/2  px-4 py-3"
+                  "flex items-center space-x-3 space-y-0 border border-slate-300 rounded-md w-1/2 bg-white px-4 py-3"
                 }
               >
                 <FormControl>
@@ -51,7 +51,7 @@ const HeRadioButtonTrueFalse = ({
               </FormItem>
               <FormItem
                 className={
-                  "flex items-center space-x-3 space-y-0 border border-slate-300 rounded-md w-1/2  px-4 py-3"
+                  "flex items-center space-x-3 space-y-0 border border-slate-300 rounded-md w-1/2 bg-white px-4 py-3"
                 }
               >
                 <FormControl>
