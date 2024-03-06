@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { cn } from "../components/lib/utils";
-import { Input } from "../components/ui/Input";
+import { cn } from "@/components copy/lib/utils";
+import { Input } from "@/components copy/ui/Input";
 import {
   Select,
   SelectContent,
@@ -11,14 +11,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/Select";
-import { companyMetaData } from "../assets/myCompanyData";
+} from "@/components copy/ui/Select";
+import { companyMetaData } from "@/assets/myCompanyData";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   getPharamcyList,
   setPharmacyListEmpty,
-} from "../reduxFolder/actions/NewPatientActions";
+} from "@/reduxFolder/actions/NewPatientActions";
 
 const HePharmacySelector = ({ setSelectedPharmacy, className }) => {
   const dispatch = useDispatch();

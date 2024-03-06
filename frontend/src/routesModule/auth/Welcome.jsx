@@ -26,10 +26,12 @@ import {
 import {
   HeFormSubmitButton,
   HeHeading1,
+  HeHeading3,
   HeInfoText,
   HePhoneNumber,
   HeTextInput,
 } from "../../heCustomComponents";
+import { companyMetaData } from "../../assets/myCompanyData";
 
 /** shadcn imports */
 import {
@@ -50,7 +52,6 @@ import {
   checkUserExists,
   setPassword,
 } from "../../reduxFolder/actions/AuthActions";
-import { companyMetaData } from "../../assets/myCompanyData";
 
 const Welcome = () => {
   const dispatch = useDispatch();
@@ -98,14 +99,14 @@ const Welcome = () => {
     mode: "all",
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      first_name: "John",
-      last_name: "Doe",
-      dialCode: "+1",
-      mobile: "333-444-5555",
-      email: "john@doe.com",
-      npi: "1020283787",
-      password: "!helloWorld9",
-      confirmPassword: "!helloWorld9",
+      first_name: "",
+      last_name: "",
+      dialCode: "",
+      mobile: "",
+      email: "",
+      npi: "",
+      password: "",
+      confirmPassword: "",
       check1: false,
       check2: false,
       check3: false,
@@ -114,6 +115,9 @@ const Welcome = () => {
   });
 
   const watchPasswordField = form.watch("password");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     if (watchPasswordField) {
       if (
@@ -136,28 +140,27 @@ const Welcome = () => {
 
   const handleAccountCreation = (data, e) => {
     e.preventDefault();
-    // const updatedData = {
-    //   first_name: data?.first_name,
-    //   last_name: data?.last_name,
-    //   email: data?.email,
-    //   phone_number: data?.dialCode + " " + data?.mobile?.replaceAll("-", ""),
-    //   password: data?.password,
-    // };
-    // setToSessionStore({
-    //   key: "phone_number",
-    //   value: updatedData?.phone_number,
-    // });
-    // dispatch(setPassword(data?.password));
-    // dispatch(
-    //   checkUserExists(
-    //     updatedData,
-    //     navigate,
-    //     toast,
-    //     companyMetaData?.organizationId
-    //   )
-    // );
-    navigate("/code-sent");
-    toast.success("Code sent!");
+    const updatedData = {
+      first_name: data?.first_name,
+      last_name: data?.last_name,
+      email: data?.email,
+      phone_number: data?.dialCode + " " + data?.mobile?.replaceAll("-", ""),
+      password: data?.password,
+    };
+    console.log(updatedData);
+    setToSessionStore({
+      key: "phone_number",
+      value: updatedData?.phone_number,
+    });
+    dispatch(setPassword(data?.password));
+    dispatch(
+      checkUserExists(
+        updatedData,
+        navigate,
+        toast,
+        companyMetaData?.organizationId
+      )
+    );
   };
 
   return loader ? (
@@ -295,13 +298,13 @@ const Welcome = () => {
                 </FormItem>
               )}
             />
-            <div className="border shadow-md rounded-md p-5">
+            <div>
               <PasswordStrengthBar
                 password={watchPasswordField}
                 className="flex flex-col text-center"
               />
               <h1 className="text-sm">Your password must contain:</h1>
-              <div className="mt-3 text-sm">
+              <div className="mt-3 text-sm flex flex-col gap-1">
                 <FormField
                   control={form.control}
                   name="check1"
@@ -311,7 +314,6 @@ const Welcome = () => {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="mt-1"
                           disabled
                         />
                       </FormControl>
@@ -327,7 +329,6 @@ const Welcome = () => {
                       <FormControl>
                         <Checkbox
                           checked={atleastOneNumber(watchPasswordField)}
-                          className="mt-1"
                           onCheckedChange={field.onChange}
                           disabled
                         />
@@ -344,7 +345,6 @@ const Welcome = () => {
                       <FormControl>
                         <Checkbox
                           checked={atleastOneSpecialChar(watchPasswordField)}
-                          className="mt-1"
                           onCheckedChange={field.onChange}
                           disabled
                         />
@@ -361,7 +361,6 @@ const Welcome = () => {
                       <FormControl>
                         <Checkbox
                           checked={watchPasswordField?.length >= 8}
-                          className="mt-1"
                           onCheckedChange={field.onChange}
                           disabled
                         />
@@ -370,6 +369,23 @@ const Welcome = () => {
                     </FormItem>
                   )}
                 />
+              </div>
+            </div>
+          </div>
+          <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
+            <div className="text-center">
+              <HeHeading3 title={"Already registed?"} />
+              <HeInfoText
+                message={
+                  "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"
+                }
+                className={"text-xs md:text-sm mt-2 md:mt-4"}
+              />
+              <div
+                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
+                onClick={() => navigate("/sign-in")}
+              >
+                Click here to login
               </div>
             </div>
           </div>

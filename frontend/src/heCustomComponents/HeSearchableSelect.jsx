@@ -60,7 +60,7 @@ const HeSearchableSelect = ({
                 <Button
                   variant="input"
                   disabled={disabledStatus}
-                  className={`w-full h-8 bg-transparent justify-between border-b rounded-none border-slate-500 text-sm font-semibold placeholder:text-slate-400 p-0 m-0 
+                  className={`w-full h-8 bg-transparent justify-between rounded-none border-slate-500 text-sm font-semibold placeholder:text-slate-400 p-0 m-0 
                     ${!field.value && "text-slate-400"} ${buttonClasses}`}
                 >
                   <div>
@@ -72,7 +72,7 @@ const HeSearchableSelect = ({
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full h-[220px] p-0">
+            <PopoverContent className="w-full h-[220px] p-0 bg-white">
               <Command className={`w-[300px] ${commandClass}`}>
                 <CommandInput
                   placeholder={"Search..."}
@@ -88,6 +88,7 @@ const HeSearchableSelect = ({
                         className="font-semibold"
                         onSelect={() => {
                           form.setValue(fieldName, item.item);
+                          form?.clearErrors(fieldName);
                         }}
                       >
                         <Check

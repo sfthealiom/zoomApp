@@ -7,7 +7,7 @@ import {
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { cn } from "../../components/lib/utils";
+import { cn } from "../lib/utils";
 
 const Select = SelectPrimitive.Root;
 

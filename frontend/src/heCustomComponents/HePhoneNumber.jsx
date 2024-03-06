@@ -64,7 +64,7 @@ const HePhoneNumber = ({
                     ? countryCode.map((item) => {
                         return (
                           <SelectItem key={item.label} value={item.label}>
-                            <span className="font-semibold">{item.value}</span>
+                            <span className="">{item.value}</span>
                           </SelectItem>
                         );
                       })

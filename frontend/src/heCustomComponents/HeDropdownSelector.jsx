@@ -4,14 +4,14 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../components/ui/Form";
+} from "../../components/ui/Form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/Select";
+} from "../../components/ui/Select";
 
 const HeDropdownSelector = ({
   form,

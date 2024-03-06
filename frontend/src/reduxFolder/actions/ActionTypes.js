@@ -10,3 +10,7 @@ export const STORE_ORG_ID = "store_org_id";
 export const STORE_JWT_TOKEN = "store_access_token";
 export const SET_PASSWORD = "set_password";
 export const USER_LOGOUT = "user_logout";
+
+/** patient */
+export const SET_PATIENT_UID = "set_patient_uid";
+export const SET_PATIENT_USER_DATA = "set_patient_user_data";

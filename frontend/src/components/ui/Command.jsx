@@ -3,8 +3,8 @@ import { Command as CommandPrimitive } from "cmdk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import { cn } from "../../components/lib/utils";
-import { Dialog, DialogContent } from "../../components/ui/Dialog";
+import { cn } from "../lib/utils";
+import { Dialog, DialogContent } from "./Dialog";
 
 const Command = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive

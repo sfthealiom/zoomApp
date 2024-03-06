@@ -101,13 +101,14 @@ export const getUserToken = async (data, dispatch, toast, navigate, type) => {
             key: "organizationId",
             value: orgId,
           });
-          navigate("/transcribe");
+          navigate("/start-new-consultation");
           toast.success("Logged in successfully!");
           dispatch(
             getUserData(
               res?.data?.uid,
               orgId,
               res?.data?.access_token,
+              "",
               toast,
               navigate
             )

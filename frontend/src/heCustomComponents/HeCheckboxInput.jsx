@@ -1,12 +1,12 @@
 import React from "react";
-import { Checkbox } from "../components/ui/Checkbox";
+import { Checkbox } from "../../components/ui/Checkbox";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components/ui/Form";
+} from "../../components/ui/Form";
 
 const HeCheckboxInput = ({
   form,

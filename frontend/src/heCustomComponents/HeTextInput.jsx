@@ -10,7 +10,7 @@ import { Input } from "../components/ui/Input";
 
 const HeTextInput = ({
   form,
-  type = "text",
+  type,
   fieldName,
   labelName,
   placeholder,
@@ -33,9 +33,9 @@ const HeTextInput = ({
           )}
           <FormControl>
             <Input
-              type={type}
+              type={type ? type : "text"}
               maxLength={maxLength}
-              className={`font-semibold ${innerTextClass}`}
+              className={`${innerTextClass}`}
               placeholder={placeholder}
               {...field}
               disabled={disabledStatus}

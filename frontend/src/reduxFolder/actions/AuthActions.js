@@ -5,6 +5,8 @@ import {
   SET_CURRENT_USER_DATA,
   SET_LOADER,
   SET_PASSWORD,
+  SET_PATIENT_UID,
+  SET_PATIENT_USER_DATA,
   STORE_JWT_TOKEN,
   STORE_ORG_ID,
   USER_LOGOUT,
@@ -41,22 +43,25 @@ export const setPassword = (value) => {
   };
 };
 
-export const guestUserSignUp = (data, navigate, toast, organization_id) => {
+export const guestUserSignUp = (data, organization_id, toast, navigate) => {
   return async (dispatch) => {
-    const { first_name, last_name, email, phone_number, password } = data;
+    dispatch({
+      type: SET_LOADER,
+      payload: true,
+    });
     let patientData = {
-      email: email,
-      first_name: first_name,
+      email: `test${data}@gmail.com`,
+      first_name: "Zoom",
       middle_name: null,
-      last_name: last_name,
-      display_name: `${first_name} ${last_name}`,
+      last_name: "Guest",
+      display_name: `Zoom Guest`,
       gender: null,
       dob: null,
-      phone_number: phone_number,
+      phone_number: `+1 ${data}`,
       he_type: "Patient",
       photo_url:
         "https://healiomdata.s3.us-east-2.amazonaws.com/default_simple.png",
-      password: password,
+      password: "Zoom@123",
       initial_zipcode: ["12345"],
       organization_id: [organization_id],
       email_verified: false,
@@ -70,10 +75,76 @@ export const guestUserSignUp = (data, navigate, toast, organization_id) => {
       url: API_URL + "/update_user",
       headers: {
         he_type: "Patient",
-        organization_id: organization_id,
         "Content-Type": "application/json",
       },
       data: patientData,
+    };
+    axios(config)
+      .then((res) => {
+        dispatch({
+          type: SET_PATIENT_UID,
+          payload: res?.data[0]?.uid || "",
+        });
+        dispatch({
+          type: SET_PATIENT_USER_DATA,
+          payload: res?.data[0] || [],
+        });
+        setToSessionStore({
+          key: "patientUid",
+          value: res?.data[0]?.uid,
+        });
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+        navigate("/consultation-screen");
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          dispatch(getRefreshToken(toast));
+        } else {
+          toast.error("Something went wrong while creating your user!");
+        }
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const providerSignUp = (data, navigate, toast, organization_id) => {
+  return async (dispatch) => {
+    const { first_name, last_name, email, phone_number, password } = data;
+    let providerData = {
+      email: email,
+      first_name: first_name,
+      middle_name: null,
+      last_name: last_name,
+      display_name: `${first_name} ${last_name}`,
+      gender: null,
+      dob: null,
+      phone_number: phone_number,
+      he_type: "Provider",
+      photo_url:
+        "https://healiomdata.s3.us-east-2.amazonaws.com/default_simple.png",
+      password: password,
+      initial_zipcode: ["12345"],
+      organization_id: [organization_id],
+      email_verified: false,
+      disabled: false,
+      guest: true,
+      sub_he_type: null,
+    };
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: API_URL + "/update_user",
+      headers: {
+        he_type: "Provider",
+        "Content-Type": "application/json",
+      },
+      data: providerData,
     };
     axios(config)
       .then((res) => {
@@ -95,7 +166,7 @@ export const guestUserSignUp = (data, navigate, toast, organization_id) => {
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
-          dispatch(getRefreshToken());
+          dispatch(getRefreshToken(toast));
         } else {
           toast.error("Something went wrong while creating your user!");
         }
@@ -145,7 +216,7 @@ export const checkUserExists = (data, navigate, toast, organization_id) => {
           });
           toast.error("User already exists!");
         } else {
-          dispatch(guestUserSignUp(data, navigate, toast, organization_id));
+          dispatch(providerSignUp(data, navigate, toast, organization_id));
         }
       })
       .catch((err) => {
@@ -158,7 +229,13 @@ export const checkUserExists = (data, navigate, toast, organization_id) => {
   };
 };
 
-export const getUserData = (uid, orgId, jwtToken, toast, navigate) => {
+export const getPatientData = (
+  patientUid,
+  orgId,
+  jwtToken,
+  toast,
+  navigate
+) => {
   return async (dispatch) => {
     dispatch({
       type: SET_LOADER,
@@ -169,7 +246,7 @@ export const getUserData = (uid, orgId, jwtToken, toast, navigate) => {
       url:
         API_URL +
         "/get_details?uid=" +
-        uid +
+        patientUid +
         "&detail_flag=specific_keys&keys=uid,he_type,photo_url,email,languages,first_name,middle_name,last_name,display_name,gender,dob,password,phone_number,nick_name,height_in_cms,height_in_inch,weight_in_kg,weight_in_lbs,organization_id,address,insurance,prescription,payment,existing_provider,preferred_pharmacy",
       headers: {
         Authorization: "Bearer " + jwtToken,
@@ -180,11 +257,10 @@ export const getUserData = (uid, orgId, jwtToken, toast, navigate) => {
     axios(config)
       .then((res) => {
         dispatch({
-          type: SET_CURRENT_USER_DATA,
+          type: SET_PATIENT_USER_DATA,
           payload: res?.data?.data,
         });
         const lastPageExist = sessionStorage.getItem("lastPage");
-        console.log(lastPageExist);
         navigate(lastPageExist);
         dispatch({
           type: SET_LOADER,
@@ -193,7 +269,65 @@ export const getUserData = (uid, orgId, jwtToken, toast, navigate) => {
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
-          dispatch(getRefreshToken());
+          dispatch(getRefreshToken(toast));
+        } else {
+          toast.error("Something went wrong!");
+        }
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+export const getUserData = (
+  providerUid,
+  orgId,
+  jwtToken,
+  patientUid,
+  toast,
+  navigate
+) => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_LOADER,
+      payload: true,
+    });
+    const config = {
+      method: "get",
+      url:
+        API_URL +
+        "/get_details?uid=" +
+        providerUid +
+        "&detail_flag=specific_keys&keys=uid,he_type,photo_url,email,languages,first_name,middle_name,last_name,display_name,gender,dob,password,phone_number,nick_name,height_in_cms,height_in_inch,weight_in_kg,weight_in_lbs,organization_id,address,insurance,prescription,payment,existing_provider,preferred_pharmacy",
+      headers: {
+        Authorization: "Bearer " + jwtToken,
+        organization_id: orgId,
+        he_type: "Provider",
+      },
+    };
+    axios(config)
+      .then((res) => {
+        dispatch({
+          type: SET_CURRENT_USER_DATA,
+          payload: res?.data?.data,
+        });
+        if (patientUid) {
+          dispatch(
+            getPatientData(patientUid, orgId, jwtToken, toast, navigate)
+          );
+        } else {
+          const lastPageExist = sessionStorage.getItem("lastPage");
+          navigate(lastPageExist);
+          dispatch({
+            type: SET_LOADER,
+            payload: false,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          dispatch(getRefreshToken(toast));
         } else {
           toast.error("Something went wrong!");
         }
@@ -272,7 +406,7 @@ export const verifyOTP = (data, toast, navigate, organizationId) => {
     axios(config)
       .then((res) => {
         getUserToken(data, dispatch, toast, navigate, "sign-up");
-        navigate("/transcribe");
+        navigate("/start-new-consultation");
         dispatch({
           type: SET_LOADER,
           payload: false,
@@ -290,7 +424,7 @@ export const verifyOTP = (data, toast, navigate, organizationId) => {
 };
 
 /** get refresh token to access healiom APIs */
-export const getRefreshToken = () => {
+export const getRefreshToken = (toast) => {
   return async (dispatch) => {
     const uid = sessionStorage.getItem("currentUserUid");
     const organization_id = sessionStorage.getItem("organizationId");

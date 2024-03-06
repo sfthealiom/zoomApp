@@ -5,8 +5,8 @@ import { faPlus, faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 /** curtom imports */
-import { cn } from "../components/lib/utils";
-import { companyMetaData } from "../assets/myCompanyData";
+import { cn } from "../../components/lib/utils";
+import { companyMetaData } from "../../assets/myCompanyData";
 
 /** shadcn imports */
 import {
@@ -15,16 +15,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components/ui/Form";
-import { Command, CommandGroup, CommandItem } from "../components/ui/Command";
+} from "../../components/ui/Form";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+} from "../../components/ui/Command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../components/ui/Popover";
-import { PopoverClose } from "@radix-ui/react-popover";
-import { Input } from "../components/ui/Input";
-import { Button } from "../components/ui/Button";
+} from "../../components/ui/Popover";
+import { PopoverClose } from "../..radix-ui/react-popover";
+import { Input } from "../../components/ui/Input";
+import { Button } from "../../components/ui/Button";
 
 function HeCommandFormSelector({
   form,

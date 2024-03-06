@@ -8,7 +8,7 @@ const LoaderSpin = () => {
       <ThreeCircles
         height="80"
         width="80"
-        color={companyMetaData?.base}
+        color={companyMetaData?.primary}
         wrapperStyle={{}}
         wrapperClass=""
         visible={true}

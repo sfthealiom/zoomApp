@@ -3,8 +3,8 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
-import { cn } from "../../components/lib/utils";
-import { companyMetaData } from "../../assets/myCompanyData.js";
+import { cn } from "../lib/utils";
+import { companyMetaData } from "../../assets/myCompanyData";
 
 const RadioGroup = React.forwardRef(({ className, ...props }, ref) => {
   return (
@@ -31,7 +31,7 @@ const RadioGroupItem = React.forwardRef(({ className, ...props }, ref) => {
         <FontAwesomeIcon
           icon={faCircle}
           className="h-2 w-2 fill-current text-current"
-          style={{ color: companyMetaData.accentTwo }}
+          style={{ color: companyMetaData?.primary }}
         />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
