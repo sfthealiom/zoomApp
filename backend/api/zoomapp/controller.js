@@ -1,6 +1,8 @@
 const { createProxyMiddleware } = require('http-proxy-middleware')
 const zoomApi = require('../../util/zoom-api')
 const zoomHelpers = require('../../util/zoom-helpers')
+const store = require('../../util/store')
+const axios = require('axios')
 
 module.exports = {
   // In-client OAuth 1/2
@@ -44,7 +46,7 @@ module.exports = {
     const codeVerifier = req.session.codeVerifier
 
     console.log(
-      '1. Verify code (from onAuthorized event in client) exists and state matches'
+      '1. Verify code (from onAuthorized event in client) exists and state matches', zoomAuthorizationCode
     )
 
     try {
@@ -84,12 +86,12 @@ module.exports = {
       // 2c. Save the tokens in the store so we can look them up when the Zoom App is opened:
       // When the home url for the app is requested on app open in the Zoom client,
       // the user id (uid field) is in the decrypted x-zoom-app-context header of the GET request
-      // await store.upsertUser(
-      //   zoomUserId,
-      //   tokenResponse.data.access_token,
-      //   tokenResponse.data.refresh_token,
-      //   Date.now() + tokenResponse.data.expires_in * 1000
-      // )
+      await store.upsertUser(
+        zoomUserId,
+        tokenResponse.data.access_token,
+        tokenResponse.data.refresh_token,
+        Date.now() + tokenResponse.data.expires_in * 1000
+      )
 
       return res.json({ result: 'Success' })
     } catch (error) {
@@ -214,12 +216,12 @@ module.exports = {
       // 2c. Save the tokens in the store so we can look them up when the Zoom App is opened:
       // When the home url for the app is requested on app open in the Zoom client,
       // the user id (uid field) is in the decrypted x-zoom-app-context header of the GET request
-      // await store.upsertUser(
-      //   zoomUserId,
-      //   tokenResponse.data.access_token,
-      //   tokenResponse.data.refresh_token,
-      //   Date.now() + tokenResponse.data.expires_in * 1000
-      // )
+      await store.upsertUser(
+        zoomUserId,
+        tokenResponse.data.access_token,
+        tokenResponse.data.refresh_token,
+        Date.now() + tokenResponse.data.expires_in * 1000
+      )
 
       // 3. Get deeplink from Zoom API
       const deepLinkResponse = await zoomApi.getDeeplink(zoomAccessToken)
@@ -237,6 +239,64 @@ module.exports = {
     } catch (error) {
       return next(error)
     }
+  },
+
+  async startLiveStream(req, res, next) {
+    const user = await store.getUser(req.session.user);
+    const zoomAccessToken = user.accessToken;
+    const meetingId = req.body.meetingId;
+    const domain = process.env.ZOOM_HOST // https://zoom.us
+
+    // 2b. Set path
+    const path = 'zoom/authorize';
+
+    let Startdata = JSON.stringify({
+      "page_url": "http://3.19.211.46:8000/admin/streams",
+      "stream_key": "85836551819",
+      "stream_url": "rtmp://3.19.211.46:1935/live",
+      "resolution": "1080p"
+    });
+
+    let startConfig = {
+      method: 'patch',
+      maxBodyLength: Infinity,
+      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream`,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${zoomAccessToken}`, 
+      },
+      data : Startdata
+    };
+
+    let data = JSON.stringify({
+      "action": "start"
+    });
+
+    let config = {
+      method: 'patch',
+      maxBodyLength: Infinity,
+      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${zoomAccessToken}`, 
+      },
+      data : data
+    };
+
+    axios.request(startConfig)
+    .then((response) => {
+      axios.request(config).then((res)=> {
+        console.log('test');
+        return res.send({status:'success'});
+      }).catch((err)=>{
+        return res.send({status: 'error'});
+      })
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.send({status:'error'});
+    })
+
   },
 
   // ZOOM APP HOME URL HANDLER ==================================================
@@ -259,15 +319,11 @@ module.exports = {
 
       // 2. Verify App Context has not expired
       if (!decryptedAppContext.exp || decryptedAppContext.exp < Date.now()) {
-        throw new Error('x-zoom-app-context header is expired')
+        throw new Error("x-zoom-app-context header is expired")
       }
 
       console.log('1. Decrypted Zoom App Context:', decryptedAppContext, '\n')
-      console.log(
-        '2. Verifying Zoom App Context is not expired: ',
-        new Date(decryptedAppContext.exp).toString(),
-        '\n'
-      )
+      console.log('2. Verifying Zoom App Context is not expired: ', new Date(decryptedAppContext.exp).toString(), '\n')
       console.log('3. Persisting user id and meetingUUIDa', '\n')
 
       // 3. Persist user id and meetingUUID

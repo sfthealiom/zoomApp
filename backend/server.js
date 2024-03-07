@@ -10,7 +10,7 @@ const middleware = require('./middleware')
 
 const zoomAppRouter = require('./api/zoomapp/router')
 const zoomRouter = require('./api/zoom/router')
-
+const thirdPartyOAuthRouter = require('./api/thirdpartyauth/router')
 // Create app
 const app = express()
 
@@ -29,6 +29,16 @@ app.use(middleware.setResponseHeaders)
 
 // Zoom App routes
 app.use('/api/zoomapp', zoomAppRouter)
+if (
+  process.env.AUTH0_CLIENT_ID &&
+  process.env.AUTH0_CLIENT_SECRET &&
+  process.env.AUTH0_ISSUER_BASE_URL
+) {
+  app.use('/api/auth0', thirdPartyOAuthRouter)
+} else {
+  console.log('Please add Auth0 env variables to enable the /auth0 route')
+}
+
 app.use('/zoom', zoomRouter)
 
 app.get('/hello', (req, res) => {

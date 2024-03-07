@@ -15,7 +15,7 @@ import { companyMetaData } from "../../assets/myCompanyData";
 
 /** shadcn imports */
 import { toast } from "sonner";
-
+import axios from "axios";
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
@@ -71,6 +71,9 @@ const StartNewConsultation = () => {
                     navigate
                   )
                 );
+                // const response = axios.post("/api/zoomapp/livestream", {
+                //   meetingId: "83362685615",
+                // });
               }}
             />
           </div>
