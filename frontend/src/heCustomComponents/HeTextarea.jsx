@@ -15,6 +15,7 @@ const HeTextarea = ({
   required,
   className,
   innerTextClass,
+  disabledStatus,
 }) => {
   return (
     <FormField
@@ -29,6 +30,7 @@ const HeTextarea = ({
           )}
           <FormControl>
             <Textarea
+              disabled={disabledStatus}
               placeholder={placeholder}
               className={`resize-none ${innerTextClass}`}
               {...field}

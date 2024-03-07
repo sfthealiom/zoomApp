@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
 
-const AddMed = ({ form, fieldName, index, watchMeds }) => {
+const EditMed = ({ form, fieldName, index, watchMeds }) => {
   const form_ways = [
     {
       id: "Oral",
@@ -35,22 +35,18 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         className="h-4 w-4 self-end cursor-pointer"
         onClick={() => {
           const previousValues = form.watch(fieldName);
-          const updatedArray = previousValues?.filter((item, idx) => {
-            return idx !== index;
-          });
+          const updatedArray = previousValues.slice(0, -1);
           form.setValue(fieldName, [...updatedArray]);
         }}
       />
-      <div className="flex flex-col items-start gap-1 justify-between md:flex-row">
-        <h1 className="max-w-xs font-semibold">
-          {watchMeds[index]?.code_value}
-        </h1>
+      <div className="flex items-start gap-1 justify-between">
+        <h1 className="max-w-xs font-semibold">{watchMeds[index]?.value}</h1>
         <p>{watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">
         <HeTextInput
           form={form}
-          fieldName={`${fieldName}[${index}].quantity`}
+          fieldName={`medications[${index}].quantity`}
           labelName={`Quantity`}
           placeholder={"1"}
           className={"flex flex-col gap-2 rounded-md"}
@@ -59,7 +55,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         />
         <HeTextInput
           form={form}
-          fieldName={`${fieldName}[${index}].refills`}
+          fieldName={`medications[${index}].refills`}
           labelName={`Refills`}
           placeholder={"0"}
           className={"flex flex-col gap-2 rounded-md"}
@@ -68,7 +64,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         />
         <HeTextInput
           form={form}
-          fieldName={`${fieldName}[${index}].daySupply`}
+          fieldName={`medications[${index}].daySupply`}
           labelName={`Days supply`}
           placeholder={"5"}
           className={"flex flex-col gap-2 rounded-md"}
@@ -79,7 +75,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full flex items-start justify-between gap-2">
         <HeSearchableSelect
           form={form}
-          fieldName={`${fieldName}[${index}].form_way`}
+          fieldName={`medications[${index}].form_way`}
           dataArray={form_ways}
           placeholder="Form"
           labelName={`Form`}
@@ -93,7 +89,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         />
         <HeSearchableSelect
           form={form}
-          fieldName={`${fieldName}[${index}].route`}
+          fieldName={`medications[${index}].route`}
           dataArray={form_ways}
           placeholder="Route"
           labelName={`Route`}
@@ -108,7 +104,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
       </div>
       <HeTextInput
         form={form}
-        fieldName={`${fieldName}[${index}].directions`}
+        fieldName={`medications[${index}].directions`}
         labelName={`Directions`}
         placeholder={"Take..."}
         className={"flex flex-col gap-2 rounded-md"}
@@ -118,14 +114,14 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
-          fieldName={`${fieldName}[${index}].allowSub`}
+          fieldName={`medications[${index}].allowSub`}
           labelName={`Allow Substitution`}
           value1={"Yes"}
           value2={"No"}
         />
         <HeRadioButtonTrueFalse
           form={form}
-          fieldName={`${fieldName}[${index}].inClinic`}
+          fieldName={`medications[${index}].inClinic`}
           labelName={`In-clinic`}
           value1={"Yes"}
           value2={"No"}
@@ -136,7 +132,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           {showOrdRea ? (
             <HeTextInput
               form={form}
-              fieldName={`${fieldName}[${index}].orderReason`}
+              fieldName={`medications[${index}].orderReason`}
               labelName={`Order/Reason`}
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
@@ -156,7 +152,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           {showNotes ? (
             <HeTextInput
               form={form}
-              fieldName={`${fieldName}[${index}].pharmacyNotes`}
+              fieldName={`medications[${index}].pharmacyNotes`}
               labelName={`Pharmacy Notes`}
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
@@ -173,14 +169,8 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           )}
         </div>
       </div>
-      {/* <HeButton
-        title={"Verify"}
-        icon={<FontAwesomeIcon icon={faCheck} />}
-        className={`w-fit self-center`}
-        bgColor={companyMetaData?.primary}
-      /> */}
     </div>
   );
 };
 
-export default AddMed;
+export default EditMed;

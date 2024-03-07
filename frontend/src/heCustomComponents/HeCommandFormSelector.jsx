@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { Check, ChevronsUpDown } from "lucide-react";
 
 /** curtom imports */
 import { cn } from "../../components/lib/utils";

@@ -4,27 +4,28 @@ import React, { useState } from "react";
 /** custom imports */
 import { companyMetaData } from "../../../assets/myCompanyData";
 import {
+  HeAISuggesstions,
+  HeAutoCompleteSearch,
   HeHeading2,
-  HeHeading3,
   HePopupMessage,
 } from "../../../heCustomComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faInfoCircle,
-  faPlus,
-  faWandMagicSparkles,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { AIProcessPill, CheckboxPill, Pill } from "../../../components/helpers";
-import data from "./data.json";
+import { faInfoCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { CheckboxPill, Pill } from "../../../components/helpers";
 
 /** shadcn imports */
-import { Input } from "../../../components/ui/Input";
 
-const Diagnosis = () => {
-  let diagnoses = data?.ai_preds?.entities?.diagnoses;
+/** redux imports */
+import { useSelector } from "react-redux";
 
+const Diagnosis = ({ form, aiData }) => {
   const [showPopup, setShowPopup] = useState(false);
+  const { autoCompleteDataDiagnoses } = useSelector(
+    (state) => state.authReducer
+  );
+
+  const watchDiffDiag = form.watch("diffDiag");
+  const watchWorkDiag = form.watch("workDiag");
 
   return (
     <div className="w-full flex flex-col gap-8 md:gap-12">
@@ -93,55 +94,46 @@ const Diagnosis = () => {
           />
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-          {diagnoses.length > 0
-            ? diagnoses?.map((item, index) => {
-                return (
-                  <Pill
-                    key={index}
-                    code={item?.code}
-                    name={item?.code_value}
-                    icon={<FontAwesomeIcon icon={faXmark} />}
-                  />
-                );
-              })
-            : null}
+          {watchDiffDiag.length > 0 ? (
+            watchDiffDiag?.map((item, index) => {
+              return (
+                <Pill
+                  key={index}
+                  code={item?.code}
+                  name={item?.code_value}
+                  icon={<FontAwesomeIcon icon={faXmark} />}
+                  onIconClick={() => {
+                    const previousValues = watchDiffDiag;
+                    const updatedArray = previousValues?.filter((item, idx) => {
+                      return idx !== index;
+                    });
+                    form.setValue("diffDiag", updatedArray);
+                    form.setValue("workDiag", updatedArray);
+                  }}
+                />
+              );
+            })
+          ) : (
+            <p className="text-sm text-slate-500">
+              No differential diagnoses added.
+            </p>
+          )}
         </div>
-        <Input
-          placeholder="Start typing..."
-          className="border border-slate-200 rounded-md px-4 py-3 h-10"
+        <HeAutoCompleteSearch
+          form={form}
+          fieldName={"diffDiag"}
+          fieldName2={"workDiag"}
+          searchType={"diagnoses"}
+          dataArray={autoCompleteDataDiagnoses}
         />
-        <div
-          className="flex flex-col gap-2 rounded-md"
-          style={{
-            backgroundColor: companyMetaData?.aiLight,
-            color: companyMetaData?.aiDark,
-          }}
-        >
-          <div className="flex gap-1 items-center px-2 pt-2">
-            <FontAwesomeIcon icon={faWandMagicSparkles} className="h-4 w-4" />
-            <HeHeading3
-              title={"AI Suggesstions"}
-              className={`md:text-[18px]`}
-            />
-          </div>
-          <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar px-2 pb-2">
-            {diagnoses.length > 0
-              ? diagnoses?.map((item, index) => {
-                  return (
-                    <Pill
-                      key={index}
-                      code={item?.code}
-                      name={item?.code_value}
-                      icon={<FontAwesomeIcon icon={faPlus} />}
-                      pillColor={companyMetaData?.accentWhite}
-                      textColor={companyMetaData?.aiDark}
-                    />
-                  );
-                })
-              : null}
-            <AIProcessPill />
-          </div>
-        </div>
+        <HeAISuggesstions
+          form={form}
+          fieldName={"diffDiag"}
+          fieldName2={"workDiag"}
+          prevValue={watchDiffDiag}
+          prevValue2={watchWorkDiag}
+          aiData={aiData}
+        />
       </div>
 
       {/* working diagnoses */}
@@ -170,17 +162,21 @@ const Diagnosis = () => {
           </div>
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-          {diagnoses.length > 0
-            ? diagnoses?.map((item, index) => {
-                return (
-                  <CheckboxPill
-                    key={index}
-                    code={item?.code}
-                    name={item?.code_value}
-                  />
-                );
-              })
-            : null}
+          {watchWorkDiag.length > 0 ? (
+            watchWorkDiag?.map((item, index) => {
+              return (
+                <CheckboxPill
+                  key={index}
+                  code={item?.code}
+                  name={item?.code_value}
+                />
+              );
+            })
+          ) : (
+            <p className="text-sm text-slate-500">
+              No working diagnoses added.
+            </p>
+          )}
         </div>
       </div>
     </div>
