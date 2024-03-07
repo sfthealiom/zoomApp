@@ -104,13 +104,7 @@ const ConsultationScreen = () => {
       diffDiag: [],
       workDiag: [],
       medications: [],
-      orders: [
-        {
-          code: "HAHDA:9292",
-          code_value: "Order",
-          inClinic: false,
-        },
-      ],
+      orders: [],
       procDone: [],
       careTaskNotes: aiCarePlan?.join(""),
     },

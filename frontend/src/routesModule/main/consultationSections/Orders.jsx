@@ -14,6 +14,9 @@ const Orders = ({ form }) => {
   const watchOrders = form.watch("orders");
 
   const { autoCompleteDataLabs } = useSelector((state) => state.authReducer);
+  const attributes = {
+    orderReason: "",
+  };
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -44,6 +47,7 @@ const Orders = ({ form }) => {
           fieldName={"orders"}
           searchType={"procedures"}
           dataArray={autoCompleteDataLabs}
+          attributes={attributes}
         />
       </div>
     </div>

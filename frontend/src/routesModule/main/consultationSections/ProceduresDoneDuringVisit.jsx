@@ -1,18 +1,13 @@
 /** library imports */
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
 /** custom imports */
-import { companyMetaData } from "../../../assets/myCompanyData";
 import {
   HeAISuggesstions,
   HeAutoCompleteSearch,
   HeHeading2,
-  HeHeading3,
 } from "../../../heCustomComponents";
 import AddProcDone from "./addCards/AddProcDone";
-import { AIProcessPill, Pill } from "../../../components/helpers";
 
 /** shadcn import */
 
@@ -21,7 +16,7 @@ import { useSelector } from "react-redux";
 
 const ProceduresDoneDuringVisit = ({ form, aiData }) => {
   const watchProcDone = form.watch("procDone");
-  const { autoCompleteDataLabs } = useSelector((state) => state.authReducer);
+  const { autoCompleteProcDone } = useSelector((state) => state.authReducer);
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -51,8 +46,8 @@ const ProceduresDoneDuringVisit = ({ form, aiData }) => {
           <HeAutoCompleteSearch
             form={form}
             fieldName={"procDone"}
-            searchType={"procedures"}
-            dataArray={autoCompleteDataLabs}
+            searchType={"procedures_done"}
+            dataArray={autoCompleteProcDone}
           />
           <HeAISuggesstions
             form={form}

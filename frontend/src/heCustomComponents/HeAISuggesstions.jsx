@@ -13,6 +13,7 @@ const HeAISuggesstions = ({
   prevValue,
   prevValue2,
   aiData,
+  attributes,
 }) => {
   return (
     <div
@@ -38,7 +39,14 @@ const HeAISuggesstions = ({
                   pillColor={companyMetaData?.accentWhite}
                   textColor={companyMetaData?.aiDark}
                   onPress={() => {
-                    form.setValue(fieldName, [...prevValue, item]);
+                    form.setValue(fieldName, [
+                      ...prevValue,
+                      {
+                        code: item?.code,
+                        code_value: item?.code_value,
+                        ...attributes,
+                      },
+                    ]);
                     if (fieldName2) {
                       form.setValue(fieldName2, [...prevValue2, item]);
                     }

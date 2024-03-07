@@ -36,7 +36,7 @@ const AddProcDone = ({ form, fieldName, index, item }) => {
         {showOrdRea ? (
           <HeTextInput
             form={form}
-            fieldName={`${fieldName}[${index}].orderReason`}
+            fieldName={`procDone[${index}].orderReason`}
             labelName={`Notes`}
             placeholder={"Notes..."}
             className={"flex flex-col gap-2 rounded-md"}

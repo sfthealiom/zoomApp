@@ -18,6 +18,18 @@ const Medications = ({ form, aiData }) => {
   const { autoCompleteDataMed } = useSelector((state) => state.authReducer);
 
   const watchMeds = form.watch("medications");
+  const attributes = {
+    quantity: "",
+    refills: "",
+    daySupply: "",
+    form_way: "",
+    route: "",
+    directions: "",
+    allowSub: false,
+    inClinic: false,
+    orderReason: "",
+    pharmacyNotes: "",
+  };
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -46,12 +58,14 @@ const Medications = ({ form, aiData }) => {
             fieldName={"medications"}
             searchType={"medications"}
             dataArray={autoCompleteDataMed}
+            attributes={attributes}
           />
           <HeAISuggesstions
             form={form}
             fieldName={"medications"}
             prevValue={watchMeds}
             aiData={aiData}
+            attributes={attributes}
           />
         </div>
       </div>

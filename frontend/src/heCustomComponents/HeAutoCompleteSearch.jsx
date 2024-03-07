@@ -20,6 +20,7 @@ const HeAutoCompleteSearch = ({
   fieldName2,
   searchType,
   dataArray,
+  attributes,
 }) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -73,6 +74,7 @@ const HeAutoCompleteSearch = ({
                       {
                         code: item?.id,
                         code_value: item?.item,
+                        ...attributes,
                       },
                     ]);
                     if (fieldName2) {
@@ -81,6 +83,7 @@ const HeAutoCompleteSearch = ({
                         {
                           code: item?.id,
                           code_value: item?.item,
+                          ...attributes,
                         },
                       ]);
                     }

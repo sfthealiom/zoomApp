@@ -5,6 +5,7 @@ import {
   SET_AUTOCOMPLETE_DIAGNOSES_DATA,
   SET_AUTOCOMPLETE_LABS_DATA,
   SET_AUTOCOMPLETE_MED_DATA,
+  SET_AUTOCOMPLETE_PROC_DONE_DATA,
   SET_LABEL_DATA,
   SET_LOADER,
 } from "./actions/ActionTypes";
@@ -145,7 +146,9 @@ export const autoCompleteSearch = (title, text, toast) => {
       maxBodyLength: Infinity,
       url:
         API_URL +
-        `/encounter_autocomplete?title=${title}&text=${text}&page=1&per_page=10`,
+        `/encounter_autocomplete?title=${
+          title === "procedures_done" ? "procedures" : title
+        }&text=${text}`,
       headers: {},
     };
     axios
@@ -181,6 +184,12 @@ export const autoCompleteSearch = (title, text, toast) => {
         if (title === "procedures") {
           dispatch({
             type: SET_AUTOCOMPLETE_LABS_DATA,
+            payload: data,
+          });
+        }
+        if (title === "procedures_done") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_PROC_DONE_DATA,
             payload: data,
           });
         }
