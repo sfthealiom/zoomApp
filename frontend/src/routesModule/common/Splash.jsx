@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 /** custom imports */
 import { companyMetaData } from "../../assets/myCompanyData";
+import companyLogo from "../../assets/images/companyLogo.png";
 
 /** shadcn imports */
 import { toast } from "sonner";
@@ -78,7 +79,7 @@ const Splash = () => {
     <div className="flex flex-col gap-2 items-center justify-center h-screen rounded-lg">
       <div className="flex gap-2 flex-col justify-center items-center p-2">
         <img
-          src={companyMetaData.companyLogoUrl}
+          src={companyLogo}
           alt="company.png"
           className="w-[100px] rounded-md shadow-md p-2"
         />

@@ -15,14 +15,14 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
-    },
-    extend: {
       fontFamily: {
         light: ["My-Light"],
         semibold: ["My-Regular"],
         bold: ["My-Bold"],
         extraBold: ["My-ExtraBold"],
       },
+    },
+    extend: {
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

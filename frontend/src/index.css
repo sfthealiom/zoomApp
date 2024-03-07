@@ -5,25 +5,25 @@
 /* change me to set your light font */
 @font-face {
   font-family: "My-Light";
-  src: url("./assets/fonts/my-light.otf");
+  src: url("./assets/fonts/my-light.otf") format("opentype");
 }
 
 /* change me to set your regular font */
 @font-face {
   font-family: "My-Regular";
-  src: url("./assets//fonts/my-regular.otf");
+  src: url("./assets//fonts/my-regular.otf") format("opentype");
 }
 
 /* change me to set your bold font */
 @font-face {
   font-family: "My-Bold";
-  src: url("./assets//fonts/my-bold.otf");
+  src: url("./assets//fonts/my-bold.otf") format("opentype");
 }
 
 /* change me to set your extra bold font */
 @font-face {
   font-family: "My-ExtraBold";
-  src: url("./assets/fonts/my-extraBold.otf");
+  src: url("./assets/fonts/my-extraBold.otf") format("opentype");
 }
 
 .scrollbar::-webkit-scrollbar {
