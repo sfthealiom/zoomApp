@@ -11,7 +11,10 @@ const CheckboxPill = ({ code, name, pillColor, textColor }) => {
       }}
     >
       <div className="flex items-start gap-2">
-        <Checkbox className="bg-white border border-slate-500 rounded-sm mt-1" />
+        <Checkbox
+          className="bg-white border border-slate-500 rounded-sm"
+          onClick={(e) => {}}
+        />
         <h1
           title={name}
           className="font-semibold text-wrap"

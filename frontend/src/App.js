@@ -12,7 +12,11 @@ import { Splash, NotFound, ProtectedLayout } from "./routesModule/common";
 import { SignIn, Welcome, CodeSent } from "./routesModule/auth";
 
 /** main routes */
-import { StartNewConsultation, ConsultationScreen } from "./routesModule/main";
+import {
+  StartNewConsultation,
+  ConsultationScreen,
+  ReviewNotes,
+} from "./routesModule/main";
 
 /** shadcn imports */
 import { Toaster } from "sonner";
@@ -46,6 +50,7 @@ const App = () => {
             element={<StartNewConsultation />}
           />
           <Route path="/consultation-screen" element={<ConsultationScreen />} />
+          <Route path="/review-consultation-notes" element={<ReviewNotes />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

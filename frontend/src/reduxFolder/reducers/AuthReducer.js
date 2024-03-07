@@ -9,6 +9,10 @@ import {
   STORE_ORG_ID,
   SET_PASSWORD,
   USER_LOGOUT,
+  SET_AUTOCOMPLETE_DIAGNOSES_DATA,
+  SET_AUTOCOMPLETE_MED_DATA,
+  SET_AUTOCOMPLETE_ALLERGY_DATA,
+  SET_AUTOCOMPLETE_LABS_DATA,
 } from "../actions/ActionTypes";
 
 const INITIAL_STATE = {
@@ -20,6 +24,10 @@ const INITIAL_STATE = {
   jwtToken: "",
   orgId: "",
   password: "",
+  autoCompleteDataDiagnoses: [],
+  autoCompleteDataMed: [],
+  autoCompleteDataAllergies: [],
+  autoCompleteDataLabs: [],
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -40,6 +48,14 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return { ...state, jwtToken: action.payload };
     case SET_PASSWORD:
       return { ...state, password: action.payload };
+    case SET_AUTOCOMPLETE_DIAGNOSES_DATA:
+      return { ...state, autoCompleteDataDiagnoses: action.payload };
+    case SET_AUTOCOMPLETE_MED_DATA:
+      return { ...state, autoCompleteDataMed: action.payload };
+    case SET_AUTOCOMPLETE_ALLERGY_DATA:
+      return { ...state, autoCompleteDataAllergies: action.payload };
+    case SET_AUTOCOMPLETE_LABS_DATA:
+      return { ...state, autoCompleteDataLabs: action.payload };
     case USER_LOGOUT:
       return INITIAL_STATE;
     default:

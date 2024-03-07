@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
@@ -10,11 +13,7 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
-import {
-  HeButton,
-  HeFormSubmitButton,
-  HeHeading2,
-} from "../../heCustomComponents";
+import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
   Diagnosis,
@@ -25,8 +24,10 @@ import {
   Subjective,
 } from "./consultationSections";
 import { companyMetaData } from "../../assets/myCompanyData";
+import encounterNotes from "./consultationSections/data.json";
 
 /** shadcn imports */
+import { Form } from "../../components/ui/Form";
 import { toast } from "sonner";
 
 /** redux imports */
@@ -40,6 +41,97 @@ const ConsultationScreen = () => {
   const navigate = useNavigate();
 
   const [endSession, setEndSession] = useState(false);
+
+  // data from ai
+  const aiDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
+  const aiMed = encounterNotes?.ai_preds?.entities?.medications;
+  const aiProc = encounterNotes?.ai_preds?.entities?.procedures;
+  const aiSubjec =
+    encounterNotes?.ai_preds?.summaries?.subjectiveClinicalSummary;
+  const aiObjec = encounterNotes?.ai_preds?.summaries?.objectiveClinicalSummary;
+  const aiCarePlan = encounterNotes?.ai_preds?.summaries?.carePlanSuggested;
+
+  const medicationsSchema = z.object({
+    code: z.string().min(1, "Required"),
+    code_value: z.string().min(1, "Required"),
+    quantity: z.string().min(1, "Required"),
+    refills: z.string().min(1, "Required"),
+    daySupply: z.string().min(1, "Required"),
+    form_way: z.string().min(1, "Required"),
+    route: z.string().min(1, "Required"),
+    directions: z.string().min(3, "Required"),
+    allowSub: z.boolean({
+      invalid_type_error: "Invalid",
+      required_error: "Required",
+    }),
+    inClinic: z.boolean({
+      invalid_type_error: "Invalid",
+      required_error: "Required",
+    }),
+    orderReason: z.string().optional(),
+    pharmacyNotes: z.string().optional(),
+  });
+  const ordersSchema = z.object({
+    code: z.string().min(1, "Required"),
+    code_value: z.string().min(1, "Required"),
+    inClinic: z.boolean({
+      invalid_type_error: "Invalid",
+      required_error: "Required",
+    }),
+  });
+  const procDoneSchema = z.object({
+    code: z.string().min(1, "Required"),
+    code_value: z.string().min(1, "Required"),
+    orderReason: z.string().optional(),
+  });
+  const diagSchema = z.object({
+    code: z.string().min(1, "Required"),
+    code_value: z.string().min(1, "Required"),
+  });
+  const FormSchema = z.object({
+    diffDiag: z.array(diagSchema).optional(),
+    workDiag: z.array(diagSchema).optional(),
+    medications: z.array(medicationsSchema).optional(),
+    orders: z.array(ordersSchema).optional(),
+    procDone: z.array(procDoneSchema).optional(),
+    careTaskNotes: z.string().optional(),
+  });
+
+  const form = useForm({
+    mode: "all",
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      diffDiag: [],
+      workDiag: [],
+      medications: [],
+      orders: [
+        {
+          code: "HAHDA:9292",
+          code_value: "Order",
+          inClinic: false,
+        },
+      ],
+      procDone: [],
+      careTaskNotes: aiCarePlan?.join(""),
+    },
+  });
+
+  const handleData = (data, e) => {
+    const { diffDiag, workDiag, medications, orders, procDone, careTaskNotes } =
+      data;
+    const encounterNotes = {
+      subjective: aiSubjec?.join(""),
+      objective: aiObjec?.join(""),
+      differentDiag: diffDiag,
+      workingDiag: workDiag,
+      medications,
+      orders,
+      proceduresDone: procDone,
+      careTaskDirectives: careTaskNotes,
+    };
+    console.log(encounterNotes);
+    navigate("/review-consultation-notes");
+  };
 
   useEffect(() => {
     setToSessionStore({
@@ -82,27 +174,33 @@ const ConsultationScreen = () => {
             </p>
           </div>
         </div>
-        <div className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
-          <Subjective />
-          <Objective />
-          <Diagnosis />
-          <Medications />
-          <Orders />
-          <ProceduresDoneDuringVisit />
-          <CareTaskDirectives />
-        </div>
-        <div
-          className="w-full rounded-md"
-          style={{
-            boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
-          }}
-        >
-          <HeButton
-            title={"End Session"}
-            className={`w-full`}
-            // onPress={() => navigate("/review-consultation-notes")}
-          />
-        </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleData)}
+            className="w-full flex flex-col gap-2"
+          >
+            <div className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
+              <Subjective aiData={aiSubjec} />
+              <Objective aiData={aiObjec} />
+              <Diagnosis form={form} aiData={aiDiag} />
+              <Medications form={form} aiData={aiMed} />
+              <Orders form={form} />
+              <ProceduresDoneDuringVisit form={form} aiData={aiProc} />
+              <CareTaskDirectives form={form} />
+            </div>
+            <div
+              className="w-full rounded-md"
+              style={{
+                boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
+              }}
+            >
+              <HeFormSubmitButton
+                title={"End Session"}
+                className={`w-full mt-4`}
+              />
+            </div>
+          </form>
+        </Form>
       </div>
     </section>
   );

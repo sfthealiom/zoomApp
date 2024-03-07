@@ -30,3 +30,6 @@ export { default as HeTextarea } from "./HeTextarea";
 // export { default as HeCheckboxInput } from "./HeCheckboxInput";
 // export { default as HeRadioButtonTrueFalse } from "./HeRadioButtonTrueFalse";
 export { default as HeClosePopup } from "./HeClosePopup";
+export { default as HeCopy } from "./HeCopy";
+export { default as HeAutoCompleteSearch } from "./HeAutoCompleteSearch";
+export { default as HeAISuggesstions } from "./HeAISuggesstions";

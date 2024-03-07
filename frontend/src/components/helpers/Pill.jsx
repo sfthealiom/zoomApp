@@ -9,10 +9,11 @@ const Pill = ({
   textColor,
   className,
   onPress,
+  onIconClick,
 }) => {
   return (
     <div
-      className={`w-full h-fit rounded-md flex flex-col lg:flex-row gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm ${className}`}
+      className={`w-full h-fit rounded-md flex flex-col lg:flex-row gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm cursor-pointer ${className}`}
       style={{
         backgroundColor: pillColor || companyMetaData?.accentOneLight,
       }}
@@ -35,7 +36,10 @@ const Pill = ({
       >
         <h2>{code}</h2>
         {icon && (
-          <span className="flex items-center justify-center cursor-pointer ml-1">
+          <span
+            className="flex items-center justify-center cursor-pointer ml-1"
+            onClick={onIconClick}
+          >
             {icon}
           </span>
         )}

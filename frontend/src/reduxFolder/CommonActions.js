@@ -1,12 +1,20 @@
 import axios from "axios";
 import {
   SET_ALL_DROPDOWN_DATA,
+  SET_AUTOCOMPLETE_ALLERGY_DATA,
+  SET_AUTOCOMPLETE_DIAGNOSES_DATA,
+  SET_AUTOCOMPLETE_LABS_DATA,
+  SET_AUTOCOMPLETE_MED_DATA,
   SET_LABEL_DATA,
   SET_LOADER,
 } from "./actions/ActionTypes";
 import { configSecret } from "../assets/awsSecrets";
 import { setToSessionStore } from "./CommonFunctions";
-import { getUserData, setJWTToken } from "./actions/AuthActions";
+import {
+  getRefreshToken,
+  getUserData,
+  setJWTToken,
+} from "./actions/AuthActions";
 import { companyMetaData } from "../assets/myCompanyData";
 
 const { API_URL } = configSecret;
@@ -127,4 +135,77 @@ export const getUserToken = async (data, dispatch, toast, navigate, type) => {
       toast.error("Invalid credentials!");
       return err;
     });
+};
+
+/** autocomplete API for searching anything with title and text */
+export const autoCompleteSearch = (title, text, toast) => {
+  return async (dispatch) => {
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url:
+        API_URL +
+        `/encounter_autocomplete?title=${title}&text=${text}&page=1&per_page=10`,
+      headers: {},
+    };
+    axios
+      .request(config)
+      .then((res) => {
+        let data = [];
+        if (res?.data?.length > 0) {
+          data = res?.data?.map((item) => {
+            return {
+              id: item?.code,
+              item: item?.code_value,
+            };
+          });
+        }
+        if (title === "diagnoses") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_DIAGNOSES_DATA,
+            payload: data,
+          });
+        }
+        if (title === "medications") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_MED_DATA,
+            payload: data,
+          });
+        }
+        if (title === "allergies") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_ALLERGY_DATA,
+            payload: data,
+          });
+        }
+        if (title === "procedures") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_LABS_DATA,
+            payload: data,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          // toast({
+          //   title: "Invalid token",
+          //   description:
+          //     "Please wait while we create a fresh token and execute your request",
+          //   variant: "note",
+          // });
+          dispatch(getRefreshToken(toast));
+        } else {
+          toast({
+            title: "Oops!",
+            description:
+              "Something happened while creating your user, please check your internet connection or try again.",
+            variant: "note",
+          });
+        }
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
 };

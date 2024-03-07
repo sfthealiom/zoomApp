@@ -22,12 +22,14 @@ const AddProcDone = ({ form, fieldName, index, item }) => {
         className="h-4 w-4 self-end cursor-pointer"
         onClick={() => {
           const previousValues = form.watch(fieldName);
-          const updatedArray = previousValues.slice(0, -1);
+          const updatedArray = previousValues?.filter((item, idx) => {
+            return idx !== index;
+          });
           form.setValue(fieldName, [...updatedArray]);
         }}
       />
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{item?.value}</h1>
+        <h1 className="max-w-xs font-semibold">{item?.code_value}</h1>
         <p>{item?.code}</p>
       </div>
       <div className="w-full mt-2">

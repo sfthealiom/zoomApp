@@ -1,69 +1,27 @@
 /** library imports */
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
 /** custom imports */
-import { HeHeading2 } from "../../../heCustomComponents";
+import { companyMetaData } from "../../../assets/myCompanyData";
+import {
+  HeAISuggesstions,
+  HeAutoCompleteSearch,
+  HeHeading2,
+  HeHeading3,
+} from "../../../heCustomComponents";
 import AddProcDone from "./addCards/AddProcDone";
+import { AIProcessPill, Pill } from "../../../components/helpers";
 
 /** shadcn import */
-import { Form } from "../../../components/ui/Form";
-import { Input } from "../../../components/ui/Input";
 
 /** redux imports */
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-const ProceduresDoneDuringVisit = () => {
-  const dispatch = useDispatch();
-  const { currentUserData, jwtToken, staticData } = useSelector(
-    (state) => state.authReducer
-  );
-
-  const [search, setSearch] = useState("");
-  const procDoneSchema = z.object({
-    code: z.string().min(1, "Required"),
-    value: z.string().min(1, "Required"),
-    orderReason: z.string().optional(),
-  });
-  const FormSchema = z.object({
-    procDone: z.array(procDoneSchema).min(1, "Required"),
-  });
-
-  const form = useForm({
-    mode: "all",
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      procDone: [
-        {
-          code: "00000000",
-          value: "Lab Test",
-          orderReason: "Hello World",
-        },
-        {
-          code: "00000000",
-          value: "Procedure",
-          orderReason: "Hello World 2",
-        },
-      ],
-    },
-  });
+const ProceduresDoneDuringVisit = ({ form, aiData }) => {
   const watchProcDone = form.watch("procDone");
-
-  const handleData = (data, e) => {
-    console.log(data);
-  };
-
-  useEffect(() => {
-    // dispatch(autoCompleteSearch("labs", search));
-  }, [search]);
-
-  useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      form.reset();
-    }
-  }, [form.reset, form.formState.isSubmitSuccessful]);
+  const { autoCompleteDataLabs } = useSelector((state) => state.authReducer);
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -73,36 +31,37 @@ const ProceduresDoneDuringVisit = () => {
           className={`md:text-[18px]`}
         />
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleData)}
-          className="w-full flex flex-col gap-2"
-        >
-          {watchProcDone?.length > 0 && (
-            <div className="flex flex-col gap-2">
-              {watchProcDone?.map((item, index) => {
-                return (
-                  <AddProcDone
-                    key={index}
-                    form={form}
-                    fieldName={"procDone"}
-                    index={index}
-                    item={item}
-                  />
-                );
-              })}
-            </div>
-          )}
+      <div className="w-full flex flex-col gap-2">
+        {watchProcDone?.length > 0 && (
           <div className="flex flex-col gap-2">
-            <Input
-              placeholder="Start typing..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="border border-slate-200 rounded-md px-4 py-3 h-10"
-            />
+            {watchProcDone?.map((item, index) => {
+              return (
+                <AddProcDone
+                  key={index}
+                  form={form}
+                  fieldName={"procDone"}
+                  index={index}
+                  item={item}
+                />
+              );
+            })}
           </div>
-        </form>
-      </Form>
+        )}
+        <div className="flex flex-col gap-2">
+          <HeAutoCompleteSearch
+            form={form}
+            fieldName={"procDone"}
+            searchType={"procedures"}
+            dataArray={autoCompleteDataLabs}
+          />
+          <HeAISuggesstions
+            form={form}
+            fieldName={"procDone"}
+            prevValue={watchProcDone}
+            aiData={aiData}
+          />
+        </div>
+      </div>
     </div>
   );
 };
