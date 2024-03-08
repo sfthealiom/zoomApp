@@ -505,29 +505,6 @@ const Welcome = (props) => {
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
-            <div className="text-center">
-              <HeHeading3 title={"Already registed?"} />
-              <HeInfoText
-                message={
-                  "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"
-                }
-                className={"text-xs md:text-sm mt-2 md:mt-4"}
-              />
-              <div
-                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
-                onClick={() => {
-                  const item = {
-                    name: "getMeetingContext",
-                  };
-                  invokeZoomAppsSdk(item);
-                  navigate("/sign-in");
-                }}
-              >
-                Click here to login
-              </div>
-            </div>
-          </div>
           <div className="flex self-center mt-8 md:mt-16 gap-2 items-center">
             <HeFormSubmitButton
               title={"Continue"}
