@@ -17,6 +17,8 @@ import {
   StartNewConsultation,
   ConsultationScreen,
   ReviewNotes,
+  ViewPastSessionDetails,
+  ConsultationNotes,
 } from "./routesModule/main";
 
 /** shadcn imports */
@@ -205,6 +207,11 @@ const App = () => {
           />
           <Route path="/consultation-screen" element={<ConsultationScreen />} />
           <Route path="/review-consultation-notes" element={<ReviewNotes />} />
+          <Route path="/consultation-notes" element={<ConsultationNotes />} />
+          <Route
+            path="/history/conversation/:id"
+            element={<ViewPastSessionDetails />}
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

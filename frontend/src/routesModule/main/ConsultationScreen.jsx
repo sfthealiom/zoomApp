@@ -6,6 +6,7 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
@@ -89,7 +90,7 @@ const ConsultationScreen = () => {
     );
   };
 
-  const leaveProvCall = (timeoutKey) => {
+  const leaveProvCall = () => {
     dispatch(
       completeEncounter(
         jwtToken,
@@ -101,13 +102,12 @@ const ConsultationScreen = () => {
         encounterCallDetails.provider_wait_time,
         encounterCallDetails.providerid,
         aiSuggestions,
-        organizationId,
+        companyMetaData?.organizationId,
         "provider",
         navigate,
         encounter_notes,
         "zoom encounter",
-        encounterCallDetails,
-        timeoutKey
+        encounterCallDetails
       )
     );
     leaveSession(false, "");
@@ -207,44 +207,45 @@ const ConsultationScreen = () => {
 
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
-    code_value: z.string().min(1, "Required"),
-    quantity: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    quantity_unit: z.string().min(1, "Required"),
     refills: z.string().min(1, "Required"),
-    daySupply: z.string().min(1, "Required"),
-    form_way: z.string().min(1, "Required"),
+    days_supply: z.string().min(1, "Required"),
+    dispense_unit: z.string().min(1, "Required"),
     route: z.string().min(1, "Required"),
-    directions: z.string().min(3, "Required"),
-    allowSub: z.boolean({
+    frequency: z.string().min(3, "Required"),
+    substitutions_allowed: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
-    inClinic: z.boolean({
-      invalid_type_error: "Invalid",
-      required_error: "Required",
-    }),
-    orderReason: z.string().optional(),
-    pharmacyNotes: z.string().optional(),
+    reason: z.string().optional(),
+    pharmacy_notes: z.string().optional(),
   });
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
-    code_value: z.string().min(1, "Required"),
-    inClinic: z.boolean({
+    display: z.string().min(1, "Required"),
+    order_fulfilment: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
   });
   const procDoneSchema = z.object({
     code: z.string().min(1, "Required"),
-    code_value: z.string().min(1, "Required"),
-    orderReason: z.string().optional(),
+    display: z.string().min(1, "Required"),
+    reason: z.string().optional(),
   });
-  const diagSchema = z.object({
+  const diffDiagSchema = z.object({
     code: z.string().min(1, "Required"),
-    code_value: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    reason: z.string().optional(),
+  });
+  const workDiagSchema = z.object({
+    code: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
   });
   const FormSchema = z.object({
-    diffDiag: z.array(diagSchema).optional(),
-    workDiag: z.array(diagSchema).optional(),
+    diffDiag: z.array(diffDiagSchema).optional(),
+    workDiag: z.array(workDiagSchema).optional(),
     medications: z.array(medicationsSchema).optional(),
     orders: z.array(ordersSchema).optional(),
     procDone: z.array(procDoneSchema).optional(),
@@ -320,7 +321,7 @@ const ConsultationScreen = () => {
         encounter_notes,
         "zoom encounter",
         encounterCallDetails,
-        timeoutKey
+        ""
       )
     );
   };
@@ -337,7 +338,10 @@ const ConsultationScreen = () => {
   ) : (
     <section className="w-full flex items-center justify-center">
       <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
-        <div className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
+        <div
+          className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
+          style={{ backgroundColor: companyMetaData?.accentWhite }}
+        >
           <HeHeading2 title={"Note Builder"} className={`md:text-[18px]`} />
           {/* <div
             className="rounded-md flex flex-col gap-2"
@@ -388,7 +392,7 @@ const ConsultationScreen = () => {
                 form={form}
                 aiData={aiSuggestions?.procedures_done}
               />
-              <CareTaskDirectives form={webSocketAiPreds?.carePlanSuggested} />
+              <CareTaskDirectives form={form} />
             </div>
             <div
               className="w-full rounded-md"

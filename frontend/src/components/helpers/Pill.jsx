@@ -19,25 +19,35 @@ const Pill = ({
       }}
       onClick={onPress}
     >
-      <h1
-        title={name}
-        className="font-semibold text-wrap"
-        style={{
-          color: textColor || "black",
-        }}
-      >
-        {name}
-      </h1>
+      <div className="w-full flex items-start justify-between">
+        <h1
+          title={name}
+          className="font-semibold text-wrap"
+          style={{
+            color: textColor || "black",
+          }}
+        >
+          {name}
+        </h1>
+        {icon && (
+          <span
+            className="md:hidden flex items-center justify-center cursor-pointer"
+            onClick={onIconClick}
+          >
+            {icon}
+          </span>
+        )}
+      </div>
       <div
         className="w-full md:w-fit flex items-center justify-between gap-1"
         style={{
           color: textColor || "black",
         }}
       >
-        <h2>{code}</h2>
+        <h2>{code?.split(":")[1] || code}</h2>
         {icon && (
           <span
-            className="flex items-center justify-center cursor-pointer ml-1"
+            className="hidden md:flex items-center justify-center cursor-pointer ml-1"
             onClick={onIconClick}
           >
             {icon}

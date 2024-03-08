@@ -6,19 +6,24 @@ import { faXmark, faEdit } from "@fortawesome/free-solid-svg-icons";
 /** custom imports */
 import { companyMetaData } from "../../../assets/myCompanyData";
 import {
-  HeCopy,
+  HeAutoCompleteSearch,
   HeHeading2,
-  HePopupMessage,
+  HeTextInput,
 } from "../../../heCustomComponents";
 import { Pill } from "../../../components/helpers";
 
 /** shadcn imports */
 
-const Diagnosis = ({ form }) => {
-  const [showPopup, setShowPopup] = useState(false);
+/** redux imports */
+import { useSelector } from "react-redux";
 
+const Diagnosis = ({ form }) => {
   const diffDiag = form.watch("diffDiag");
   const workDiag = form.watch("workDiag");
+
+  const { autoCompleteDataDiagnoses } = useSelector(
+    (state) => state.authReducer
+  );
 
   const [editDiffDiag, setEditDiffDiag] = useState(false);
   const [editWorkDiag, setEditWorkDiag] = useState(false);
@@ -88,17 +93,13 @@ const Diagnosis = ({ form }) => {
             title={"Differential Diagnoses (DDx)"}
             className={`md:text-[18px]`}
           />
-          <div className="flex items-center gap-2 md:gap-4">
-            <HeCopy
-              targetId={"diffDiag"}
-              targetText={JSON.stringify(diffDiag)}
-            />
+          {!editDiffDiag ? (
             <FontAwesomeIcon
               icon={faEdit}
               className="cursor-pointer h-5 w-5 text-slate-300"
               onClick={() => setEditDiffDiag(true)}
             />
-          </div>
+          ) : null}
         </div>
         {editDiffDiag ? (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
@@ -133,12 +134,38 @@ const Diagnosis = ({ form }) => {
             {diffDiag.length > 0 ? (
               diffDiag?.map((item, index) => {
                 return (
-                  <Pill
+                  <div
                     key={index}
-                    code={item?.code}
-                    name={item?.code_value}
-                    pillColor={companyMetaData?.accentGray}
-                  />
+                    className="px-4 py-3 flex flex-col gap-2 rounded-md"
+                    style={{
+                      backgroundColor: companyMetaData?.accentOneLight,
+                    }}
+                  >
+                    <Pill
+                      code={item?.code}
+                      name={item?.code_value}
+                      className="px-0 py-0"
+                      icon={<FontAwesomeIcon icon={faXmark} />}
+                      onIconClick={() => {
+                        const previousValues = diffDiag;
+                        const updatedArray = previousValues?.filter(
+                          (item, idx) => {
+                            return idx !== index;
+                          }
+                        );
+                        form.setValue("diffDiag", updatedArray);
+                        form.setValue("workDiag", updatedArray);
+                      }}
+                    />
+                    <HeTextInput
+                      form={form}
+                      fieldName={`diffDiag[${index}].reason`}
+                      labelName={"Reason"}
+                      placeholder={"Notes..."}
+                      className={"flex flex-col gap-2 rounded-md"}
+                      innerTextClass={"border-none px-2 rounded-md"}
+                    />
+                  </div>
                 );
               })
             ) : (
@@ -147,6 +174,16 @@ const Diagnosis = ({ form }) => {
               </p>
             )}
           </div>
+        )}
+        {editDiffDiag && (
+          <HeAutoCompleteSearch
+            form={form}
+            fieldName={"diffDiag"}
+            fieldName2={"workDiag"}
+            searchType={"diagnoses"}
+            dataArray={autoCompleteDataDiagnoses}
+            attributes={{ reason: "" }}
+          />
         )}
       </div>
 
@@ -157,17 +194,13 @@ const Diagnosis = ({ form }) => {
             title={"Working Diagnoses"}
             className={`md:text-[18px]`}
           />
-          <div className="flex items-center gap-2 md:gap-4">
-            <HeCopy
-              targetId={"workDiag"}
-              targetText={JSON.stringify(workDiag)}
-            />
+          {!editWorkDiag ? (
             <FontAwesomeIcon
               icon={faEdit}
               className="cursor-pointer h-5 w-5 text-slate-300"
               onClick={() => setEditWorkDiag(true)}
             />
-          </div>
+          ) : null}
         </div>
         {editWorkDiag ? (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
@@ -218,6 +251,14 @@ const Diagnosis = ({ form }) => {
           </div>
         )}
       </div>
+      {editWorkDiag && (
+        <HeAutoCompleteSearch
+          form={form}
+          fieldName={"workDiag"}
+          searchType={"diagnoses"}
+          dataArray={autoCompleteDataDiagnoses}
+        />
+      )}
     </div>
   );
 };

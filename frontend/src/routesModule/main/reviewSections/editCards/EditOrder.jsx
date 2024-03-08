@@ -24,8 +24,8 @@ const EditOrder = ({ form, fieldName, index, item }) => {
           form.setValue(fieldName, [...updatedArray]);
         }}
       />
-      <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{item?.value}</h1>
+      <div className="flex flex-col items-start gap-1 justify-between md:flex-row">
+        <h1 className="max-w-xs font-semibold">{item?.code_value}</h1>
         <p>{item?.code}</p>
       </div>
       <HeRadioButtonTrueFalse

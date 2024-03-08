@@ -23,6 +23,10 @@ export const SET_AUTOCOMPLETE_ALLERGY_DATA = "set_autcomplete_allergy_data";
 export const SET_AUTOCOMPLETE_LABS_DATA = "set_autcomplete_labs_data";
 export const SET_AUTOCOMPLETE_PROC_DONE_DATA = "set_autcomplete_proc_done_data";
 
+/** encounters history */
+export const SET_HISTORY_LIST = "set_history_list";
+export const SET_SEL_HISTORY_DATA = "set_sel_history_data";
+
 // CareAction
 export const SET_CARE_REQ_TYPE = "set_care_req_type";
 export const SET_ENCOUNTER_CALL_DETAILS = "set_encounter_call_details";

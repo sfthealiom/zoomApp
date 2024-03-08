@@ -85,7 +85,10 @@ const CodeSent = () => {
           onSubmit={form.handleSubmit(handleData)}
           className="w-full max-w-xs md:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4"
         >
-          <div className="w-full min-h-[80vh] flex flex-col items-center gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
+          <div
+            className="w-full min-h-[80vh] flex flex-col items-center gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8"
+            style={{ backgroundColor: companyMetaData?.accentWhite }}
+          >
             <div className="flex flex-col items-center gap-5 text-center h-fit">
               <HeTick />
               <HeHeading1 title={"Account successfully created!"} />

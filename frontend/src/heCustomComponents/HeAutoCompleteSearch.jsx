@@ -73,7 +73,7 @@ const HeAutoCompleteSearch = ({
                       ...previousValues,
                       {
                         code: item?.id,
-                        code_value: item?.item,
+                        display: item?.item,
                         ...attributes,
                       },
                     ]);
@@ -82,8 +82,7 @@ const HeAutoCompleteSearch = ({
                         ...previousValues,
                         {
                           code: item?.id,
-                          code_value: item?.item,
-                          ...attributes,
+                          display: item?.item,
                         },
                       ]);
                     }

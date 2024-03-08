@@ -34,7 +34,7 @@ let companyMetaData = {
   accentSlate: "#94b8a3",
   accentBlack: "#000000",
   accentWhite: "#FFFFFF",
-  accentGray: "#f1f5f9",
+  accentGray: "#F8F9F9",
   bgColor: "#FFFFFF",
   bgNavbarColor: "#FFFFFF",
   bgBodyColor: "#cdffcd",

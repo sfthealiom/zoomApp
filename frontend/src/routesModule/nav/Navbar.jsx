@@ -34,7 +34,10 @@ const Navbar = () => {
       style={{ backgroundColor: companyMetaData?.primary }}
     >
       {/* logo */}
-      <div className="flex gap-2 items-center px-4 py-2">
+      <div
+        className="flex gap-2 items-center px-4 py-2 cursor-pointer"
+        // onClick={() => navigate("/start-new-consultation")}
+      >
         <h1 className="font-bold text-lg md:text-2xl text-white">
           {companyMetaData.companyName}
         </h1>

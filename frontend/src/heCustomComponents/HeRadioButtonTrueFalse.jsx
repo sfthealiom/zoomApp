@@ -30,6 +30,7 @@ const HeRadioButtonTrueFalse = ({
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
+              disabled={disabledStatus}
               className="flex justify-between"
             >
               <FormItem
@@ -38,7 +39,7 @@ const HeRadioButtonTrueFalse = ({
                 }
               >
                 <FormControl>
-                  <RadioGroupItem value={true} />
+                  <RadioGroupItem value={value1} />
                 </FormControl>
                 <FormLabel>
                   {/* {getLabels(
@@ -55,7 +56,7 @@ const HeRadioButtonTrueFalse = ({
                 }
               >
                 <FormControl>
-                  <RadioGroupItem value={false} />
+                  <RadioGroupItem value={value2} />
                 </FormControl>
                 <FormLabel>
                   {/* {getLabels(

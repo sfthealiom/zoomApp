@@ -43,12 +43,19 @@ const HeAISuggesstions = ({
                       ...prevValue,
                       {
                         code: item?.code,
-                        code_value: item?.code_value,
+                        display: item?.code_value,
                         ...attributes,
                       },
                     ]);
                     if (fieldName2) {
-                      form.setValue(fieldName2, [...prevValue2, item]);
+                      form.setValue(fieldName2, [
+                        ...prevValue2,
+                        {
+                          code: item?.code,
+                          display: item?.code_value,
+                          ...attributes,
+                        },
+                      ]);
                     }
                   }}
                 />
