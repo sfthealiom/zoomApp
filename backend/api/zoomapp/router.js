@@ -9,5 +9,6 @@ router
   .get('/home', controller.home)
   .get('/authorize', controller.inClientAuthorize)
   .post('/onauthorized', controller.inClientOnAuthorized)
-
+  .post('/livestream', controller.startLiveStream)
+  .post('/stoplivestream', controller.stopLiveStream)
 module.exports = router

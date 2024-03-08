@@ -15,6 +15,8 @@ const envars = [
   'ZOOM_APP_REDIRECT_URI',
   'ZOOM_HOST',
   'ZOOM_APP_OAUTH_STATE_SECRET',
+  'REDIS_URL',
+  'REDIS_ENCRYPTION_KEY',
 ]
 
 envars.forEach((envar) => {

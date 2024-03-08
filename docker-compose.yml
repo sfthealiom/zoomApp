@@ -14,6 +14,8 @@ services:
       - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - AUTH0_ISSUER_BASE_URL=${AUTH0_ISSUER_BASE_URL}
       - PORT=3000
+      - REDIS_ENCRYPTION_KEY=${REDIS_ENCRYPTION_KEY}
+      - REDIS_URL=${REDIS_URL}
       - SESSION_SECRET=${SESSION_SECRET}
       - ZOOM_APP_CLIENT_ID=${ZOOM_APP_CLIENT_ID}
       - ZOOM_APP_CLIENT_SECRET=${ZOOM_APP_CLIENT_SECRET}
@@ -24,6 +26,8 @@ services:
     volumes:
       - ./backend:/home/node/app
       - /home/node/app/node_modules
+    depends_on:
+      - redis
 
   frontend:
     build: ./frontend/.
@@ -42,3 +46,10 @@ services:
     volumes:
       - ./frontend:/home/node/app
       - /home/node/app/node_modules
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - ./data:/data

@@ -18,10 +18,9 @@ import {
   HeInfoText,
 } from "../../heCustomComponents";
 import { companyMetaData } from "../../assets/myCompanyData";
-
 /** shadcn imports */
 import { toast } from "sonner";
-
+import axios from "axios";
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
@@ -29,12 +28,12 @@ import moment from "moment";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage, currentUserData, historyList } =
-    useSelector((state) => state.authReducer);
-  const navigate = useNavigate();
-
   const [listOfTranscripts, setListOfTranscripts] = useState([]);
 
+  const { loader, labelData, appLanguage, currentUserData, meetingId } =
+    useSelector((state) => state.authReducer);
+  const navigate = useNavigate();
+  const jwtToken = sessionStorage.getItem("jwtToken");
   useEffect(() => {
     setToSessionStore({
       key: "lastPage",
@@ -85,9 +84,16 @@ const StartNewConsultation = () => {
                     Date.now(),
                     companyMetaData?.organizationId,
                     toast,
-                    navigate
+                    navigate,
+                    jwtToken,
+                    currentUserData.uid,
+                    currentUserData.display_name,
+                    meetingId
                   )
                 );
+                // const response = axios.post("/api/zoomapp/livestream", {
+                //   meetingId: "83362685615",
+                // });
               }}
             />
           </div>

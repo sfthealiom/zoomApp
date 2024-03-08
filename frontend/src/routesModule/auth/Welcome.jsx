@@ -1,9 +1,10 @@
+/* globals zoomSdk */
 /** library imports */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -11,7 +12,7 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import PasswordStrengthBar from "react-password-strength-bar";
-
+import { SET_MEETING_ID } from "../../reduxFolder/actions/ActionTypes";
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
 import {
@@ -53,9 +54,16 @@ import {
   setPassword,
 } from "../../reduxFolder/actions/AuthActions";
 
-const Welcome = () => {
+const Welcome = (props) => {
+  const {
+    handleError,
+    handleUser,
+    handleUserContextStatus,
+    user,
+    userContextStatus,
+  } = props;
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
+  const { loader, labelData, appLanguage, meetingId } = useSelector(
     (state) => state.authReducer
   );
   const navigate = useNavigate();
@@ -94,7 +102,6 @@ const Welcome = () => {
         });
       }
     });
-
   const form = useForm({
     mode: "all",
     resolver: zodResolver(FormSchema),
@@ -139,6 +146,10 @@ const Welcome = () => {
   }, [watchPasswordField]);
 
   const handleAccountCreation = (data, e) => {
+    const item = {
+      name: "getMeetingContext",
+    };
+    invokeZoomAppsSdk(item);
     e.preventDefault();
     const updatedData = {
       first_name: data?.first_name,
@@ -163,6 +174,102 @@ const Welcome = () => {
     );
   };
 
+  const [userAuthorized, setUserAuthorized] = useState(null);
+  const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
+  const [inGuestMode, setInGuestMode] = useState(false);
+
+  useEffect(() => {
+    // this is not the best way to make sure > 1 instances are not registered
+    console.log("In-Client OAuth flow: onAuthorized event listener added");
+    zoomSdk.addEventListener("onAuthorized", (event) => {
+      const { code, state } = event;
+      console.log("3. onAuthorized event fired.");
+      console.log(
+        "3a. Here is the event passed to event listener callback, with code and state: ",
+        event
+      );
+      console.log(
+        "4. POST the code, state to backend to exchange server-side for a token.  Refer to backend logs now . . ."
+      );
+
+      fetch("/api/zoomapp/onauthorized", {
+        method: "POST",
+        body: JSON.stringify({
+          code,
+          state,
+          href: window.location.href,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(() => {
+        console.log(
+          "4. Backend returns succesfully after exchanging code for auth token.  Go ahead and update the UI"
+        );
+        setUserAuthorized(true);
+
+        // the error === string
+        handleError(null);
+      });
+    });
+  }, [handleError]);
+
+  useEffect(() => {
+    zoomSdk.addEventListener("onMyUserContextChange", (event) => {
+      handleUserContextStatus(event.status);
+    });
+    async function fetchUser() {
+      try {
+        // An example of using the Zoom REST API via proxy
+        const response = await fetch("/zoom/api/v2/users/me");
+        if (response.status !== 200) throw new Error();
+        const user = await response.json();
+        handleUser(user);
+        setShowInClientOAuthPrompt(false);
+      } catch (error) {
+        console.error(error);
+        console.log(
+          "Request to Zoom REST API has failed ^, likely because no Zoom access token exists for this user. You must use the authorize API to get an access token"
+        );
+        setShowInClientOAuthPrompt(true);
+        // setError("There was an error getting your user information");
+      }
+    }
+
+    if (userContextStatus === "authorized") {
+      setInGuestMode(false);
+      fetchUser();
+    } else if (
+      userContextStatus === "unauthenticated" ||
+      userContextStatus === "authenticated"
+    ) {
+      setInGuestMode(true);
+    }
+  }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
+
+  const invokeZoomAppsSdk = (api) => {
+    const { name, buttonName = "", options = null } = api;
+    const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk);
+    const response = zoomAppsSdkApi(options)
+      .then((clientResponse) => {
+        console.log(
+          `${buttonName || name} success with response: ${JSON.stringify(
+            clientResponse
+          )}`
+        );
+        dispatch({
+          type: SET_MEETING_ID,
+          payload: clientResponse?.meetingID,
+        });
+      })
+      .catch((clientError) => {
+        console.log(
+          `${buttonName || name} error: ${JSON.stringify(clientError)}`
+        );
+      });
+
+    return response;
+  };
   return loader ? (
     <LoaderSpin />
   ) : (
@@ -186,7 +293,13 @@ const Welcome = () => {
               />
               <div
                 className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
-                onClick={() => navigate("/sign-in")}
+                onClick={() => {
+                  const item = {
+                    name: "getMeetingContext",
+                  };
+                  invokeZoomAppsSdk(item);
+                  navigate("/sign-in");
+                }}
               >
                 Click here to login
               </div>
@@ -389,6 +502,29 @@ const Welcome = () => {
                     </FormItem>
                   )}
                 />
+              </div>
+            </div>
+          </div>
+          <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
+            <div className="text-center">
+              <HeHeading3 title={"Already registed?"} />
+              <HeInfoText
+                message={
+                  "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"
+                }
+                className={"text-xs md:text-sm mt-2 md:mt-4"}
+              />
+              <div
+                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
+                onClick={() => {
+                  const item = {
+                    name: "getMeetingContext",
+                  };
+                  invokeZoomAppsSdk(item);
+                  navigate("/sign-in");
+                }}
+              >
+                Click here to login
               </div>
             </div>
           </div>

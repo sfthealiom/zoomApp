@@ -37,11 +37,12 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserToken } from "../../reduxFolder/CommonActions";
 
-const SignIn = () => {
+const SignIn = ({ data }) => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
+  const { loader, labelData, appLanguage, meetingId } = useSelector(
     (state) => state.authReducer
   );
+
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);

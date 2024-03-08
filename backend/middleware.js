@@ -1,7 +1,7 @@
 const session = require('express-session')
-// const SessionStore = require('connect-redis')(session)
-// const redis = require('redis')
-// const store = require('./util/store')
+const SessionStore = require('connect-redis')(session)
+const redis = require('redis')
+const store = require('./util/store')
 
 module.exports = {
   // Set up required OWASP HTTP response headers
@@ -21,7 +21,7 @@ module.exports = {
     next()
   },
 
-  // // Zoom app session middleware
+  // Zoom app session middleware
   session: session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -31,20 +31,20 @@ module.exports = {
       httpOnly: true,
       maxAge: 365 * 24 * 60 * 60 * 1000,
     },
-    // store: new SessionStore({
-    //   client: redis.createClient({
-    //     url: process.env.REDIS_URL,
-    //   }),
-    // }),
+    store: new SessionStore({
+      client: redis.createClient({
+        url: process.env.REDIS_URL,
+      }),
+    }),
   }),
 
-  // // Protected route middleware
-  // // Routes behind this will only show if the user has a Zoom App session and an Auth0 id token
+  // Protected route middleware
+  // Routes behind this will only show if the user has a Zoom App session and an Auth0 id token
   async requiresThirdPartyAuth(req, res, next) {
     if (req.session.user) {
       try {
-        // const user = await store.getUser(req.session.user)
-        // req.thirdPartyAccessToken = user.thirdPartyAccessToken
+        const user = await store.getUser(req.session.user)
+        req.thirdPartyAccessToken = user.thirdPartyAccessToken
         return next()
       } catch (error) {
         return next(

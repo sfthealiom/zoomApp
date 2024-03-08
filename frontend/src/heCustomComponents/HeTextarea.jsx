@@ -19,7 +19,7 @@ const HeTextarea = ({
 }) => {
   return (
     <FormField
-      control={form.control}
+      control={form?.control}
       name={fieldName}
       render={({ field }) => (
         <FormItem className={`w-full ${className}`}>

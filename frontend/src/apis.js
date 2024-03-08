@@ -1,138 +1,155 @@
 /* globals zoomSdk */
 
-const invokeZoomAppsSdk = api => () => {
-  const { name, buttonName = '', options = null } = api
-  const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk)
+export const invokeZoomAppsSdk = (api, setData) => async () => {
+  setData("started");
+  const { name, buttonName = "", options = null } = api;
+  const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk);
 
-  zoomAppsSdkApi(options)
-    .then(clientResponse => {
-      console.log(`${buttonName || name} success with response: ${JSON.stringify(clientResponse)}`);
+  const response = await zoomAppsSdkApi(options)
+    .then((clientResponse) => {
+      console.log(
+        `${buttonName || name} success with response: ${JSON.stringify(
+          clientResponse
+        )}`
+      );
+      // dispatch({
+      //   type: SET_MEETING_ID,
+      //   payload: clientResponse,
+      // });
+      // setData(JSON.stringify(clientResponse));
     })
-    .catch(clientError => {
-      console.log(`${buttonName || name} error: ${JSON.stringify(clientError)}`);
+    .catch((clientError) => {
+      console.log(
+        `${buttonName || name} error: ${JSON.stringify(clientError)}`
+      );
+      // setData(JSON.stringify(clientError));
     });
-}
 
-const sortListByName = (curr, next) => {
+  return response;
+};
+
+export const sortListByName = (curr, next) => {
   const currName = curr.name.toLowerCase();
   const nextName = next.name.toLowerCase();
-  if (currName < nextName) { return -1; }
-  if (currName > nextName) { return 1; }
+  if (currName < nextName) {
+    return -1;
+  }
+  if (currName > nextName) {
+    return 1;
+  }
   return 0;
-}
+};
 
 // New apis are constantly created and may not be included here
 // Please visit the Zoom Apps developer docs for comprehensive list
-const apis = [
+export const apis = [
   {
-    name: 'setVirtualBackground',
+    name: "setVirtualBackground",
     options: {
       fileUrl:
         "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=983&q=80",
-    }
+    },
   },
   {
-    name: 'removeVirtualBackground'
+    name: "removeVirtualBackground",
   },
   {
-    name: 'getSupportedJsApis'
+    name: "getSupportedJsApis",
   },
   {
-    name: 'openUrl',
-    options: { url: "https://www.google.com/" }
+    name: "openUrl",
+    options: { url: "https://www.google.com/" },
   },
   {
-    name: 'getMeetingContext'
+    name: "getMeetingContext",
   },
   {
-    name: 'getRunningContext'
+    name: "getRunningContext",
   },
   {
-    name: 'showNotification',
+    name: "showNotification",
     options: {
       type: "info",
       title: "Hello Zoom Apps",
       message: "Testing notification",
-    }
+    },
   },
   {
-    name: 'sendAppInvitationToAllParticipants'
+    name: "sendAppInvitationToAllParticipants",
   },
   {
-    name: 'sendAppInvitationToMeetingOwner'
+    name: "sendAppInvitationToMeetingOwner",
   },
   {
-    name: 'showAppInvitationDialog'
+    name: "showAppInvitationDialog",
   },
   {
-    name: 'getMeetingParticipants'
+    name: "getMeetingParticipants",
   },
   {
-    name: 'getMeetingUUID'
+    name: "getMeetingUUID",
   },
   {
-    name: 'getMeetingJoinUrl'
+    name: "getMeetingJoinUrl",
   },
   {
-    name: 'listCameras'
+    name: "listCameras",
   },
   {
-    name: 'expandApp'
+    name: "expandApp",
   },
   {
-    name: 'allowParticipantToRecord'
+    name: "allowParticipantToRecord",
   },
   {
-    name: 'getRecordingContext'
+    name: "getRecordingContext",
   },
   {
-    buttonName: 'cloudRecording (start)',
-    name: 'cloudRecording',
-    options: { action: 'start' }
+    buttonName: "cloudRecording (start)",
+    name: "cloudRecording",
+    options: { action: "start" },
   },
   {
-    buttonName: 'cloudRecording (stop)',
-    name: 'cloudRecording',
-    options: { action: 'stop' }
+    buttonName: "cloudRecording (stop)",
+    name: "cloudRecording",
+    options: { action: "stop" },
   },
   {
-    buttonName: 'cloudRecording (pause)',
-    name: 'cloudRecording',
-    options: { action: 'pause' }
+    buttonName: "cloudRecording (pause)",
+    name: "cloudRecording",
+    options: { action: "pause" },
   },
   {
-    buttonName: 'cloudRecording (resume)',
-    name: 'cloudRecording',
-    options: { action: 'resume' }
+    buttonName: "cloudRecording (resume)",
+    name: "cloudRecording",
+    options: { action: "resume" },
   },
   {
-    buttonName: 'setVideoMirrorEffect (true)',
-    name: 'setVideoMirrorEffect',
+    buttonName: "setVideoMirrorEffect (true)",
+    name: "setVideoMirrorEffect",
     options: {
-      mirrorMyVideo: true
-    }
+      mirrorMyVideo: true,
+    },
   },
   {
-    buttonName: 'setVideoMirrorEffect (false)',
-    name: 'setVideoMirrorEffect',
+    buttonName: "setVideoMirrorEffect (false)",
+    name: "setVideoMirrorEffect",
     options: {
-      mirrorMyVideo: false
-    }
+      mirrorMyVideo: false,
+    },
   },
   {
-    buttonName: 'shareApp (start)',
-    name: 'shareApp',
+    buttonName: "shareApp (start)",
+    name: "shareApp",
     options: {
-      action: 'start'
-    }
+      action: "start",
+    },
   },
   {
-    buttonName: 'shareApp (stop)',
-    name: 'shareApp',
+    buttonName: "shareApp (stop)",
+    name: "shareApp",
     options: {
-      action: 'stop'
-    }
+      action: "stop",
+    },
   },
 ].sort(sortListByName);
-
-module.exports = { apis, invokeZoomAppsSdk }
