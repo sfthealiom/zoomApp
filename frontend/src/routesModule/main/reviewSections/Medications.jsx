@@ -1,64 +1,94 @@
 /** library imports */
-import React, { useEffect, useState } from "react";
-import { faCopy, faEdit } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /** custom imports */
-import { HeHeading2 } from "../../../heCustomComponents";
+import { HeAutoCompleteSearch, HeHeading2 } from "../../../heCustomComponents";
 import EditMed from "./editCards/EditMed";
+import { companyMetaData } from "../../../assets/myCompanyData";
 
 /** shadcn import */
-import { Input } from "../../../components/ui/Input";
+import { toast } from "sonner";
 
 /** redux imports */
+import { useSelector } from "react-redux";
+import ViewMed from "./viewCards/ViewMed";
 
 const Medications = ({ form }) => {
-  const [search, setSearch] = useState("");
-  const watchMeds = form.watch("medications");
+  const [edit, setEdit] = useState(false);
 
-  useEffect(() => {
-    // dispatch(autoCompleteSearch("medications", search));
-  }, [search]);
+  const watchMeds = form.watch("medications");
+  const { autoCompleteDataMed } = useSelector((state) => state.authReducer);
+  const attributes = {
+    quantity_unit: "",
+    refills: "",
+    days_supply: "",
+    dispense_unit: "",
+    route: "",
+    frequency: "",
+    substitutions_allowed: "",
+    reason: "",
+    pharmacy_notes: "",
+  };
 
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Medication Orders"} className={`md:text-[18px]`} />
-        <div className="flex items-center gap-2 md:gap-4">
-          <FontAwesomeIcon
-            icon={faCopy}
-            className="cursor-pointer h-5 w-5 text-slate-300"
-          />
+        {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
             className="cursor-pointer h-5 w-5 text-slate-300"
+            onClick={() => setEdit(true)}
           />
-        </div>
+        ) : null}
       </div>
       <div className="w-full flex flex-col gap-2">
-        {watchMeds?.length > 0 && (
-          <div className="flex flex-col gap-2">
-            {watchMeds?.map((item, index) => {
-              return (
-                <EditMed
-                  key={index}
-                  form={form}
-                  fieldName={"medications"}
-                  index={index}
-                  watchMeds={watchMeds}
-                />
-              );
-            })}
+        {watchMeds?.length > 0 ? (
+          <div>
+            {edit ? (
+              <div className="flex flex-col gap-2">
+                {watchMeds?.map((item, index) => {
+                  return (
+                    <EditMed
+                      key={index}
+                      form={form}
+                      fieldName={"medications"}
+                      index={index}
+                      watchMeds={watchMeds}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {watchMeds?.map((item, index) => {
+                  return (
+                    <ViewMed
+                      key={index}
+                      form={form}
+                      fieldName={"medications"}
+                      index={index}
+                      watchMeds={watchMeds}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
+        ) : (
+          <p className="text-sm text-slate-500">No medications added.</p>
         )}
-        <div className="flex flex-col gap-2">
-          <Input
-            placeholder="Start typing..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border border-slate-200 rounded-md px-4 py-3 h-10"
+        {edit && (
+          <HeAutoCompleteSearch
+            form={form}
+            fieldName={"medications"}
+            searchType={"medications"}
+            dataArray={autoCompleteDataMed}
+            attributes={attributes}
           />
-        </div>
+        )}
       </div>
     </div>
   );

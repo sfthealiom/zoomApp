@@ -7,11 +7,9 @@ import {
   HeTextInput,
 } from "../../../../heCustomComponents";
 import { companyMetaData } from "../../../../assets/myCompanyData";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
 
-const EditMed = ({ form, fieldName, index, watchMeds }) => {
+const ViewMed = ({ form, fieldName, index, watchMeds }) => {
   const form_ways = [
     {
       id: "Oral",
@@ -23,18 +21,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
     <div
       className="px-4 py-3 flex flex-col gap-2 rounded-md"
       style={{
-        backgroundColor: companyMetaData?.accentOneLight,
+        backgroundColor: companyMetaData?.accentGray,
       }}
     >
-      <FontAwesomeIcon
-        icon={faXmark}
-        className="h-4 w-4 self-end cursor-pointer"
-        onClick={() => {
-          const previousValues = form.watch(fieldName);
-          const updatedArray = previousValues.slice(0, -1);
-          form.setValue(fieldName, [...updatedArray]);
-        }}
-      />
       <div className="flex items-start gap-1 justify-between">
         <h1 className="max-w-xs font-semibold">
           {watchMeds[index]?.code_value}
@@ -47,8 +36,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].quantity`}
           labelName={`Quantity`}
           placeholder={"1"}
-          className={"flex flex-col gap-2 rounded-md"}
-          innerTextClass={"border-none px-2 rounded-md"}
+          disabledStatus={true}
+          className={"flex flex-col rounded-md"}
+          innerTextClass={"border-none disabled:bg-transparent rounded-md"}
           required={true}
         />
         <HeTextInput
@@ -56,8 +46,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].refills`}
           labelName={`Refills`}
           placeholder={"0"}
-          className={"flex flex-col gap-2 rounded-md"}
-          innerTextClass={"border-none px-2 rounded-md"}
+          disabledStatus={true}
+          className={"flex flex-col rounded-md"}
+          innerTextClass={"border-none disabled:bg-transparent rounded-md"}
           required={true}
         />
         <HeTextInput
@@ -65,8 +56,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].daySupply`}
           labelName={`Days supply`}
           placeholder={"5"}
-          className={"flex flex-col gap-2 rounded-md"}
-          innerTextClass={"border-none px-2 rounded-md"}
+          disabledStatus={true}
+          className={"flex flex-col rounded-md"}
+          innerTextClass={"border-none disabled:bg-transparent rounded-md"}
           required={true}
         />
       </div>
@@ -76,11 +68,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].form_way`}
           dataArray={form_ways}
           placeholder="Form"
+          disabledStatus={true}
           labelName={`Form`}
-          className={"w-full md:w-1/2 gap-2"}
-          buttonClasses={
-            "w-full h-10 px-2 rounded-md font-semibold select-none bg-white"
-          }
+          className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
           required={true}
@@ -90,31 +80,31 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].route`}
           dataArray={form_ways}
           placeholder="Route"
+          disabledStatus={true}
           labelName={`Route`}
-          className={"w-full md:w-1/2 gap-2"}
-          buttonClasses={
-            "w-full h-10 px-2 rounded-md font-semibold select-none bg-white"
-          }
+          className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
           required={true}
         />
+        <HeTextInput
+          form={form}
+          fieldName={`medications[${index}].directions`}
+          labelName={`Directions`}
+          placeholder={"Take..."}
+          disabledStatus={true}
+          className={"flex flex-col rounded-md w-full md:w-1/3"}
+          innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+          required={true}
+        />
       </div>
-      <HeTextInput
-        form={form}
-        fieldName={`medications[${index}].directions`}
-        labelName={`Directions`}
-        placeholder={"Take..."}
-        className={"flex flex-col gap-2 rounded-md"}
-        innerTextClass={"border-none px-2 rounded-md"}
-        required={true}
-      />
       <div className="w-full flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
           fieldName={`medications[${index}].allowSub`}
           labelName={`Allow Substitution`}
           value1={"Yes"}
+          disabledStatus={true}
           value2={"No"}
         />
         <HeRadioButtonTrueFalse
@@ -122,6 +112,7 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].inClinic`}
           labelName={`In-clinic`}
           value1={"Yes"}
+          disabledStatus={true}
           value2={"No"}
         />
       </div>
@@ -132,8 +123,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
             fieldName={`medications[${index}].orderReason`}
             labelName={`Order/Reason`}
             placeholder={"Notes..."}
-            className={"flex flex-col gap-2 rounded-md"}
-            innerTextClass={"border-none px-2 rounded-md"}
+            className={"flex flex-col rounded-md"}
+            innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+            disabledStatus={true}
           />
         </div>
         <div className="w-full md:w-1/2">
@@ -142,8 +134,9 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
             fieldName={`medications[${index}].pharmacyNotes`}
             labelName={`Pharmacy Notes`}
             placeholder={"Notes..."}
-            className={"flex flex-col gap-2 rounded-md"}
-            innerTextClass={"border-none px-2 rounded-md"}
+            className={"flex flex-col rounded-md"}
+            innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+            disabledStatus={true}
           />
         </div>
       </div>
@@ -151,4 +144,4 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
   );
 };
 
-export default EditMed;
+export default ViewMed;

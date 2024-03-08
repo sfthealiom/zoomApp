@@ -42,15 +42,13 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         }}
       />
       <div className="flex flex-col items-start gap-1 justify-between md:flex-row">
-        <h1 className="max-w-xs font-semibold">
-          {watchMeds[index]?.code_value}
-        </h1>
+        <h1 className="max-w-xs font-semibold">{watchMeds[index]?.display}</h1>
         <p>{watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">
         <HeTextInput
           form={form}
-          fieldName={`${fieldName}[${index}].quantity`}
+          fieldName={`${fieldName}[${index}].quantity_unit`}
           labelName={`Quantity`}
           placeholder={"1"}
           className={"flex flex-col gap-2 rounded-md"}
@@ -68,7 +66,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         />
         <HeTextInput
           form={form}
-          fieldName={`${fieldName}[${index}].daySupply`}
+          fieldName={`${fieldName}[${index}].days_supply`}
           labelName={`Days supply`}
           placeholder={"5"}
           className={"flex flex-col gap-2 rounded-md"}
@@ -79,7 +77,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full flex items-start justify-between gap-2">
         <HeSearchableSelect
           form={form}
-          fieldName={`${fieldName}[${index}].form_way`}
+          fieldName={`${fieldName}[${index}].dispense_unit`}
           dataArray={form_ways}
           placeholder="Form"
           labelName={`Form`}
@@ -108,25 +106,18 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
       </div>
       <HeTextInput
         form={form}
-        fieldName={`${fieldName}[${index}].directions`}
+        fieldName={`${fieldName}[${index}].frequency`}
         labelName={`Directions`}
         placeholder={"Take..."}
         className={"flex flex-col gap-2 rounded-md"}
         innerTextClass={"border-none px-2 rounded-md"}
         required={true}
       />
-      <div className="w-full flex flex-col md:flex-row items-start justify-between gap-2">
+      <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
-          fieldName={`${fieldName}[${index}].allowSub`}
+          fieldName={`${fieldName}[${index}].substitutions_allowed`}
           labelName={`Allow Substitution`}
-          value1={"Yes"}
-          value2={"No"}
-        />
-        <HeRadioButtonTrueFalse
-          form={form}
-          fieldName={`${fieldName}[${index}].inClinic`}
-          labelName={`In-clinic`}
           value1={"Yes"}
           value2={"No"}
         />
@@ -136,7 +127,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           {showOrdRea ? (
             <HeTextInput
               form={form}
-              fieldName={`${fieldName}[${index}].orderReason`}
+              fieldName={`${fieldName}[${index}].reason`}
               labelName={`Order/Reason`}
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
@@ -156,7 +147,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           {showNotes ? (
             <HeTextInput
               form={form}
-              fieldName={`${fieldName}[${index}].pharmacyNotes`}
+              fieldName={`${fieldName}[${index}].pharmacy_notes`}
               labelName={`Pharmacy Notes`}
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
@@ -173,12 +164,6 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           )}
         </div>
       </div>
-      {/* <HeButton
-        title={"Verify"}
-        icon={<FontAwesomeIcon icon={faCheck} />}
-        className={`w-fit self-center`}
-        bgColor={companyMetaData?.primary}
-      /> */}
     </div>
   );
 };

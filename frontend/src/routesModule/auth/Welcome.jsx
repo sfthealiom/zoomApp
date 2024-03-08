@@ -172,6 +172,26 @@ const Welcome = () => {
           onSubmit={form.handleSubmit(handleAccountCreation)}
           className="w-full max-w-xs md:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4"
         >
+          <div
+            className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8"
+            style={{ backgroundColor: companyMetaData?.accentWhite }}
+          >
+            <div className="text-center">
+              <HeHeading3 title={"Already registered?"} />
+              <HeInfoText
+                message={
+                  "To start, let's get you verified and start taking encounters!"
+                }
+                className={"text-xs md:text-sm mt-2 md:mt-4"}
+              />
+              <div
+                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
+                onClick={() => navigate("/sign-in")}
+              >
+                Click here to login
+              </div>
+            </div>
+          </div>
           <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
             <div className="text-center">
               <HeHeading1 title={"Welcome!"} />
@@ -369,23 +389,6 @@ const Welcome = () => {
                     </FormItem>
                   )}
                 />
-              </div>
-            </div>
-          </div>
-          <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
-            <div className="text-center">
-              <HeHeading3 title={"Already registed?"} />
-              <HeInfoText
-                message={
-                  "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"
-                }
-                className={"text-xs md:text-sm mt-2 md:mt-4"}
-              />
-              <div
-                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
-                onClick={() => navigate("/sign-in")}
-              >
-                Click here to login
               </div>
             </div>
           </div>

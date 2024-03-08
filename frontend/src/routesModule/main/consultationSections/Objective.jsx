@@ -28,7 +28,7 @@ const Objective = ({ aiData }) => {
             {aiData}
           </p>
         ) : (
-          <div className="flex items-center">
+          <div className="flex items-center px-4 py-2">
             <span>Preparing Summary</span>
             <FontAwesomeIcon
               icon={faCircleNotch}

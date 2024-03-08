@@ -29,14 +29,14 @@ const AddProcDone = ({ form, fieldName, index, item }) => {
         }}
       />
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{item?.code_value}</h1>
+        <h1 className="max-w-xs font-semibold">{item?.display}</h1>
         <p>{item?.code}</p>
       </div>
       <div className="w-full mt-2">
         {showOrdRea ? (
           <HeTextInput
             form={form}
-            fieldName={`procDone[${index}].orderReason`}
+            fieldName={`procDone[${index}].reason`}
             labelName={`Notes`}
             placeholder={"Notes..."}
             className={"flex flex-col gap-2 rounded-md"}
@@ -47,7 +47,7 @@ const AddProcDone = ({ form, fieldName, index, item }) => {
             className="flex items-center gap-1 cursor-pointer text-slate-500 font-semibold text-sm"
             onClick={() => setShowOrdRea(true)}
           >
-            <span>Order/Reason</span>
+            <span>Notes</span>
             <FontAwesomeIcon icon={faPlus} className="h-4 w-4" />
           </div>
         )}

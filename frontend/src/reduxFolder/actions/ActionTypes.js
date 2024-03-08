@@ -21,3 +21,7 @@ export const SET_AUTOCOMPLETE_MED_DATA = "set_autcomplete_med_data";
 export const SET_AUTOCOMPLETE_ALLERGY_DATA = "set_autcomplete_allergy_data";
 export const SET_AUTOCOMPLETE_LABS_DATA = "set_autcomplete_labs_data";
 export const SET_AUTOCOMPLETE_PROC_DONE_DATA = "set_autcomplete_proc_done_data";
+
+/** encounters history */
+export const SET_HISTORY_LIST = "set_history_list";
+export const SET_SEL_HISTORY_DATA = "set_sel_history_data";

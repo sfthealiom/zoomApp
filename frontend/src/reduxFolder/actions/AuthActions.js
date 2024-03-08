@@ -10,11 +10,13 @@ import {
   STORE_JWT_TOKEN,
   STORE_ORG_ID,
   USER_LOGOUT,
+  SET_HISTORY_LIST,
+  SET_SEL_HISTORY_DATA,
 } from "./ActionTypes";
 import { setToSessionStore } from "../CommonFunctions";
 import { getUserToken } from "../CommonActions";
 
-const { API_URL } = configSecret;
+const { API_URL, AI_SERVER } = configSecret;
 
 export const setAppLang = (value) => {
   return async (dispatch) => {
@@ -324,6 +326,7 @@ export const getUserData = (
             payload: false,
           });
         }
+        dispatch(getHistoryTranscriptions(providerUid));
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
@@ -476,6 +479,75 @@ export const signOut = (navigate, toast) => {
     dispatch({
       type: SET_LOADER,
       payload: false,
+    });
+  };
+};
+
+export const setSelHistoryData = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_SEL_HISTORY_DATA,
+      payload: {},
+    });
+  };
+};
+
+export const emptyHistoryList = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_HISTORY_LIST,
+      payload: [],
+    });
+  };
+};
+
+export const getHistoryTranscriptions = (uid, type) => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_LOADER,
+      payload: true,
+    });
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: AI_SERVER + `/dev/history?uid=${uid}`,
+      headers: {},
+    };
+    axios.request(config).then((res) => {
+      dispatch({
+        type: SET_LOADER,
+        payload: false,
+      });
+      dispatch({
+        type: SET_HISTORY_LIST,
+        payload: res?.data,
+      });
+    });
+  };
+};
+
+export const getSelectedTranscriptDetails = (conversation_id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_LOADER,
+      payload: true,
+    });
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: AI_SERVER + `/dev/history?conversation_id=${conversation_id}`,
+      headers: {},
+    };
+    axios.request(config).then((res) => {
+      dispatch({
+        type: SET_LOADER,
+        payload: false,
+      });
+      // navigate(`/history/conversation/${conversation_id}`);
+      dispatch({
+        type: SET_SEL_HISTORY_DATA,
+        payload: res?.data,
+      });
     });
   };
 };

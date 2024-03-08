@@ -8,6 +8,7 @@ import {
   HeAutoCompleteSearch,
   HeHeading2,
   HePopupMessage,
+  HeTextInput,
 } from "../../../heCustomComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -44,7 +45,7 @@ const Diagnosis = ({ form, aiData }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     icon={
                       <FontAwesomeIcon icon={faXmark} className="h-4 w-4" />
                     }
@@ -70,7 +71,7 @@ const Diagnosis = ({ form, aiData }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     icon={
                       <FontAwesomeIcon
                         icon={faPlus}
@@ -97,20 +98,38 @@ const Diagnosis = ({ form, aiData }) => {
           {watchDiffDiag.length > 0 ? (
             watchDiffDiag?.map((item, index) => {
               return (
-                <Pill
+                <div
                   key={index}
-                  code={item?.code}
-                  name={item?.code_value}
-                  icon={<FontAwesomeIcon icon={faXmark} />}
-                  onIconClick={() => {
-                    const previousValues = watchDiffDiag;
-                    const updatedArray = previousValues?.filter((item, idx) => {
-                      return idx !== index;
-                    });
-                    form.setValue("diffDiag", updatedArray);
-                    form.setValue("workDiag", updatedArray);
+                  className="px-4 py-3 flex flex-col gap-2 rounded-md"
+                  style={{
+                    backgroundColor: companyMetaData?.accentOneLight,
                   }}
-                />
+                >
+                  <Pill
+                    code={item?.code}
+                    name={item?.display}
+                    className="px-0 py-0"
+                    icon={<FontAwesomeIcon icon={faXmark} />}
+                    onIconClick={() => {
+                      const previousValues = watchDiffDiag;
+                      const updatedArray = previousValues?.filter(
+                        (item, idx) => {
+                          return idx !== index;
+                        }
+                      );
+                      form.setValue("diffDiag", updatedArray);
+                      form.setValue("workDiag", updatedArray);
+                    }}
+                  />
+                  <HeTextInput
+                    form={form}
+                    fieldName={`diffDiag[${index}].reason`}
+                    labelName={"Reason"}
+                    placeholder={"Notes..."}
+                    className={"flex flex-col gap-2 rounded-md"}
+                    innerTextClass={"border-none px-2 rounded-md"}
+                  />
+                </div>
               );
             })
           ) : (
@@ -122,17 +141,16 @@ const Diagnosis = ({ form, aiData }) => {
         <HeAutoCompleteSearch
           form={form}
           fieldName={"diffDiag"}
-          fieldName2={"workDiag"}
           searchType={"diagnoses"}
           dataArray={autoCompleteDataDiagnoses}
+          attributes={{ reason: "" }}
         />
         <HeAISuggesstions
           form={form}
           fieldName={"diffDiag"}
-          fieldName2={"workDiag"}
           prevValue={watchDiffDiag}
-          prevValue2={watchWorkDiag}
           aiData={aiData}
+          attributes={{ reason: "" }}
         />
       </div>
 
@@ -162,13 +180,16 @@ const Diagnosis = ({ form, aiData }) => {
           </div>
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-          {watchWorkDiag.length > 0 ? (
-            watchWorkDiag?.map((item, index) => {
+          {watchDiffDiag.length > 0 ? (
+            watchDiffDiag?.map((item, index) => {
               return (
                 <CheckboxPill
                   key={index}
                   code={item?.code}
-                  name={item?.code_value}
+                  name={item?.display}
+                  form={form}
+                  fieldName={"workDiag"}
+                  prevValue={watchWorkDiag}
                 />
               );
             })

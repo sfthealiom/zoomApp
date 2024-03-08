@@ -1,5 +1,5 @@
 /** library imports */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +11,7 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
-import { HeFormSubmitButton } from "../../heCustomComponents";
+import { HeButton, HeFormSubmitButton } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
   Diagnosis,
@@ -22,10 +22,10 @@ import {
   Subjective,
 } from "./reviewSections";
 import { companyMetaData } from "../../assets/myCompanyData";
+import encounterNotes from "../main/consultationSections/data.json";
 
 /** shadcn imports */
 import { Form } from "../../components/ui/Form";
-import encounterNotes from "./consultationSections/data.json";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
@@ -37,48 +37,42 @@ const ReviewNotes = () => {
   );
   const navigate = useNavigate();
 
-  const [endSession, setEndSession] = useState(false);
-
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
-    value: z.string().min(1, "Required"),
-    quantity: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    quantity_unit: z.string().min(1, "Required"),
     refills: z.string().min(1, "Required"),
-    daySupply: z.string().min(1, "Required"),
-    form_way: z.string().min(1, "Required"),
+    days_supply: z.string().min(1, "Required"),
+    dispense_unit: z.string().min(1, "Required"),
     route: z.string().min(1, "Required"),
-    directions: z.string().min(3, "Required"),
-    allowSub: z.boolean({
+    frequency: z.string().min(3, "Required"),
+    substitutions_allowed: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
-    inClinic: z.boolean({
-      invalid_type_error: "Invalid",
-      required_error: "Required",
-    }),
-    orderReason: z.string().optional(),
-    pharmacyNotes: z.string().optional(),
+    reason: z.string().optional(),
+    pharmacy_notes: z.string().optional(),
   });
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
-    value: z.string().min(1, "Required"),
-    inClinic: z.boolean({
+    display: z.string().min(1, "Required"),
+    inClinic: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
   });
   const procDoneSchema = z.object({
     code: z.string().min(1, "Required"),
-    value: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
     orderReason: z.string().optional(),
   });
   const diagSchema = z.object({
     code: z.string().min(1, "Required"),
-    value: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
   });
   const FormSchema = z.object({
-    subjective: z.string().min(10, "Required"),
-    objective: z.string().min(10, "Required"),
+    subjective: z.string(),
+    objective: z.string(),
     diffDiag: z.array(diagSchema).optional(),
     workDiag: z.array(diagSchema).optional(),
     medications: z.array(medicationsSchema).optional(),
@@ -91,49 +85,29 @@ const ReviewNotes = () => {
     mode: "all",
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      subjective: "Subjective Notes from redux",
-      objective: "Objective Notes from redux",
+      subjective:
+        encounterNotes?.ai_preds?.summaries?.subjectiveClinicalSummary?.join(
+          ""
+        ),
+      objective:
+        encounterNotes?.ai_preds?.summaries?.objectiveClinicalSummary?.join(""),
       diffDiag: encounterNotes?.ai_preds?.entities?.diagnoses,
       workDiag: encounterNotes?.ai_preds?.entities?.diagnoses,
-      medications: [
-        {
-          code: "HHAJD",
-          value: "Paracetamol",
-          quantity: "1",
-          daySupply: "5",
-          refills: "0",
-          form_way: "Oral",
-          route: "Oral",
-          directions: "Note....",
-          allowSub: false,
-          inClinic: false,
-          pharmacyNotes: "Notes......",
-          orderReason: "Notes.....123123",
-        },
-      ],
-      orders: [
-        {
-          code: "IIAD:24234",
-          value: "Order",
-          inClinic: false,
-        },
-      ],
-      procDone: [
-        {
-          code: "ISD;987",
-          value: "Procedure",
-          orderReason: "Reason.....",
-        },
-      ],
-      careTaskNotes: "Care Task & Directives Notes......",
+      medications: encounterNotes?.ai_preds?.entities?.medications,
+      orders: encounterNotes?.ai_preds?.entities?.procedures,
+      procDone: encounterNotes?.ai_preds?.entities?.procedures_done,
+      careTaskNotes:
+        encounterNotes?.ai_preds?.summaries?.carePlanSuggested?.join(""),
     },
   });
 
   const handleData = (data, e) => {
     console.log(data);
+    navigate("/consultation-notes");
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setToSessionStore({
       key: "lastPage",
       value: "/review-consultation-notes",
@@ -150,7 +124,10 @@ const ReviewNotes = () => {
             onSubmit={form.handleSubmit(handleData)}
             className="w-full flex flex-col gap-2"
           >
-            <div className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
+            <div
+              className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
+              style={{ backgroundColor: companyMetaData?.accentWhite }}
+            >
               <Subjective form={form} />
               <Objective form={form} />
               <Diagnosis form={form} />
@@ -165,9 +142,11 @@ const ReviewNotes = () => {
                 boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
               }}
             >
-              <HeFormSubmitButton
-                title={"End Session"}
+              {/* <HeFormSubmitButton title={"Done"} className={`w-full mt-4`} /> */}
+              <HeButton
+                title={"Done"}
                 className={`w-full mt-4`}
+                onPress={() => navigate("/consultation-notes")}
               />
             </div>
           </form>

@@ -63,11 +63,12 @@ const Splash = () => {
                 jwtToken,
                 patientUid,
                 toast,
-                navigate
+                navigate,
+                "refresh"
               )
             );
           } else {
-            navigate("/consultation-screen");
+            navigate("/sign-in");
           }
         } else {
           navigate("/welcome");
@@ -76,12 +77,12 @@ const Splash = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-screen rounded-lg">
-      <div className="flex gap-2 flex-col justify-center items-center p-2">
+    <div className="flex flex-col items-center justify-center h-screen rounded-lg">
+      <div className="flex gap-1 flex-col justify-center items-center p-2">
         <img
           src={companyLogo}
           alt="company.png"
-          className="w-[100px] rounded-md shadow-md p-2"
+          className="w-[100px] rounded-md p-1"
         />
         <h1 className="text-2xl font-bold">{companyMetaData.companyName}</h1>
       </div>

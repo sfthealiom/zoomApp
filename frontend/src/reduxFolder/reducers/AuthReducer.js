@@ -14,6 +14,8 @@ import {
   SET_AUTOCOMPLETE_ALLERGY_DATA,
   SET_AUTOCOMPLETE_LABS_DATA,
   SET_AUTOCOMPLETE_PROC_DONE_DATA,
+  SET_HISTORY_LIST,
+  SET_SEL_HISTORY_DATA,
 } from "../actions/ActionTypes";
 
 const INITIAL_STATE = {
@@ -30,6 +32,8 @@ const INITIAL_STATE = {
   autoCompleteDataAllergies: [],
   autoCompleteDataLabs: [],
   autoCompleteProcDone: [],
+  historyList: [],
+  selHistoryData: {},
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -60,6 +64,10 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return { ...state, autoCompleteDataLabs: action.payload };
     case SET_AUTOCOMPLETE_PROC_DONE_DATA:
       return { ...state, autoCompleteProcDone: action.payload };
+    case SET_HISTORY_LIST:
+      return { ...state, historyList: action.payload };
+    case SET_SEL_HISTORY_DATA:
+      return { ...state, selHistoryData: action.payload };
     case USER_LOGOUT:
       return INITIAL_STATE;
     default:

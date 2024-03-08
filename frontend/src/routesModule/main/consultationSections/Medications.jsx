@@ -19,16 +19,15 @@ const Medications = ({ form, aiData }) => {
 
   const watchMeds = form.watch("medications");
   const attributes = {
-    quantity: "",
+    quantity_unit: "",
     refills: "",
-    daySupply: "",
-    form_way: "",
+    days_supply: "",
+    dispense_unit: "",
     route: "",
-    directions: "",
-    allowSub: false,
-    inClinic: false,
-    orderReason: "",
-    pharmacyNotes: "",
+    frequency: "",
+    substitutions_allowed: "",
+    reason: "",
+    pharmacy_notes: "",
   };
 
   return (

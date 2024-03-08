@@ -2,7 +2,15 @@ import React from "react";
 import { companyMetaData } from "../../assets/myCompanyData";
 import { Checkbox } from "../../components/ui/Checkbox";
 
-const CheckboxPill = ({ code, name, pillColor, textColor }) => {
+const CheckboxPill = ({
+  form,
+  fieldName,
+  prevValue,
+  code,
+  name,
+  pillColor,
+  textColor,
+}) => {
   return (
     <div
       className="w-full h-fit rounded-md flex flex-col lg:flex-row gap-1  lg:gap-4 items-start justify-between px-4 py-2 text-sm"
@@ -13,7 +21,22 @@ const CheckboxPill = ({ code, name, pillColor, textColor }) => {
       <div className="flex items-start gap-2">
         <Checkbox
           className="bg-white border border-slate-500 rounded-sm mt-1"
-          onClick={(e) => {}}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              form.setValue(fieldName, [
+                ...prevValue,
+                {
+                  code: code,
+                  display: name,
+                },
+              ]);
+            } else {
+              const updatedArray = prevValue?.filter((item, idx) => {
+                return code !== item?.code;
+              });
+              form.setValue(fieldName, [...updatedArray]);
+            }
+          }}
         />
         <h1
           title={name}
@@ -31,7 +54,7 @@ const CheckboxPill = ({ code, name, pillColor, textColor }) => {
           color: textColor || "black",
         }}
       >
-        <h2>{code}</h2>
+        <h2>{code?.split(":")[1] || code}</h2>
       </div>
     </div>
   );
