@@ -1,3 +1,4 @@
+/* globals zoomSdk */
 import axios from "axios";
 import { configSecret } from "../../assets/awsSecrets";
 import {
@@ -10,6 +11,15 @@ import {
   STORE_JWT_TOKEN,
   STORE_ORG_ID,
   USER_LOGOUT,
+  SET_ENCOUNTER_CALL_DETAILS,
+  SET_AI_PREDS,
+  SET_TRIAGE_AI_SUGGESTION,
+  SET_VITALS,
+  SET_AI_SUGGESTION_NOTES,
+  SET_ALL_TRANSCRIPT,
+  SET_CC,
+  SET_WEBSOCKET_AI_PREDS,
+  SET_ENCOUNTER_NOTES,
 } from "./ActionTypes";
 import { setToSessionStore } from "../CommonFunctions";
 import { getUserToken } from "../CommonActions";
@@ -23,6 +33,14 @@ export const setAppLang = (value) => {
       payload: value,
     });
   };
+};
+
+const invokeZoomAppsSdk = (api) => async () => {
+  const { name, buttonName = "", options = null } = api;
+  const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk);
+
+  const response = await zoomAppsSdkApi(options);
+  return response;
 };
 
 export const setJWTToken = (value) => {
@@ -43,7 +61,428 @@ export const setPassword = (value) => {
   };
 };
 
-export const guestUserSignUp = (data, organization_id, toast, navigate) => {
+export const setAiSuggestionNotes = (data) => {
+  return async (dispatch) => {
+    dispatch({
+      type: SET_AI_SUGGESTION_NOTES,
+      payload: data,
+    });
+  };
+};
+
+export const setAllTranscript = (transcript, count) => {
+  console.log(count, "this is countcountcount");
+  return (dispatch) => {
+    dispatch({
+      type: SET_ALL_TRANSCRIPT,
+      payload: { transcript: transcript, count: count + 1 },
+    });
+  };
+};
+
+export const setCC = (cc) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_CC,
+      payload: cc,
+    });
+  };
+};
+
+export const setWebSocketAiPreds = (aiPreds, currentAiPreds) => {
+  return (dispatch) => {
+    var newAIPreds = currentAiPreds;
+    if (
+      aiPreds?.subjectiveClinicalSummary &&
+      aiPreds?.subjectiveClinicalSummary?.length
+    ) {
+      newAIPreds["subjectiveClinicalSummary"] =
+        aiPreds?.subjectiveClinicalSummary;
+    }
+
+    if (
+      aiPreds?.objectiveClinicalSummary &&
+      aiPreds?.objectiveClinicalSummary?.length
+    ) {
+      newAIPreds["objectiveClinicalSummary"] =
+        aiPreds?.objectiveClinicalSummary;
+    }
+    if (aiPreds?.clinicalAssessment && aiPreds?.clinicalAssessment?.length) {
+      newAIPreds["clinicalAssessment"] = aiPreds?.clinicalAssessment;
+    }
+    if (aiPreds?.carePlanSuggested && aiPreds?.carePlanSuggested?.length) {
+      newAIPreds["carePlanSuggested"] = aiPreds?.carePlanSuggested;
+    }
+    console.log(aiPreds, "ksadhjfakshlfjafdhljfhakljds");
+    dispatch({
+      type: SET_WEBSOCKET_AI_PREDS,
+      payload: aiPreds,
+    });
+  };
+};
+
+export const submitEncounterNote = (
+  jwtAuthToken,
+  updateData,
+  organization_id,
+  he_type,
+  navigate
+) => {
+  return (dispatch) => {
+    const header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+    var url = API_URL + "/encounter_note";
+
+    var new_notes = JSON.parse(JSON.stringify(updateData.encounter_note));
+    var abrMap = {
+      quantity_unit: "",
+      route: "",
+      frequency: "",
+      dispense_unit: "",
+      refills: "",
+      generic: "",
+      days_supply: "",
+      substitutions_allowed: "",
+    };
+    if (new_notes.medications) {
+      var temp_medications = new_notes.medications.map((item) => {
+        var temp_item = {
+          code: item.code,
+          dispense_unit: item.dispense_unit,
+          display: item.display,
+          frequency: item.frequency,
+          quantity_unit: item.quantity_unit,
+          reason: item.reason,
+          refills: item.refills,
+          route: item.route,
+          days_supply: item.days_supply,
+          status: item.status,
+          suggested_ai: item.suggested_ai,
+          generic: item.generic,
+          substitutions_allowed: item.substitutions_allowed,
+          pharmacy_notes: item.pharmacy_notes,
+          alternative_pharmacy_id: item?.alternative_pharmacy_id,
+          estimated_rtpb_pay_amount: item?.estimated_rtpb_pay_amount,
+          is_alternative: item?.is_alternative,
+          original_med_code: item?.original_med_code,
+          original_med_name: item?.original_med_name,
+        };
+        return temp_item;
+      });
+
+      new_notes.medications = temp_medications;
+    }
+
+    var config = {
+      method: "POST",
+      url: url,
+      headers: header,
+      data: {
+        encounter_id: updateData.encounterid,
+        encounter_note: new_notes,
+      },
+    };
+    let apiCall = axios(config)
+      .then((response) => {
+        navigate("/review-consultation-notes");
+      })
+      .catch((error) => {
+        console.log(error, "this is response of encounterSubmit");
+      });
+  };
+};
+
+export const completeEncounter = (
+  jwtAuthToken,
+  care_request_id,
+  encounterid,
+  patient_msg_id,
+  patientid,
+  provider_msg_id,
+  provider_wait_time,
+  providerid,
+  aiSuggestions,
+  organization_id,
+  he_type,
+  navigate,
+  encounter_notes,
+  inclinicKey,
+  encounterCallDetails,
+  timeoutKey
+) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_LOADER, payload: true });
+    const header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+
+    const url = API_URL + "/completed_encounter";
+
+    const insertData = {
+      care_request_id: care_request_id,
+      encounterid: encounterid,
+      patient_msg_id: patient_msg_id,
+      patientid: patientid,
+      provider_msg_id: provider_msg_id,
+      provider_wait_time: provider_wait_time,
+      providerid: providerid,
+      predicted_suggestions: aiSuggestions,
+    };
+    let apiCall = axios
+      .post(url, insertData, { headers: header })
+      .then((response) => {
+        var updateData_temp = encounterCallDetails;
+        updateData_temp["encounter_note"] = encounter_notes;
+        dispatch(
+          submitEncounterNote(
+            jwtAuthToken,
+            updateData_temp,
+            organization_id,
+            he_type,
+            navigate
+          )
+        );
+      })
+      .catch((error) => {
+        console.log(error, "this is response data completed_encounter");
+
+        dispatch({ type: SET_LOADER, payload: false });
+
+        return error;
+      });
+  };
+};
+
+export const encounterStartCall = (
+  jwtAuthToken,
+  patientid,
+  providerid,
+  sessionname,
+  sessionpass,
+  encounter_time,
+  transcript,
+  encounter_note,
+  care_team,
+  stream_channel,
+  clinical_info,
+  status,
+  care_request_id,
+  provider_wait_time,
+  organization_id,
+  he_type,
+  displayName,
+  roleType,
+  sessionIdleTimeoutMins,
+  navigate,
+  careReqType,
+  meetingId
+) => {
+  return async (dispatch) => {
+    var header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+    dispatch({
+      type: SET_LOADER,
+      payload: true,
+    });
+    const url = API_URL + "/encounter";
+    let updateData = {
+      patientid: patientid,
+      providerid: providerid,
+      sessionname: sessionname,
+      sessionpass: sessionpass,
+      encounter_time: encounter_time,
+      transcript: transcript,
+      encounter_note: encounter_note,
+      care_team: care_team,
+      stream_channel: stream_channel,
+      clinical_info: clinical_info,
+      status: status,
+      care_request_id: care_request_id === "" ? sessionname : care_request_id,
+      provider_wait_time: provider_wait_time,
+    };
+    console.log(updateData, header, "this is loglog", careReqType);
+    let apiCall = axios
+      .post(url, updateData, { headers: header })
+      .then((response) => {
+        console.log(
+          JSON.stringify(response.data),
+          "This is create temp Patient 4th api encounterStartCall"
+        );
+        console.log(
+          response.data,
+          "This is create temp Patient 5th api encounterStartCall"
+        );
+        dispatch({
+          type: SET_ENCOUNTER_CALL_DETAILS,
+          payload: response.data[0].data,
+        });
+        setToSessionStore({
+          key: "encounterCallDetails",
+          value: JSON.stringify(response.data[0].data),
+        });
+        console.log(
+          "SET_TRIAGE_AI_SUGGESTION",
+          response?.data[0]?.data?.triage_ai_suggestions
+        );
+
+        dispatch({
+          type: SET_AI_PREDS,
+          payload: response?.data[0]?.data?.ai_preds || [],
+        });
+        dispatch({
+          type: SET_TRIAGE_AI_SUGGESTION,
+          payload: response?.data[0]?.data?.triage_ai_suggestions || {
+            diagnoses: [],
+            medications: [],
+            procedures: [],
+            procedures_done: [],
+          },
+        });
+        dispatch({
+          type: SET_VITALS,
+          payload: response?.data[0]?.data?.vitals || {
+            bpm: "",
+            oxygen: "",
+            rr: "",
+            stressStatus: "",
+            systolic: "",
+            hrv: "",
+          },
+        });
+
+        const meetingContext = {
+          name: "getMeetingContext",
+        };
+
+        axios.post("/api/zoomapp/livestream", {
+          meetingId: meetingId,
+          care_request_id: response.data[0].data?.care_request_id,
+        });
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+        navigate("/consultation-screen");
+      })
+      .catch((error) => {
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const setEncounterNote = (notes) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_ENCOUNTER_NOTES,
+      payload: notes,
+    });
+  };
+};
+
+export const onlyTranscribe = (
+  jwtAuthToken,
+  organization_id,
+  he_type,
+  patient_id,
+  navigate,
+  provider_id,
+  display_name,
+  meetingId
+) => {
+  return (dispatch) => {
+    dispatch({ type: SET_LOADER, payload: true });
+
+    var header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+    const url = API_URL + "/carerequest_flow_provider?patient_id=" + patient_id;
+    console.log(header, "header", url);
+    let apiCall = axios
+      .post(url, {}, { headers: header })
+      .then(async (response) => {
+        console.log(
+          response.data,
+          "This is create temp Patient 3rd api onlyTranscribe"
+        );
+        var conss = {
+          encounter_time: null,
+          transcript: null,
+          encounter_note: null,
+          care_team: null,
+          stream_channel: null,
+          clinical_info: null,
+          status: "Scheduled",
+        };
+        const sessionPassword = String(
+          Math.floor(100000 + Math.random() * 900000)
+        );
+        const roleType = "1";
+        const sessionIdleTimeoutMins = "30";
+        const wait_time = 1;
+        // dispatch({
+        //   type: SET_LOADER,
+        //   payload: false,
+        // });
+        dispatch(
+          encounterStartCall(
+            jwtAuthToken,
+            patient_id,
+            provider_id,
+            response.data?.care_request_id,
+            sessionPassword,
+            conss.encounter_time,
+            conss.transcript,
+            conss.encounter_note,
+            conss.care_team,
+            conss.stream_channel,
+            conss.clinical_info,
+            conss.status,
+            response.data?.care_request_id,
+            // routeParams.care_provider[0].wait_time,
+            wait_time,
+            organization_id,
+            he_type,
+            display_name,
+            roleType,
+            sessionIdleTimeoutMins,
+            navigate,
+            "zoom encounter",
+            meetingId
+          )
+        );
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const guestUserSignUp = (
+  data,
+  organization_id,
+  toast,
+  navigate,
+  jwtToken,
+  provUid,
+  display_name,
+  meetingId
+) => {
   return async (dispatch) => {
     dispatch({
       type: SET_LOADER,
@@ -93,11 +532,18 @@ export const guestUserSignUp = (data, organization_id, toast, navigate) => {
           key: "patientUid",
           value: res?.data[0]?.uid,
         });
-        dispatch({
-          type: SET_LOADER,
-          payload: false,
-        });
-        navigate("/consultation-screen");
+        dispatch(
+          onlyTranscribe(
+            jwtToken,
+            organization_id,
+            "Provider",
+            res?.data[0]?.uid,
+            navigate,
+            provUid,
+            display_name,
+            meetingId
+          )
+        );
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {

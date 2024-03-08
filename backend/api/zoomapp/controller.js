@@ -244,7 +244,9 @@ module.exports = {
   async startLiveStream(req, res, next) {
     const user = await store.getUser(req.session.user);
     const zoomAccessToken = user.accessToken;
+    const zoomRefreshToken = user.refreshToken;
     const meetingId = req.body.meetingId;
+    const care_request_id = req.body.care_request_id;
     const domain = process.env.ZOOM_HOST // https://zoom.us
 
     // 2b. Set path
@@ -252,7 +254,7 @@ module.exports = {
 
     let Startdata = JSON.stringify({
       "page_url": "http://3.19.211.46:8000/admin/streams",
-      "stream_key": "85836551819",
+      "stream_key": care_request_id,
       "stream_url": "rtmp://3.19.211.46:1935/live",
       "resolution": "1080p"
     });
@@ -299,13 +301,49 @@ module.exports = {
 
   },
 
+  async stopLiveStream(req, res, next) {
+    const user = await store.getUser(req.session.user);
+    const zoomAccessToken = user.accessToken;
+    const zoomRefreshToken = user.refreshToken;
+    const meetingId = req.body.meetingId;
+    const care_request_id = req.body.care_request_id;
+    const domain = process.env.ZOOM_HOST // https://zoom.us
+
+    // 2b. Set path
+    const path = 'zoom/authorize';
+
+    let data = JSON.stringify({
+      "action": "stop"
+    });
+
+    let config = {
+      method: 'patch',
+      maxBodyLength: Infinity,
+      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${zoomAccessToken}`, 
+      },
+      data : data
+    };
+
+    
+      axios.request(config).then((res)=> {
+        console.log('test');
+        return res.send({status:'success'});
+      }).catch((err)=>{
+        return res.send({status: 'error'});
+      })
+  },
+
   // ZOOM APP HOME URL HANDLER ==================================================
   // This route is called when the app opens
   home(req, res, next) {
     console.log(
       'ZOOM APP HOME URL HANDLER ==================================================',
-      '\n'
-    )
+      '\n', req.headers
+    );
+
     try {
       // 1. Decrypt the Zoom App context header
       if (!req.headers['x-zoom-app-context']) {

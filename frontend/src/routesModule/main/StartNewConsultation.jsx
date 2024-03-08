@@ -1,5 +1,5 @@
 /** library imports */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,6 @@ import {
 } from "../../reduxFolder/CommonFunctions";
 import { HeButton, HeHeading1, HeInfoText } from "../../heCustomComponents";
 import { companyMetaData } from "../../assets/myCompanyData";
-
 /** shadcn imports */
 import { toast } from "sonner";
 import axios from "axios";
@@ -22,11 +21,10 @@ import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage, currentUserData } = useSelector(
-    (state) => state.authReducer
-  );
+  const { loader, labelData, appLanguage, currentUserData, meetingId } =
+    useSelector((state) => state.authReducer);
   const navigate = useNavigate();
-
+  const jwtToken = sessionStorage.getItem("jwtToken");
   useEffect(() => {
     setToSessionStore({
       key: "lastPage",
@@ -68,7 +66,11 @@ const StartNewConsultation = () => {
                     Date.now(),
                     companyMetaData?.organizationId,
                     toast,
-                    navigate
+                    navigate,
+                    jwtToken,
+                    currentUserData.uid,
+                    currentUserData.display_name,
+                    meetingId
                   )
                 );
                 // const response = axios.post("/api/zoomapp/livestream", {

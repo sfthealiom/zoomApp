@@ -14,6 +14,16 @@ import {
   SET_AUTOCOMPLETE_ALLERGY_DATA,
   SET_AUTOCOMPLETE_LABS_DATA,
   SET_AUTOCOMPLETE_PROC_DONE_DATA,
+  SET_ENCOUNTER_CALL_DETAILS,
+  SET_AI_PREDS,
+  SET_TRIAGE_AI_SUGGESTION,
+  SET_VITALS,
+  SET_AI_SUGGESTION_NOTES,
+  SET_ALL_TRANSCRIPT,
+  SET_CC,
+  SET_WEBSOCKET_AI_PREDS,
+  SET_ENCOUNTER_NOTES,
+  SET_MEETING_ID,
 } from "../actions/ActionTypes";
 
 const INITIAL_STATE = {
@@ -30,6 +40,55 @@ const INITIAL_STATE = {
   autoCompleteDataAllergies: [],
   autoCompleteDataLabs: [],
   autoCompleteProcDone: [],
+  encounterCallDetails: {},
+  aiPreds: [],
+  triageAiSuggestions: {
+    diagnoses: [],
+    medications: [],
+    procedures: [],
+    procedures_done: [],
+  },
+  vitals: {
+    bpm: "",
+    oxygen: "",
+    rr: "",
+    stressStatus: "",
+    systolic: "",
+    hrv: "",
+  },
+  aiSuggestions: {
+    diagnoses: [],
+    medications: [],
+    procedures: [],
+    procedures_done: [],
+  },
+  allTranscript: "",
+  transcriptMessageCount: 0,
+  closedCaptions: "",
+  webSocketAiPreds: {},
+  encounter_notes: {
+    subjective_clinical_summary: null,
+    ai_predictions: true,
+    patient_location: null,
+    diagnoses: [],
+    diagnoses_comments: null,
+    medications: [],
+    medication_comments: null,
+    generic_medication: null,
+    lab_imaging: [],
+    lab_imaging_comments: null,
+    procedures: [],
+    procedures_done: [],
+    procedure_comments: null,
+    referal_data: [],
+    referal_comment: null,
+    follow_up: {},
+    follow_up_comments: null,
+    patient_education: {},
+    care_task_directives: null,
+    comment: null,
+  },
+  meetingId: "",
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -62,6 +121,33 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return { ...state, autoCompleteProcDone: action.payload };
     case USER_LOGOUT:
       return INITIAL_STATE;
+    case SET_ENCOUNTER_CALL_DETAILS:
+      return {
+        ...state,
+        encounterCallDetails: action.payload,
+      };
+    case SET_AI_PREDS:
+      return { ...state, aiPreds: action.payload };
+    case SET_TRIAGE_AI_SUGGESTION:
+      return { ...state, triageAiSuggestions: action.payload };
+    case SET_VITALS:
+      return { ...state, vitals: action.payload };
+    case SET_AI_SUGGESTION_NOTES:
+      return { ...state, aiSuggestions: action.payload };
+    case SET_ALL_TRANSCRIPT:
+      return {
+        ...state,
+        allTranscript: action.payload.transcript,
+        transcriptMessageCount: action.payload.count,
+      };
+    case SET_CC:
+      return { ...state, closedCaptions: action.payload };
+    case SET_WEBSOCKET_AI_PREDS:
+      return { ...state, webSocketAiPreds: action.payload };
+    case SET_ENCOUNTER_NOTES:
+      return { ...state, encounter_notes: action.payload };
+    case SET_MEETING_ID:
+      return { ...state, meetingId: action.payload };
     default:
       return state;
   }

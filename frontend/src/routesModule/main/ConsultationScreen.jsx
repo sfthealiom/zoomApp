@@ -13,6 +13,14 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
+import {
+  setAiSuggestionNotes,
+  setAllTranscript,
+  setCC,
+  setWebSocketAiPreds,
+  completeEncounter,
+  submitEncounterNote,
+} from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
@@ -32,15 +40,161 @@ import { toast } from "sonner";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
+import { configSecret } from "../../assets/awsSecrets";
 
 const ConsultationScreen = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
-    (state) => state.authReducer
-  );
+  const {
+    loader,
+    labelData,
+    appLanguage,
+    encounterCallDetails,
+    aiSuggestions,
+    closedCaptions,
+    transcriptMessageCount,
+    allTranscript,
+    webSocketAiPreds,
+    encounter_notes,
+    meetingId,
+  } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
+  const { WEBSOCKET_URL, TRANSCRIPT_SOCKET_URL, ADMIN_RTMP_URL, RTMP_URL } =
+    configSecret;
 
   const [endSession, setEndSession] = useState(false);
+  const [webSocketSignal, setWebSocketSignal] = useState(false);
+  const providerUID = sessionStorage.getItem("currentUserUid");
+  const jwtToken = sessionStorage.getItem("jwtToken");
+  const [data, setdata] = useState("");
+  const [jsonData, setJsonData] = useState("");
+
+  const splitCode = (oldArray) => {
+    // var newArray = []
+    var newArray = oldArray.map((item, index) => {
+      return {
+        code: item?.code?.split(":")[1],
+        code_value: item?.code_value,
+        source: item?.source,
+      };
+    });
+
+    return newArray;
+  };
+
+  const leaveSession = (endSession, leaveType) => {
+    console.log(
+      "leaveSessionleaveSessionleaveSessionleaveSession",
+      endSession,
+      leaveType
+    );
+  };
+
+  const leaveProvCall = (timeoutKey) => {
+    dispatch(
+      completeEncounter(
+        jwtToken,
+        encounterCallDetails.care_request_id,
+        encounterCallDetails.encounterid,
+        encounterCallDetails.patient_msg_id,
+        encounterCallDetails.patientid,
+        encounterCallDetails.provider_msg_id,
+        encounterCallDetails.provider_wait_time,
+        encounterCallDetails.providerid,
+        aiSuggestions,
+        organizationId,
+        "provider",
+        navigate,
+        encounter_notes,
+        "zoom encounter",
+        encounterCallDetails,
+        timeoutKey
+      )
+    );
+    leaveSession(false, "");
+  };
+
+  useEffect(() => {
+    var wss = new WebSocket(
+      "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
+    );
+    var count = 0;
+    const providerWebSocketFunction = (count) => {
+      count = count++;
+      console.log(count, "this is countttt");
+
+      wss.onopen = () => {
+        setWebSocketSignal(true);
+        wss.send(
+          JSON.stringify({
+            stream_key: encounterCallDetails.care_request_id,
+            triage_ai_suggestion: encounterCallDetails?.triage_ai_suggestion,
+            ai_preds: encounterCallDetails?.triage_result?.analysis_summary,
+            user_type: "provider",
+            uid: providerUID,
+          })
+        );
+      };
+
+      wss.onclose = (error) => {
+        setWebSocketSignal(false);
+
+        if (error.code !== "1000" || error.code !== 1000) {
+          providerWebSocketFunction(count);
+        }
+      };
+
+      wss.onmessage = (event) => {
+        var res = JSON.parse(event.data);
+        if (res?.ai_preds?.entities) {
+          const newAiSuggestions = {
+            diagnoses: res?.ai_preds?.entities?.diagnoses?.length
+              ? res?.ai_preds?.entities?.diagnoses
+              : aiSuggestions?.diagnoses || [],
+            medications: res?.ai_preds?.entities?.medications?.length
+              ? res?.ai_preds?.entities?.medications
+              : aiSuggestions?.medications || [],
+            procedures: res?.ai_preds?.entities?.procedures?.length
+              ? res?.ai_preds?.entities?.procedures
+              : aiSuggestions?.procedures || [],
+            procedures_done: res?.ai_preds?.entities?.procedures_done?.length
+              ? res?.ai_preds?.entities?.procedures_done
+              : aiSuggestions?.procedures_done || [],
+          };
+
+          dispatch(setAiSuggestionNotes(newAiSuggestions));
+
+          if (res?.transcript) {
+            dispatch(setAllTranscript(res.transcript, transcriptMessageCount));
+          }
+
+          if (res?.cc) {
+            dispatch(setCC(res.cc));
+          }
+
+          if (res?.ai_preds?.summaries) {
+            dispatch(
+              setWebSocketAiPreds(
+                res?.ai_preds?.summaries,
+                JSON.parse(JSON.stringify(webSocketAiPreds))
+              )
+            );
+          }
+          if (!res?.success && res?.issue === "time-exceeded") {
+            leaveProvCall(true);
+          }
+        }
+      };
+      wss.onerror = (error) => {
+        console.log(error, "this is errorr");
+        setdata(`error${JSON.stringify(error)}`);
+        console.log(error, "this is websocket error");
+      };
+    };
+
+    if (encounterCallDetails) {
+      providerWebSocketFunction();
+    }
+  }, [encounterCallDetails?.care_request_id?.length > 0]);
 
   // data from ai
   const aiDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
@@ -110,21 +264,65 @@ const ConsultationScreen = () => {
     },
   });
 
+  const encounterNoteSubmit = () => {};
+
   const handleData = (data, e) => {
-    const { diffDiag, workDiag, medications, orders, procDone, careTaskNotes } =
-      data;
-    const encounterNotes = {
-      subjective: aiSubjec?.join(""),
-      objective: aiObjec?.join(""),
-      differentDiag: diffDiag,
-      workingDiag: workDiag,
-      medications,
-      orders,
-      proceduresDone: procDone,
-      careTaskDirectives: careTaskNotes,
+    var updateData_temp = encounterCallDetails;
+    const notes = {
+      subjective_clinical_summary: webSocketAiPreds?.subjectiveClinicalSummary,
+      ai_predictions: true,
+      patient_location: null,
+      diagnoses: data.diffDiag,
+      diagnoses_comments: null,
+      medications: data.medications,
+      working_diagnoses: data.workDiag,
+      medication_comments: null,
+      generic_medication: null,
+      lab_imaging: [],
+      lab_imaging_comments: null,
+      procedures: data.orders,
+      procedures_done: data.procDone,
+      procedure_comments: null,
+      referal_data: [],
+      referal_comment: null,
+      follow_up: {},
+      follow_up_comments: null,
+      patient_education: {},
+      care_task_directives: data?.careTaskNotes,
+      comment: null,
     };
-    console.log(encounterNotes);
-    navigate("/review-consultation-notes");
+    updateData_temp["encounter_note"] = notes;
+    dispatch(
+      submitEncounterNote(
+        jwtToken,
+        updateData_temp,
+        companyMetaData?.organizationId,
+        "provider"
+      )
+    );
+    axios.post("/api/zoomapp/stoplivestream", {
+      meetingId: meetingId,
+    });
+    dispatch(
+      completeEncounter(
+        jwtToken,
+        encounterCallDetails.care_request_id,
+        encounterCallDetails.encounterid,
+        encounterCallDetails.patient_msg_id,
+        encounterCallDetails.patientid,
+        encounterCallDetails.provider_msg_id,
+        encounterCallDetails.provider_wait_time,
+        encounterCallDetails.providerid,
+        aiSuggestions,
+        companyMetaData.organizationId,
+        "provider",
+        navigate,
+        encounter_notes,
+        "zoom encounter",
+        encounterCallDetails,
+        timeoutKey
+      )
+    );
   };
 
   useEffect(() => {
@@ -141,7 +339,7 @@ const ConsultationScreen = () => {
       <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
         <div className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
           <HeHeading2 title={"Note Builder"} className={`md:text-[18px]`} />
-          <div
+          {/* <div
             className="rounded-md flex flex-col gap-2"
             style={{ backgroundColor: companyMetaData?.primaryLightest }}
           >
@@ -153,34 +351,44 @@ const ConsultationScreen = () => {
               <span>Live Transcript</span>
             </div>
             <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde
-              facilis temporibus corrupti est neque veritatis dicta sapiente, ad
-              esse. Dicta voluptatem fugiat architecto impedit in reiciendis
-              libero ratione dolorem perferendis soluta debitis, ad
-              voluptatibus, illum corporis quisquam quis itaque rerum neque,
-              consequatur fuga. Dolor asperiores, delectus expedita quam ipsa
-              non ea obcaecati vel fugit quibusdam iure ratione hic dolores
-              quidem minima molestias sit exercitationem soluta. Aliquam esse
-              fugiat voluptate unde sapiente adipisci voluptatibus earum. Ullam,
-              officia illo reiciendis eaque iusto doloribus eum ea expedita
-              veniam sint molestias quaerat ad quibusdam. Nisi praesentium fuga
-              repudiandae dignissimos pariatur laboriosam dicta ut enim?
+              {closedCaptions}
+            </p>
+          </div> */}
+          <div
+            className="rounded-md flex flex-col gap-2"
+            style={{ backgroundColor: companyMetaData?.primaryLightest }}
+          >
+            <div className="self-end font-semibold flex items-center gap-1 px-4 pt-3">
+              <FontAwesomeIcon
+                icon={faCircle}
+                className="text-red-500 h-2 w-2"
+              />
+              <span>Long Transcript</span>
+            </div>
+            <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
+              {allTranscript}
             </p>
           </div>
         </div>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleData)}
             className="w-full flex flex-col gap-2"
           >
             <div className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4 bg-white">
-              <Subjective aiData={aiSubjec} />
-              <Objective aiData={aiObjec} />
-              <Diagnosis form={form} aiData={aiDiag} />
-              <Medications form={form} aiData={aiMed} />
+              <Subjective
+                aiData={webSocketAiPreds?.subjectiveClinicalSummary}
+              />
+              <Objective aiData={webSocketAiPreds?.objectiveClinicalSummary} />
+              <Diagnosis form={form} aiData={aiSuggestions?.diagnoses} />
+              <Medications form={form} aiData={aiSuggestions?.medications} />
               <Orders form={form} />
-              <ProceduresDoneDuringVisit form={form} aiData={aiProc} />
-              <CareTaskDirectives form={form} />
+              <ProceduresDoneDuringVisit
+                form={form}
+                aiData={aiSuggestions?.procedures_done}
+              />
+              <CareTaskDirectives form={webSocketAiPreds?.carePlanSuggested} />
             </div>
             <div
               className="w-full rounded-md"
