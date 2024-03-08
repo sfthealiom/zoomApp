@@ -304,26 +304,27 @@ const ConsultationScreen = () => {
     axios.post("/api/zoomapp/stoplivestream", {
       meetingId: meetingId,
     });
-    dispatch(
-      completeEncounter(
-        jwtToken,
-        encounterCallDetails.care_request_id,
-        encounterCallDetails.encounterid,
-        encounterCallDetails.patient_msg_id,
-        encounterCallDetails.patientid,
-        encounterCallDetails.provider_msg_id,
-        encounterCallDetails.provider_wait_time,
-        encounterCallDetails.providerid,
-        aiSuggestions,
-        companyMetaData.organizationId,
-        "provider",
-        navigate,
-        encounter_notes,
-        "zoom encounter",
-        encounterCallDetails,
-        ""
-      )
-    );
+    // dispatch(
+    //   completeEncounter(
+    //     jwtToken,
+    //     encounterCallDetails.care_request_id,
+    //     encounterCallDetails.encounterid,
+    //     encounterCallDetails.patient_msg_id,
+    //     encounterCallDetails.patientid,
+    //     encounterCallDetails.provider_msg_id,
+    //     encounterCallDetails.provider_wait_time,
+    //     encounterCallDetails.providerid,
+    //     aiSuggestions,
+    //     companyMetaData.organizationId,
+    //     "provider",
+    //     navigate,
+    //     encounter_notes,
+    //     "zoom encounter",
+    //     encounterCallDetails,
+    //     ""
+    //   )
+    // );
+    navigate("/review-consultation-notes");
   };
 
   useEffect(() => {
