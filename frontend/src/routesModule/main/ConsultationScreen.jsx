@@ -6,6 +6,7 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
@@ -89,7 +90,7 @@ const ConsultationScreen = () => {
     );
   };
 
-  const leaveProvCall = (timeoutKey) => {
+  const leaveProvCall = () => {
     dispatch(
       completeEncounter(
         jwtToken,
@@ -101,13 +102,12 @@ const ConsultationScreen = () => {
         encounterCallDetails.provider_wait_time,
         encounterCallDetails.providerid,
         aiSuggestions,
-        organizationId,
+        companyMetaData?.organizationId,
         "provider",
         navigate,
         encounter_notes,
         "zoom encounter",
-        encounterCallDetails,
-        timeoutKey
+        encounterCallDetails
       )
     );
     leaveSession(false, "");
@@ -321,7 +321,7 @@ const ConsultationScreen = () => {
         encounter_notes,
         "zoom encounter",
         encounterCallDetails,
-        timeoutKey
+        ""
       )
     );
   };

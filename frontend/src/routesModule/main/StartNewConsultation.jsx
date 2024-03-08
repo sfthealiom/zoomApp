@@ -30,8 +30,14 @@ const StartNewConsultation = () => {
   const dispatch = useDispatch();
   const [listOfTranscripts, setListOfTranscripts] = useState([]);
 
-  const { loader, labelData, appLanguage, currentUserData, meetingId } =
-    useSelector((state) => state.authReducer);
+  const {
+    loader,
+    labelData,
+    appLanguage,
+    currentUserData,
+    meetingId,
+    historyList,
+  } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
   const jwtToken = sessionStorage.getItem("jwtToken");
   useEffect(() => {
