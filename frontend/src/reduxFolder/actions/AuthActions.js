@@ -475,6 +475,37 @@ export const onlyTranscribe = (
   };
 };
 
+export const addProviderAddress = (uid, organization_id, jwtToken) => {
+  return async (dispatch) => {
+    const url = API_URL + "/add_details?uid=" + uid + "&detail_flag=address";
+    let address = {
+      address: [
+        {
+          address_line1: "221B Baker's St.",
+          address_line2: "",
+          city: "New York City",
+          country: "United States",
+          state: "NY",
+          zip_code: "94404",
+        },
+      ],
+    };
+    var header = {
+      Authorization: "Bearer " + jwtToken,
+      organization_id: organization_id,
+      he_type: "Provider",
+    };
+    axios
+      .post(url, address, { headers: header })
+      .then((res) => {})
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          dispatch(getRefreshToken());
+        }
+      });
+  };
+};
+
 export const guestUserSignUp = (
   data,
   organization_id,
@@ -760,6 +791,15 @@ export const getUserData = (
           type: SET_CURRENT_USER_DATA,
           payload: res?.data?.data,
         });
+        if (!res?.data?.data?.address) {
+          dispatch(
+            addProviderAddress(
+              res?.data?.data?.uid,
+              res?.data?.data?.organization_id,
+              jwtToken
+            )
+          );
+        }
         if (patientUid) {
           dispatch(
             getPatientData(patientUid, orgId, jwtToken, toast, navigate)

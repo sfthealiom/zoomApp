@@ -10,15 +10,9 @@ import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
+import { dispensedUnitData } from "../../../../reduxFolder/CommonFunctions";
 
 const EditMed = ({ form, fieldName, index, watchMeds }) => {
-  const form_ways = [
-    {
-      id: "Oral",
-      item: "Oral",
-    },
-  ];
-
   return (
     <div
       className="px-4 py-3 flex flex-col gap-2 rounded-md"
@@ -36,17 +30,16 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
         }}
       />
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">
-          {watchMeds[index]?.code_value}
-        </h1>
+        <h1 className="max-w-xs font-semibold">{watchMeds[index]?.display}</h1>
         <p>{watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">
         <HeTextInput
           form={form}
-          fieldName={`medications[${index}].quantity`}
+          fieldName={`medications[${index}].quantity_unit`}
           labelName={`Quantity`}
           placeholder={"1"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
@@ -56,15 +49,17 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`medications[${index}].refills`}
           labelName={`Refills`}
           placeholder={"0"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
         />
         <HeTextInput
           form={form}
-          fieldName={`medications[${index}].daySupply`}
+          fieldName={`medications[${index}].days_supply`}
           labelName={`Days supply`}
           placeholder={"5"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
@@ -73,8 +68,8 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full flex items-start justify-between gap-2">
         <HeSearchableSelect
           form={form}
-          fieldName={`medications[${index}].form_way`}
-          dataArray={form_ways}
+          fieldName={`medications[${index}].dispense_unit`}
+          dataArray={dispensedUnitData}
           placeholder="Form"
           labelName={`Form`}
           className={"w-full md:w-1/2 gap-2"}
@@ -88,7 +83,7 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`medications[${index}].route`}
-          dataArray={form_ways}
+          dataArray={dispensedUnitData}
           placeholder="Route"
           labelName={`Route`}
           className={"w-full md:w-1/2 gap-2"}
@@ -102,25 +97,18 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
       </div>
       <HeTextInput
         form={form}
-        fieldName={`medications[${index}].directions`}
+        fieldName={`medications[${index}].frequency`}
         labelName={`Directions`}
         placeholder={"Take..."}
         className={"flex flex-col gap-2 rounded-md"}
         innerTextClass={"border-none px-2 rounded-md"}
         required={true}
       />
-      <div className="w-full flex flex-col md:flex-row items-start justify-between gap-2">
+      <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
-          fieldName={`medications[${index}].allowSub`}
+          fieldName={`medications[${index}].substitutions_allowed`}
           labelName={`Allow Substitution`}
-          value1={"Yes"}
-          value2={"No"}
-        />
-        <HeRadioButtonTrueFalse
-          form={form}
-          fieldName={`medications[${index}].inClinic`}
-          labelName={`In-clinic`}
           value1={"Yes"}
           value2={"No"}
         />
@@ -129,7 +117,7 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
         <div className="w-full md:w-1/2">
           <HeTextInput
             form={form}
-            fieldName={`medications[${index}].orderReason`}
+            fieldName={`medications[${index}].reason`}
             labelName={`Order/Reason`}
             placeholder={"Notes..."}
             className={"flex flex-col gap-2 rounded-md"}
@@ -139,7 +127,7 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
         <div className="w-full md:w-1/2">
           <HeTextInput
             form={form}
-            fieldName={`medications[${index}].pharmacyNotes`}
+            fieldName={`medications[${index}].pharmacy_notes`}
             labelName={`Pharmacy Notes`}
             placeholder={"Notes..."}
             className={"flex flex-col gap-2 rounded-md"}

@@ -53,7 +53,6 @@ const HeAISuggesstions = ({
                         {
                           code: item?.code,
                           display: item?.code_value,
-                          ...attributes,
                         },
                       ]);
                     }

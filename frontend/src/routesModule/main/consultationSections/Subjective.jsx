@@ -28,7 +28,7 @@ const Subjective = ({ aiData }) => {
             {aiData}
           </p>
         ) : (
-          <div className="flex items-center px-4 py-2">
+          <div className="flex items-center px-4 py-2 font-semibold">
             <span>Preparing Summary</span>
             <FontAwesomeIcon
               icon={faCircleNotch}

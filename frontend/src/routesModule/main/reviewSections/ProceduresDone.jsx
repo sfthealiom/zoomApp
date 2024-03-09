@@ -19,7 +19,7 @@ const ProceduresDone = ({ form }) => {
 
   const [edit, setEdit] = useState(false);
   const attributes = {
-    orderReason: "",
+    reason: "",
   };
 
   return (
@@ -63,7 +63,7 @@ const ProceduresDone = ({ form }) => {
                 <ViewProc
                   key={index}
                   code={item?.code}
-                  code_value={item?.code_value}
+                  code_value={item?.display}
                   data={item?.orderReason}
                 />
               );

@@ -196,24 +196,27 @@ const ConsultationScreen = () => {
     }
   }, [encounterCallDetails?.care_request_id?.length > 0]);
 
-  // data from ai
-  const aiDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
-  const aiMed = encounterNotes?.ai_preds?.entities?.medications;
-  const aiProc = encounterNotes?.ai_preds?.entities?.procedures;
-  const aiSubjec =
-    encounterNotes?.ai_preds?.summaries?.subjectiveClinicalSummary;
-  const aiObjec = encounterNotes?.ai_preds?.summaries?.objectiveClinicalSummary;
-  const aiCarePlan = encounterNotes?.ai_preds?.summaries?.carePlanSuggested;
-
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    quantity_unit: z.string().min(1, "Required"),
-    refills: z.string().min(1, "Required"),
-    days_supply: z.string().min(1, "Required"),
-    dispense_unit: z.string().min(1, "Required"),
-    route: z.string().min(1, "Required"),
-    frequency: z.string().min(3, "Required"),
+    quantity_unit: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    refills: z.coerce.number().int().nonnegative(),
+    days_supply: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    dispense_unit: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    route: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    frequency: z.string().optional(),
     substitutions_allowed: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
@@ -249,7 +252,7 @@ const ConsultationScreen = () => {
     medications: z.array(medicationsSchema).optional(),
     orders: z.array(ordersSchema).optional(),
     procDone: z.array(procDoneSchema).optional(),
-    careTaskNotes: z.string().optional(),
+    // careTaskNotes: z.string().optional(),
   });
 
   const form = useForm({
@@ -261,13 +264,12 @@ const ConsultationScreen = () => {
       medications: [],
       orders: [],
       procDone: [],
-      careTaskNotes: aiCarePlan?.join(""),
+      // careTaskNotes: "",
     },
   });
 
-  const encounterNoteSubmit = () => {};
-
   const handleData = (data, e) => {
+    console.log(data);
     var updateData_temp = encounterCallDetails;
     const notes = {
       subjective_clinical_summary: webSocketAiPreds?.subjectiveClinicalSummary,
@@ -344,31 +346,31 @@ const ConsultationScreen = () => {
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
           <HeHeading2 title={"Note Builder"} className={`md:text-[18px]`} />
-          {/* <div
-            className="rounded-md flex flex-col gap-2"
-            style={{ backgroundColor: companyMetaData?.primaryLightest }}
-          >
-            <div className="self-end font-semibold flex items-center gap-1 px-4 pt-3">
-              <FontAwesomeIcon
-                icon={faCircle}
-                className="text-red-500 h-2 w-2"
-              />
-              <span>Live Transcript</span>
-            </div>
-            <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
-              {closedCaptions}
-            </p>
-          </div> */}
           <div
             className="rounded-md flex flex-col gap-2"
             style={{ backgroundColor: companyMetaData?.primaryLightest }}
           >
-            <div className="self-end font-semibold flex items-center gap-1 px-4 pt-3">
+            <div className="self-start md:self-end font-semibold flex items-center gap-2 px-4 pt-3">
               <FontAwesomeIcon
                 icon={faCircle}
-                className="text-red-500 h-2 w-2"
+                className="text-red-500 h-2 w-2 animate-ping"
               />
-              <span>Long Transcript</span>
+              <span>Live CC</span>
+            </div>
+            <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
+              {closedCaptions}
+            </p>
+          </div>
+          <div
+            className="rounded-md flex flex-col gap-2"
+            style={{ backgroundColor: companyMetaData?.primaryLightest }}
+          >
+            <div className="self-start md:self-end font-semibold flex items-center gap-2 px-4 pt-3">
+              <FontAwesomeIcon
+                icon={faCircle}
+                className="text-red-500 h-2 w-2 animate-ping"
+              />
+              <span>Live Transcription with Long Lookback</span>
             </div>
             <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
               {allTranscript}
@@ -393,7 +395,9 @@ const ConsultationScreen = () => {
                 form={form}
                 aiData={aiSuggestions?.procedures_done}
               />
-              <CareTaskDirectives form={form} />
+              <CareTaskDirectives
+                aiData={webSocketAiPreds?.carePlanSuggested}
+              />
             </div>
             <div
               className="w-full rounded-md"

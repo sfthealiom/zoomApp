@@ -65,7 +65,7 @@ const HeSearchableSelect = ({
                 >
                   <div>
                     {field.value
-                      ? dataArray.find((item) => item.item === field.value)?.id
+                      ? dataArray.find((item) => item.id === field.value)?.item
                       : placeholder}
                   </div>
                   {!disabledStatus && (
@@ -85,11 +85,11 @@ const HeSearchableSelect = ({
                   <CommandGroup className="overflow-y-scroll">
                     {dataArray.map((item) => (
                       <CommandItem
-                        value={item.id}
+                        value={item.item}
                         key={item.item}
                         className="font-semibold"
                         onSelect={() => {
-                          form.setValue(fieldName, item.item);
+                          form.setValue(fieldName, item.id);
                           form?.clearErrors(fieldName);
                         }}
                       >

@@ -69,22 +69,23 @@ const HeAutoCompleteSearch = ({
                   icon={<FontAwesomeIcon icon={faPlus} />}
                   onPress={() => {
                     const previousValues = form?.getValues(fieldName);
-                    form.setValue(fieldName, [
-                      ...previousValues,
-                      {
-                        code: item?.id,
-                        display: item?.item,
-                        ...attributes,
-                      },
-                    ]);
-                    if (fieldName2) {
-                      form.setValue(fieldName2, [
+                    const existingItems = previousValues.filter(
+                      (prev) => prev.code === item?.id
+                    );
+                    if (!existingItems.length) {
+                      form.setValue(fieldName, [
                         ...previousValues,
-                        {
-                          code: item?.id,
-                          display: item?.item,
-                        },
+                        { code: item?.id, display: item?.item, ...attributes },
                       ]);
+                      if (fieldName2) {
+                        form.setValue(fieldName2, [
+                          ...previousValues,
+                          {
+                            code: item?.id,
+                            display: item?.item,
+                          },
+                        ]);
+                      }
                     }
                   }}
                   className={"my-2"}

@@ -112,17 +112,17 @@ export const getUserToken = async (data, dispatch, toast, navigate, type) => {
           });
           navigate("/start-new-consultation");
           toast.success("Logged in successfully!");
-          dispatch(
-            getUserData(
-              res?.data?.uid,
-              orgId,
-              res?.data?.access_token,
-              "",
-              toast,
-              navigate
-            )
-          );
         }
+        dispatch(
+          getUserData(
+            res?.data?.uid,
+            orgId,
+            res?.data?.access_token,
+            "",
+            toast,
+            navigate
+          )
+        );
         dispatch(setJWTToken(res?.data?.access_token));
       } else {
         dispatch({

@@ -8,15 +8,9 @@ import {
 } from "../../../../heCustomComponents";
 import { companyMetaData } from "../../../../assets/myCompanyData";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
+import { dispensedUnitData } from "../../../../reduxFolder/CommonFunctions";
 
 const ViewMed = ({ form, fieldName, index, watchMeds }) => {
-  const form_ways = [
-    {
-      id: "Oral",
-      item: "Oral",
-    },
-  ];
-
   return (
     <div
       className="px-4 py-3 flex flex-col gap-2 rounded-md"
@@ -65,8 +59,8 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full flex items-start justify-between gap-2">
         <HeSearchableSelect
           form={form}
-          fieldName={`medications[${index}].form_way`}
-          dataArray={form_ways}
+          fieldName={`medications[${index}].dispense_unit`}
+          dataArray={dispensedUnitData}
           placeholder="Form"
           disabledStatus={true}
           labelName={`Form`}
@@ -78,7 +72,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`medications[${index}].route`}
-          dataArray={form_ways}
+          dataArray={dispensedUnitData}
           placeholder="Route"
           disabledStatus={true}
           labelName={`Route`}
