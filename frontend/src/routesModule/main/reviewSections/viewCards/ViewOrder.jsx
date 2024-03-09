@@ -14,7 +14,7 @@ const ViewOrder = ({ code, code_value, data }) => {
       </div>
       <div className="text-slate-400">
         <span className="font-semibold">In-clinic? </span>
-        {data}
+        {data === true ? "Yes" : "No"}
       </div>
     </div>
   );

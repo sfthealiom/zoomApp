@@ -215,7 +215,7 @@ const ConsultationScreen = () => {
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    order_fulfilment: z.string({
+    order_fulfilment: z.boolean({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
@@ -257,7 +257,6 @@ const ConsultationScreen = () => {
   });
 
   const handleData = (data, e) => {
-    toast.warning("encounter notes");
     var updateData_temp = encounterCallDetails;
 
     const notes = {
@@ -354,12 +353,7 @@ const ConsultationScreen = () => {
                 aiData={webSocketAiPreds?.subjectiveClinicalSummary}
               />
               <Objective aiData={webSocketAiPreds?.objectiveClinicalSummary} />
-              <Diagnosis
-                form={form}
-                aiData={[
-                  { code: "HASD:98798", code_value: "JKAS ASDIAUB ASIUD" },
-                ]}
-              />
+              <Diagnosis form={form} aiData={aiSuggestions?.diagnoses} />
               <Medications form={form} aiData={aiSuggestions?.medications} />
               <Orders form={form} />
               <ProceduresDoneDuringVisit

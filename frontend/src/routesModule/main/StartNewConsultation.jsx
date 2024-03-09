@@ -61,7 +61,10 @@ const StartNewConsultation = () => {
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
           <div>
-            <HeHeading1 title={`Hi, Jane`} className={`text-center`} />
+            <HeHeading1
+              title={`Hi, ${currentUserData?.first_name}`}
+              className={`text-center`}
+            />
             <HeInfoText
               message={
                 "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"

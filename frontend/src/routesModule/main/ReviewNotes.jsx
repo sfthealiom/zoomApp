@@ -75,7 +75,7 @@ const ReviewNotes = () => {
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    order_fulfilment: z.string({
+    order_fulfilment: z.boolean({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
