@@ -16,7 +16,7 @@ const MedicationNotes = ({ medications }) => {
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Medication Orders"} className={`md:text-[18px]`} />
         <HeCopy
-          targetText={JSON.stringify(medications)}
+          targetText={JSON.stringify(JSON.stringify(medications))}
           targetId={"medications"}
         />
       </div>
@@ -44,13 +44,15 @@ const MedRecord = ({ data }) => {
       }}
     >
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{data?.code_value}</h1>
+        <h1 className="max-w-xs font-semibold">
+          {data?.display || data?.code_value}
+        </h1>
         <p>{data?.code}</p>
       </div>
       <div className="grid grid-cols-3 items-start gap-2">
         <CardPill
           title={"Quantity"}
-          value={data?.quantity}
+          value={data?.quantity_unit}
           className={"w-full md:w-1/3"}
         />
         <CardPill
@@ -58,12 +60,12 @@ const MedRecord = ({ data }) => {
           value={data?.refills}
           className={"w-full md:w-1/3"}
         />
-        <CardPill title={"Days Supply"} value={data?.daySupply} />
+        <CardPill title={"Days Supply"} value={data?.days_supply} />
       </div>
       <div className="grid grid-cols-3 items-start gap-2">
         <CardPill
           title={"Form"}
-          value={data?.form_way}
+          value={data?.dispense_unit}
           className={"w-full md:w-1/3"}
         />
         <CardPill
@@ -73,7 +75,7 @@ const MedRecord = ({ data }) => {
         />
         <CardPill
           title={"Directions"}
-          value={data?.directions}
+          value={data?.frequnecy}
           className={"w-full md:w-1/3"}
         />
       </div>
@@ -81,24 +83,24 @@ const MedRecord = ({ data }) => {
         <CardPill
           title={"Allow substitutions?"}
           className={"w-full md:w-1/2"}
-          value={data?.allowSub}
+          value={data?.substitutions_allowed}
         />
         <CardPill
           title={"Fulfill in-clinic?"}
           className={"w-full md:w-1/2"}
-          value={data?.inClinic}
+          value={data?.reason}
         />
       </div>
       <div className="flex flex-col items-start gap-2">
         <CardPill
           title={"Pharmacy Notes"}
           className={"w-full md:w-1/2"}
-          value={data?.pharmacyNotes}
+          value={data?.pharmacy_notes}
         />
         <CardPill
           title={"Order/Reason"}
           className={"w-full md:w-1/2"}
-          value={data?.orderReason}
+          value={data?.reason}
         />
       </div>
     </div>

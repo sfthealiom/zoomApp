@@ -22,7 +22,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
         <h1 className="max-w-xs font-semibold">
           {watchMeds[index]?.code_value}
         </h1>
-        <p>{watchMeds[index]?.code}</p>
+        <p>{watchMeds[index]?.code?.split(":")[1] || watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">
         <HeTextInput
@@ -33,17 +33,14 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           disabledStatus={true}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
-          required={true}
         />
         <HeTextInput
           form={form}
           fieldName={`medications[${index}].refills`}
           labelName={`Refills`}
           placeholder={"0"}
-          disabledStatus={true}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
-          required={true}
         />
         <HeTextInput
           form={form}
@@ -53,7 +50,6 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           disabledStatus={true}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
-          required={true}
         />
       </div>
       <div className="w-full flex items-start justify-between gap-2">
@@ -67,7 +63,6 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
-          required={true}
         />
         <HeSearchableSelect
           form={form}
@@ -79,7 +74,6 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
-          required={true}
         />
         <HeTextInput
           form={form}
@@ -89,25 +83,16 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           disabledStatus={true}
           className={"flex flex-col rounded-md w-full md:w-1/3"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
-          required={true}
         />
       </div>
-      <div className="w-full flex flex-col md:flex-row items-start justify-between gap-2">
+      <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
           fieldName={`medications[${index}].allowSub`}
           labelName={`Allow Substitution`}
           value1={"Yes"}
-          disabledStatus={true}
           value2={"No"}
-        />
-        <HeRadioButtonTrueFalse
-          form={form}
-          fieldName={`medications[${index}].inClinic`}
-          labelName={`In-clinic`}
-          value1={"Yes"}
           disabledStatus={true}
-          value2={"No"}
         />
       </div>
       <div className="flex flex-col md:flex-row items-start gap-2">

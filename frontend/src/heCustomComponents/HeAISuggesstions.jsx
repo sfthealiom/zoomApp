@@ -39,22 +39,28 @@ const HeAISuggesstions = ({
                   pillColor={companyMetaData?.accentWhite}
                   textColor={companyMetaData?.aiDark}
                   onPress={() => {
-                    form.setValue(fieldName, [
-                      ...prevValue,
-                      {
-                        code: item?.code,
-                        display: item?.code_value,
-                        ...attributes,
-                      },
-                    ]);
-                    if (fieldName2) {
-                      form.setValue(fieldName2, [
-                        ...prevValue2,
+                    const previousValues = form?.getValues(fieldName);
+                    const existingItems = previousValues.filter(
+                      (prev) => prev.code === item?.code
+                    );
+                    if (!existingItems.length) {
+                      form.setValue(fieldName, [
+                        ...previousValues,
                         {
                           code: item?.code,
                           display: item?.code_value,
+                          ...attributes,
                         },
                       ]);
+                      if (fieldName2) {
+                        form.setValue(fieldName2, [
+                          ...previousValues,
+                          {
+                            code: item?.code,
+                            display: item?.code_value,
+                          },
+                        ]);
+                      }
                     }
                   }}
                 />

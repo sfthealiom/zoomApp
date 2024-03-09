@@ -25,6 +25,8 @@ import encounterNotes from "./consultationSections/data.json";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 
 const ConsultationNotes = () => {
   const dispatch = useDispatch();
@@ -38,10 +40,10 @@ const ConsultationNotes = () => {
   const medications = [
     {
       code: "IDA:7789",
-      code_value: "Paracetamol",
-      quantity_unit: "1",
-      refills: "0",
-      days_supply: "5",
+      display: "Paracetamol",
+      quantity_unit: 1,
+      refills: 0,
+      days_supply: 5,
       dispense_unit: "Oral",
       route: "Oral",
       frequnecy: "Daily",
@@ -53,17 +55,18 @@ const ConsultationNotes = () => {
   const orderNotes = [
     {
       code: "ASH:9798",
-      code_value: "Order",
+      display: "Order",
       order_fulfilment: "No",
     },
   ];
   const procDoneNotes = [
     {
       code: "ASH:9798",
-      code_value: "Procedure",
+      display: "Procedure",
       reason: "Procedure notes",
     },
   ];
+  const careNotes = "ASJdkahduAHSDiuabsiduabsdiaus";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -103,8 +106,8 @@ const ConsultationNotes = () => {
             <DiagnosisNotes diffDiag={diffDiag} workDiag={workDiag} />
             <MedicationNotes medications={medications} />
             <OrderNotes orderNotes={orderNotes} />
-            <ProcedureNotes />
-            <CareTaskNotes />
+            <ProcedureNotes procedureNotes={procDoneNotes} />
+            <CareTaskNotes careNotes={careNotes} />
           </div>
           <div
             className="w-full rounded-md"
@@ -112,9 +115,9 @@ const ConsultationNotes = () => {
               boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
             }}
           >
-            {/* <HeFormSubmitButton title={"Done"} className={`w-full mt-4`} /> */}
             <HeButton
-              title={"Done"}
+              title={"New Recording"}
+              icon={<FontAwesomeIcon icon={faMicrophone} className="h-4 w-4" />}
               className={`w-full mt-4`}
               onPress={() => navigate("/start-new-consultation")}
             />
