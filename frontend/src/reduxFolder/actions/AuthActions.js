@@ -477,10 +477,6 @@ export const onlyTranscribe = (
 
 export const addProviderAddress = (uid, organization_id, jwtToken) => {
   return async (dispatch) => {
-    dispatch({
-      type: SET_LOADER,
-      payload: true,
-    });
     const url = API_URL + "/add_details?uid=" + uid + "&detail_flag=address";
     let address = {
       address: [
@@ -489,7 +485,7 @@ export const addProviderAddress = (uid, organization_id, jwtToken) => {
           address_line2: "",
           city: "New York City",
           country: "United States",
-          state: "New York",
+          state: "NY",
           zip_code: "94404",
         },
       ],
@@ -506,10 +502,6 @@ export const addProviderAddress = (uid, organization_id, jwtToken) => {
         if (err.code === "ERR_BAD_REQUEST") {
           dispatch(getRefreshToken());
         }
-        dispatch({
-          type: SET_LOADER,
-          payload: false,
-        });
       });
   };
 };
@@ -799,13 +791,15 @@ export const getUserData = (
           type: SET_CURRENT_USER_DATA,
           payload: res?.data?.data,
         });
-        dispatch(
-          addProviderAddress(
-            res?.data?.uid,
-            res?.data?.organization_id,
-            jwtToken
-          )
-        );
+        if (!res?.data?.data?.address) {
+          dispatch(
+            addProviderAddress(
+              res?.data?.data?.uid,
+              res?.data?.data?.organization_id,
+              jwtToken
+            )
+          );
+        }
         if (patientUid) {
           dispatch(
             getPatientData(patientUid, orgId, jwtToken, toast, navigate)
