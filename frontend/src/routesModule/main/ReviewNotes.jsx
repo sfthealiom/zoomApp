@@ -104,12 +104,7 @@ const ReviewNotes = () => {
     defaultValues: {
       subjective: "",
       objective: "",
-      diffDiag: [
-        {
-          code: "ASDA:9809",
-          display: "asdadasd",
-        },
-      ],
+      diffDiag: [],
       workDiag: [],
       medications: [],
       orders: [],

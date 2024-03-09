@@ -41,6 +41,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           placeholder={"0"}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+          disabledStatus={true}
         />
         <HeTextInput
           form={form}
@@ -88,7 +89,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse
           form={form}
-          fieldName={`medications[${index}].allowSub`}
+          fieldName={`medications[${index}].substitutions_allowed`}
           labelName={`Allow Substitution`}
           value1={"Yes"}
           value2={"No"}

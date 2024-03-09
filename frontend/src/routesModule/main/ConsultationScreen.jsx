@@ -388,12 +388,7 @@ const ConsultationScreen = () => {
                 aiData={webSocketAiPreds?.subjectiveClinicalSummary}
               />
               <Objective aiData={webSocketAiPreds?.objectiveClinicalSummary} />
-              <Diagnosis
-                form={form}
-                aiData={[
-                  { code: "HASD:98798", code_value: "JKAS ASDIAUB ASIUD" },
-                ]}
-              />
+              <Diagnosis form={form} aiData={aiSuggestions?.diagnoses} />
               <Medications form={form} aiData={aiSuggestions?.medications} />
               <Orders form={form} />
               <ProceduresDoneDuringVisit
