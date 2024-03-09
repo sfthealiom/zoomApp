@@ -128,7 +128,8 @@ export const submitEncounterNote = (
   updateData,
   organization_id,
   he_type,
-  navigate
+  navigate,
+  meetingId
 ) => {
   return (dispatch) => {
     const header = {
@@ -189,10 +190,144 @@ export const submitEncounterNote = (
     };
     let apiCall = axios(config)
       .then((response) => {
-        navigate("/review-consultation-notes");
+        navigate("/consultation-notes");
+        dispatch({ type: SET_LOADER, payload: false });
       })
       .catch((error) => {
-        console.log(error, "this is response of encounterSubmit");
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+      });
+  };
+};
+
+export const getEncounterNote = (
+  jwtAuthToken,
+  encounter_id,
+  organization_id,
+  he_type,
+  edit_key
+) => {
+  return async (dispatch) => {
+    var header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+    const url = API_URL + "/get_encounter_notes?encounter_id=" + encounter_id;
+    let apiCall = axios
+      .get(url, { headers: header })
+      .then((response) => {
+        if (response.data.length !== 0) {
+          var temp_notes = JSON.parse(JSON.stringify(response.data));
+          var abrMap = {
+            quantity_unit: "",
+            route: "",
+            frequency: "",
+            dispense_unit: "",
+            refills: "",
+            generic: "",
+            days_supply: "",
+            substitutions_allowed: "",
+          };
+          if (temp_notes.medications && edit_key) {
+            var temp_medications = temp_notes.medications.map((item) => {
+              const temp_item = {
+                code: item.code,
+                dispense_unit: item.dispense_unit
+                  ? abrMap.dispense_unit + item.dispense_unit
+                  : null,
+                display: item.display,
+                frequency: item.frequency
+                  ? abrMap.frequency + item.frequency
+                  : null,
+                quantity_unit: item.quantity_unit
+                  ? abrMap.quantity_unit + item.quantity_unit
+                  : null,
+                reason: item.reason,
+                refills: item.refills ? abrMap.refills + item.refills : null,
+                route: item.route ? abrMap.route + item.route : null,
+                days_supply: item.days_supply
+                  ? abrMap.days_supply + item.days_supply
+                  : null,
+                pharmacy_notes: item.pharmacy_notes,
+                status: item.status,
+                suggested_ai: item.suggested_ai,
+                generic: item.generic,
+                substitutions_allowed: item.substitutions_allowed,
+              };
+              return temp_item;
+            });
+            temp_notes.medications = temp_medications;
+          }
+          dispatch({
+            type: SET_ENCOUNTER_NOTES,
+            payload: temp_notes,
+          });
+          // if (
+          //   response.data.medications &&
+          //   response.data.medications.length != 0
+          // ) {
+          //   var tempMedicationUi = response.data.medications.map(item => {
+          //     return {
+          //       renderQuantity: false,
+          //       renderRoute: false,
+          //       renderFrequency: false,
+          //       renderDispense: false,
+          //       renderRefills: false,
+          //       renderGeneric: false,
+          //       renderFirstLine: 0,
+          //       renderSecondLine: 0,
+          //     };
+          //   });
+          //   dispatch({type: SET_MEDICATION_UI, payload: tempMedicationUi});
+          // }
+
+          // if (
+          //   response.data.procedures &&
+          //   response.data.procedures.length != 0
+          // ) {
+          //   var tempProcedureUi = response.data.procedures.map(item => {
+          //     return {
+          //       renderFulfil: false,
+          //     };
+          //   });
+          //   dispatch({type: SET_PROCEDURE_UI, payload: tempProcedureUi});
+          // }
+        } else {
+          dispatch({
+            type: SET_ENCOUNTER_NOTES,
+            payload: {
+              subjective_clinical_summary: null,
+              ai_predictions: true,
+              patient_location: null,
+              diagnoses: [],
+              diagnoses_comments: null,
+              medications: [],
+              medication_comments: null,
+              generic_medication: null,
+              lab_imaging: [],
+              lab_imaging_comments: null,
+              procedures: [],
+              procedures_done: [],
+              working_diagnoses: [],
+              procedure_comments: null,
+              referal_data: [],
+              referal_comment: null,
+              follow_up: {},
+              follow_up_comments: null,
+              patient_education: {},
+              care_task_directives: null,
+              comment: null,
+            },
+          });
+          // dispatch({type: SET_PROCEDURE_UI, payload: []});
+          // dispatch({type: SET_MEDICATION_UI, payload: []});
+        }
+      })
+      .catch((error) => {
+        error;
       });
   };
 };
@@ -211,9 +346,8 @@ export const completeEncounter = (
   he_type,
   navigate,
   encounter_notes,
-  inclinicKey,
   encounterCallDetails,
-  timeoutKey
+  meetingId
 ) => {
   return async (dispatch) => {
     dispatch({ type: SET_LOADER, payload: true });
@@ -246,15 +380,14 @@ export const completeEncounter = (
             updateData_temp,
             organization_id,
             he_type,
-            navigate
+            navigate,
+            meetingId
           )
         );
       })
       .catch((error) => {
         console.log(error, "this is response data completed_encounter");
-
         dispatch({ type: SET_LOADER, payload: false });
-
         return error;
       });
   };

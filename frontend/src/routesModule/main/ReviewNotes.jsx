@@ -11,6 +11,7 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
+import { completeEncounter } from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
@@ -31,10 +32,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ReviewNotes = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
-    (state) => state.authReducer
-  );
+  const {
+    loader,
+    labelData,
+    appLanguage,
+    encounter_notes,
+    encounterCallDetails,
+    aiSuggestions,
+    meetingId,
+  } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
+  const jwtToken = sessionStorage.getItem("jwtToken");
 
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
@@ -67,7 +75,7 @@ const ReviewNotes = () => {
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    order_fulfilment: z.string({
+    order_fulfilment: z.boolean({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
@@ -102,20 +110,62 @@ const ReviewNotes = () => {
     resolver: zodResolver(FormSchema),
     // put your redux state variables here
     defaultValues: {
-      subjective: "",
-      objective: "",
-      diffDiag: [],
-      workDiag: [],
-      medications: [],
-      orders: [],
-      procDone: [],
-      careTaskNotes: "",
+      subjective: encounter_notes.subjective_clinical_summary?.join(""),
+      objective: encounter_notes.objectiveClinicalSummary?.join(""),
+      diffDiag: encounter_notes.diagnoses,
+      workDiag: encounter_notes.working_diagnoses,
+      medications: encounter_notes.medications,
+      orders: encounter_notes.procedures,
+      procDone: encounter_notes.procedures_done,
+      careTaskNotes: encounter_notes.care_task_directives?.join(""),
     },
   });
 
   const handleData = (data, e) => {
     console.log(data);
-    navigate("/consultation-notes");
+    const notes = {
+      subjective_clinical_summary: data.subjective,
+      ai_predictions: true,
+      patient_location: null,
+      diagnoses: data.diffDiag,
+      diagnoses_comments: null,
+      medications: data.medications,
+      working_diagnoses: data.workDiag,
+      medication_comments: null,
+      generic_medication: null,
+      lab_imaging: [],
+      lab_imaging_comments: null,
+      procedures: data.orders,
+      procedures_done: data.procDone,
+      procedure_comments: null,
+      referal_data: [],
+      referal_comment: null,
+      follow_up: {},
+      follow_up_comments: null,
+      patient_education: {},
+      care_task_directives: data?.careTaskNotes,
+      objective_clinical_summary: data?.objective,
+      comment: null,
+    };
+    dispatch(
+      completeEncounter(
+        jwtToken,
+        encounterCallDetails.care_request_id,
+        encounterCallDetails.encounterid,
+        encounterCallDetails.patient_msg_id,
+        encounterCallDetails.patientid,
+        encounterCallDetails.provider_msg_id,
+        encounterCallDetails.provider_wait_time,
+        encounterCallDetails.providerid,
+        aiSuggestions,
+        companyMetaData?.organizationId,
+        "provider",
+        navigate,
+        notes,
+        encounterCallDetails,
+        meetingId
+      )
+    );
   };
 
   useEffect(() => {

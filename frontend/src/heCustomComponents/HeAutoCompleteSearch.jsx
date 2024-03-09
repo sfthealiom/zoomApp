@@ -75,7 +75,11 @@ const HeAutoCompleteSearch = ({
                     if (!existingItems.length) {
                       form.setValue(fieldName, [
                         ...previousValues,
-                        { code: item?.id, display: item?.item, ...attributes },
+                        {
+                          code: item?.id,
+                          display: item?.item,
+                          ...attributes,
+                        },
                       ]);
                       if (fieldName2) {
                         form.setValue(fieldName2, [
