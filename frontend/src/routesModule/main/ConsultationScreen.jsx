@@ -185,8 +185,6 @@ const ConsultationScreen = () => {
         }
       };
       wss.onerror = (error) => {
-        console.log(error, "this is errorr");
-        setdata(`error${JSON.stringify(error)}`);
         console.log(error, "this is websocket error");
       };
     };
@@ -295,38 +293,29 @@ const ConsultationScreen = () => {
       comment: null,
     };
     updateData_temp["encounter_note"] = notes;
-    dispatch(
-      submitEncounterNote(
-        jwtToken,
-        updateData_temp,
-        companyMetaData?.organizationId,
-        "provider"
-      )
-    );
+
+    setdata(updateData_temp);
+    // completeEncounter(
+    //   jwtToken,
+    //   encounterCallDetails.care_request_id,
+    //   encounterCallDetails.encounterid,
+    //   encounterCallDetails.patient_msg_id,
+    //   encounterCallDetails.patientid,
+    //   encounterCallDetails.provider_msg_id,
+    //   encounterCallDetails.provider_wait_time,
+    //   encounterCallDetails.providerid,
+    //   aiSuggestions,
+    //   companyMetaData.organizationId,
+    //   "provider",
+    //   navigate,
+    //   notes,
+    //   "zoom encounter",
+    //   encounterCallDetails,
+    //   ""
+    // );
     axios.post("/api/zoomapp/stoplivestream", {
       meetingId: meetingId,
     });
-    // dispatch(
-    //   completeEncounter(
-    //     jwtToken,
-    //     encounterCallDetails.care_request_id,
-    //     encounterCallDetails.encounterid,
-    //     encounterCallDetails.patient_msg_id,
-    //     encounterCallDetails.patientid,
-    //     encounterCallDetails.provider_msg_id,
-    //     encounterCallDetails.provider_wait_time,
-    //     encounterCallDetails.providerid,
-    //     aiSuggestions,
-    //     companyMetaData.organizationId,
-    //     "provider",
-    //     navigate,
-    //     encounter_notes,
-    //     "zoom encounter",
-    //     encounterCallDetails,
-    //     ""
-    //   )
-    // );
-    navigate("/review-consultation-notes");
   };
 
   useEffect(() => {
