@@ -76,6 +76,7 @@ const INITIAL_STATE = {
     patient_location: null,
     diagnoses: [],
     diagnoses_comments: null,
+    working_diagnoses: [],
     medications: [],
     medication_comments: null,
     generic_medication: null,

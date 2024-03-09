@@ -19,6 +19,7 @@ import {
   SubjectiveNotes,
 } from "./consultNotes";
 import { companyMetaData } from "../../assets/myCompanyData";
+import { getEncounterNote } from "../../reduxFolder/actions/AuthActions";
 
 /** shadcn imports */
 import encounterNotes from "./consultationSections/data.json";
@@ -30,11 +31,15 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 
 const ConsultationNotes = () => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage } = useSelector(
-    (state) => state.authReducer
-  );
+  const {
+    loader,
+    labelData,
+    appLanguage,
+    encounterCallDetails,
+    encounter_notes,
+  } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
-
+  const jwtToken = sessionStorage.getItem("jwtToken");
   const diffDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
   const workDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
   const medications = [
@@ -76,6 +81,17 @@ const ConsultationNotes = () => {
     });
   }, []);
 
+  useEffect(() => {
+    dispatch(
+      getEncounterNote(
+        jwtToken,
+        encounterCallDetails.encounterid,
+        companyMetaData?.organizationId,
+        "patient"
+      )
+    );
+  }, []);
+
   return loader ? (
     <LoaderSpin />
   ) : (
@@ -100,14 +116,21 @@ const ConsultationNotes = () => {
                   )
                 }
               /> */}
-              <SubjectiveNotes subjectiveData={"Final subjective notes...."} />
+              <SubjectiveNotes
+                subjectiveData={encounter_notes.subjective_clinical_summary}
+              />
             </div>
-            <ObjectiveNotes objectiveData={"Final objective notes...."} />
-            <DiagnosisNotes diffDiag={diffDiag} workDiag={workDiag} />
-            <MedicationNotes medications={medications} />
-            <OrderNotes orderNotes={orderNotes} />
-            <ProcedureNotes procedureNotes={procDoneNotes} />
-            <CareTaskNotes careNotes={careNotes} />
+            <ObjectiveNotes
+              objectiveData={encounter_notes?.objective_clinical_summary}
+            />
+            <DiagnosisNotes
+              diffDiag={encounter_notes?.diagnoses}
+              workDiag={encounter_notes?.working_diagnoses}
+            />
+            <MedicationNotes medications={encounter_notes?.medications} />
+            <OrderNotes orderNotes={encounter_notes?.procedures} />
+            <ProcedureNotes procedureNotes={encounter_notes?.procedures_done} />
+            <CareTaskNotes careNotes={encounter_notes?.care_task_directives} />
           </div>
           <div
             className="w-full rounded-md"

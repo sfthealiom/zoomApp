@@ -42,6 +42,7 @@ import { toast } from "sonner";
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { configSecret } from "../../assets/awsSecrets";
+import { SET_ENCOUNTER_NOTES } from "../../reduxFolder/actions/ActionTypes";
 
 const ConsultationScreen = () => {
   const dispatch = useDispatch();
@@ -82,14 +83,6 @@ const ConsultationScreen = () => {
     return newArray;
   };
 
-  const leaveSession = (endSession, leaveType) => {
-    console.log(
-      "leaveSessionleaveSessionleaveSessionleaveSession",
-      endSession,
-      leaveType
-    );
-  };
-
   const leaveProvCall = () => {
     dispatch(
       completeEncounter(
@@ -110,7 +103,6 @@ const ConsultationScreen = () => {
         encounterCallDetails
       )
     );
-    leaveSession(false, "");
   };
 
   useEffect(() => {
@@ -145,6 +137,12 @@ const ConsultationScreen = () => {
 
       wss.onmessage = (event) => {
         var res = JSON.parse(event.data);
+        if (res?.cc) {
+          dispatch(setCC(res.cc));
+        }
+        if (res?.transcript) {
+          dispatch(setAllTranscript(res.transcript, transcriptMessageCount));
+        }
         if (res?.ai_preds?.entities) {
           const newAiSuggestions = {
             diagnoses: res?.ai_preds?.entities?.diagnoses?.length
@@ -162,14 +160,6 @@ const ConsultationScreen = () => {
           };
 
           dispatch(setAiSuggestionNotes(newAiSuggestions));
-
-          if (res?.transcript) {
-            dispatch(setAllTranscript(res.transcript, transcriptMessageCount));
-          }
-
-          if (res?.cc) {
-            dispatch(setCC(res.cc));
-          }
 
           if (res?.ai_preds?.summaries) {
             dispatch(
@@ -267,8 +257,9 @@ const ConsultationScreen = () => {
   });
 
   const handleData = (data, e) => {
-    console.log(data);
+    toast.warning("encounter notes");
     var updateData_temp = encounterCallDetails;
+
     const notes = {
       subjective_clinical_summary: webSocketAiPreds?.subjectiveClinicalSummary,
       ai_predictions: true,
@@ -289,33 +280,19 @@ const ConsultationScreen = () => {
       follow_up: {},
       follow_up_comments: null,
       patient_education: {},
-      care_task_directives: data?.careTaskNotes,
+      care_task_directives: webSocketAiPreds?.carePlanSuggested,
+      objective_clinical_summary: webSocketAiPreds?.objectiveClinicalSummary,
       comment: null,
     };
     updateData_temp["encounter_note"] = notes;
-
-    setdata(updateData_temp);
-    // completeEncounter(
-    //   jwtToken,
-    //   encounterCallDetails.care_request_id,
-    //   encounterCallDetails.encounterid,
-    //   encounterCallDetails.patient_msg_id,
-    //   encounterCallDetails.patientid,
-    //   encounterCallDetails.provider_msg_id,
-    //   encounterCallDetails.provider_wait_time,
-    //   encounterCallDetails.providerid,
-    //   aiSuggestions,
-    //   companyMetaData.organizationId,
-    //   "provider",
-    //   navigate,
-    //   notes,
-    //   "zoom encounter",
-    //   encounterCallDetails,
-    //   ""
-    // );
+    dispatch({
+      type: SET_ENCOUNTER_NOTES,
+      payload: notes,
+    });
     axios.post("/api/zoomapp/stoplivestream", {
       meetingId: meetingId,
     });
+    navigate("/review-consultation-notes");
   };
 
   useEffect(() => {
@@ -387,7 +364,7 @@ const ConsultationScreen = () => {
               <Orders form={form} />
               <ProceduresDoneDuringVisit
                 form={form}
-                aiData={aiSuggestions?.procedures_done}
+                aiData={aiSuggestions?.procedures}
               />
               <CareTaskDirectives
                 aiData={webSocketAiPreds?.carePlanSuggested}
