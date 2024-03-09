@@ -11,15 +11,9 @@ import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
+import { dispensedUnitData } from "../../../../reduxFolder/CommonFunctions";
 
 const AddMed = ({ form, fieldName, index, watchMeds }) => {
-  const form_ways = [
-    {
-      id: "Oral",
-      item: "Oral",
-    },
-  ];
-
   const [showOrdRea, setShowOrdRea] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
 
@@ -51,6 +45,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`${fieldName}[${index}].quantity_unit`}
           labelName={`Quantity`}
           placeholder={"1"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
@@ -60,6 +55,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`${fieldName}[${index}].refills`}
           labelName={`Refills`}
           placeholder={"0"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
@@ -69,6 +65,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           fieldName={`${fieldName}[${index}].days_supply`}
           labelName={`Days supply`}
           placeholder={"5"}
+          type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
@@ -78,7 +75,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`${fieldName}[${index}].dispense_unit`}
-          dataArray={form_ways}
+          dataArray={dispensedUnitData}
           placeholder="Form"
           labelName={`Form`}
           className={"w-full md:w-1/2 gap-2"}
@@ -92,7 +89,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`${fieldName}[${index}].route`}
-          dataArray={form_ways}
+          dataArray={dispensedUnitData}
           placeholder="Route"
           labelName={`Route`}
           className={"w-full md:w-1/2 gap-2"}

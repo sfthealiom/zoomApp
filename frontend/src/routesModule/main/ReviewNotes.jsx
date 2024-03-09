@@ -11,7 +11,7 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
-import { HeButton, HeFormSubmitButton } from "../../heCustomComponents";
+import { HeFormSubmitButton } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
   Diagnosis,
@@ -22,7 +22,6 @@ import {
   Subjective,
 } from "./reviewSections";
 import { companyMetaData } from "../../assets/myCompanyData";
-import encounterNotes from "../main/consultationSections/data.json";
 
 /** shadcn imports */
 import { Form } from "../../components/ui/Form";
@@ -40,12 +39,24 @@ const ReviewNotes = () => {
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    quantity_unit: z.string().min(1, "Required"),
-    refills: z.string().min(1, "Required"),
-    days_supply: z.string().min(1, "Required"),
-    dispense_unit: z.string().min(1, "Required"),
-    route: z.string().min(1, "Required"),
-    frequency: z.string().min(3, "Required"),
+    quantity_unit: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    refills: z.coerce.number().int().nonnegative(),
+    days_supply: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    dispense_unit: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    route: z.coerce
+      .number()
+      .int({ message: "Required" })
+      .positive({ message: "Required" }),
+    frequency: z.string().optional(),
     substitutions_allowed: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
@@ -56,7 +67,7 @@ const ReviewNotes = () => {
   const ordersSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    inClinic: z.string({
+    order_fulfilment: z.string({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
@@ -64,17 +75,22 @@ const ReviewNotes = () => {
   const procDoneSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
-    orderReason: z.string().optional(),
+    reason: z.string().optional(),
   });
-  const diagSchema = z.object({
+  const diffDiagSchema = z.object({
+    code: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    reason: z.string().optional(),
+  });
+  const workDiagSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
   });
   const FormSchema = z.object({
     subjective: z.string(),
     objective: z.string(),
-    diffDiag: z.array(diagSchema).optional(),
-    workDiag: z.array(diagSchema).optional(),
+    diffDiag: z.array(diffDiagSchema).optional(),
+    workDiag: z.array(workDiagSchema).optional(),
     medications: z.array(medicationsSchema).optional(),
     orders: z.array(ordersSchema).optional(),
     procDone: z.array(procDoneSchema).optional(),
@@ -84,20 +100,16 @@ const ReviewNotes = () => {
   const form = useForm({
     mode: "all",
     resolver: zodResolver(FormSchema),
+    // put your redux state variables here
     defaultValues: {
-      subjective:
-        encounterNotes?.ai_preds?.summaries?.subjectiveClinicalSummary?.join(
-          ""
-        ),
-      objective:
-        encounterNotes?.ai_preds?.summaries?.objectiveClinicalSummary?.join(""),
-      diffDiag: encounterNotes?.ai_preds?.entities?.diagnoses,
-      workDiag: encounterNotes?.ai_preds?.entities?.diagnoses,
-      medications: encounterNotes?.ai_preds?.entities?.medications,
-      orders: encounterNotes?.ai_preds?.entities?.procedures,
-      procDone: encounterNotes?.ai_preds?.entities?.procedures_done,
-      careTaskNotes:
-        encounterNotes?.ai_preds?.summaries?.carePlanSuggested?.join(""),
+      subjective: "",
+      objective: "",
+      diffDiag: [],
+      workDiag: [],
+      medications: [],
+      orders: [],
+      procDone: [],
+      careTaskNotes: "",
     },
   });
 
@@ -142,12 +154,7 @@ const ReviewNotes = () => {
                 boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
               }}
             >
-              {/* <HeFormSubmitButton title={"Done"} className={`w-full mt-4`} /> */}
-              <HeButton
-                title={"Done"}
-                className={`w-full mt-4`}
-                onPress={() => navigate("/consultation-notes")}
-              />
+              <HeFormSubmitButton title={"Done"} className={`w-full mt-4`} />
             </div>
           </form>
         </Form>

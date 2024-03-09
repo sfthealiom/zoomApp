@@ -175,3 +175,118 @@ export const convertEpochToLocal = (ids) => {
     };
   });
 };
+
+export const dispensedUnitData = [
+  {
+    item: "Applicator",
+    id: 35,
+  },
+  {
+    item: "Caplet",
+    id: 44,
+  },
+  {
+    item: "Each",
+    id: 32,
+  },
+  {
+    item: "Gram",
+    id: 8,
+  },
+  {
+    item: "Implant",
+    id: 54,
+  },
+  {
+    item: "Kit",
+    id: 11,
+  },
+  {
+    item: "Lozenge",
+    id: 13,
+  },
+  {
+    item: "Packet",
+    id: 21,
+  },
+  {
+    item: "Patch",
+    id: 28,
+  },
+  {
+    item: "Ring",
+    id: 70,
+  },
+  {
+    item: "Stick",
+    id: 75,
+  },
+  {
+    item: "Suppository",
+    id: 23,
+  },
+  {
+    item: "Tablet",
+    id: 26,
+  },
+  {
+    item: "Unspecified",
+    id: 19,
+  },
+  {
+    item: "Blister",
+    id: 39,
+  },
+  {
+    item: "Capsule",
+    id: 4,
+  },
+  {
+    item: "Film",
+    id: 52,
+  },
+  {
+    item: "Gum",
+    id: 33,
+  },
+  {
+    item: "Insert",
+    id: 57,
+  },
+  {
+    item: "Lancet",
+    id: 90,
+  },
+  {
+    item: "Milliliter",
+    id: 15,
+  },
+  {
+    item: "Pad",
+    id: 64,
+  },
+  {
+    item: "Pen Needle",
+    id: 73,
+  },
+  {
+    item: "Sponge",
+    id: 73,
+  },
+  {
+    item: "Strip",
+    id: 76,
+  },
+  {
+    item: "Swab",
+    id: 77,
+  },
+  {
+    item: "Troche",
+    id: 81,
+  },
+  {
+    item: "Wafer",
+    id: 82,
+  },
+];

@@ -39,19 +39,31 @@ const ConsultationNotes = () => {
     {
       code: "IDA:7789",
       code_value: "Paracetamol",
-      quantity: "1",
+      quantity_unit: "1",
       refills: "0",
-      daySupply: "5",
-      form_way: "Oral",
+      days_supply: "5",
+      dispense_unit: "Oral",
       route: "Oral",
-      directions: "Daily",
-      allowSub: "Yes",
-      inClinic: "Yes",
-      orderReason: "Order notes",
-      pharmacyNotes: "Reason notes",
+      frequnecy: "Daily",
+      substitutions_allowed: "Yes",
+      reason: "Order notes",
+      pharmacy_notes: "Reason notes",
     },
   ];
-  const orderNotes = [{}];
+  const orderNotes = [
+    {
+      code: "ASH:9798",
+      code_value: "Order",
+      order_fulfilment: "No",
+    },
+  ];
+  const procDoneNotes = [
+    {
+      code: "ASH:9798",
+      code_value: "Procedure",
+      reason: "Procedure notes",
+    },
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,13 +83,28 @@ const ConsultationNotes = () => {
             className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
             style={{ backgroundColor: companyMetaData?.accentWhite }}
           >
-            <SubjectiveNotes subjectiveData={"Final subjective notes...."} />
+            <div className="w-full flex flex-col gap-4">
+              <HeButton
+                title={"Copy to Clipboard"}
+                titleClass={"text-slate-600 text-base"}
+                className={
+                  "w-full h-12 border-2 border-slate-400 text-slate-600"
+                }
+                bgColor={companyMetaData?.accentGray}
+                onPress={() =>
+                  navigator.clipboard.writeText(
+                    JSON.stringify({ object: "notes" })
+                  )
+                }
+              />
+              <SubjectiveNotes subjectiveData={"Final subjective notes...."} />
+            </div>
             <ObjectiveNotes objectiveData={"Final objective notes...."} />
             <DiagnosisNotes diffDiag={diffDiag} workDiag={workDiag} />
             <MedicationNotes medications={medications} />
-            {/* <OrderNotes orderNotes={orderNotes} />
+            <OrderNotes orderNotes={orderNotes} />
             <ProcedureNotes />
-            <CareTaskNotes /> */}
+            <CareTaskNotes />
           </div>
           <div
             className="w-full rounded-md"

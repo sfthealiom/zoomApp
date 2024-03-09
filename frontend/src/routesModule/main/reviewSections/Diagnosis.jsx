@@ -45,7 +45,7 @@ const Diagnosis = ({ form }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     icon={
                       <FontAwesomeIcon icon={faXmark} className="h-4 w-4" />
                     }
@@ -71,7 +71,7 @@ const Diagnosis = ({ form }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     icon={
                       <FontAwesomeIcon
                         icon={faPlus}
@@ -106,21 +106,38 @@ const Diagnosis = ({ form }) => {
             {diffDiag.length > 0 ? (
               diffDiag?.map((item, index) => {
                 return (
-                  <Pill
+                  <div
                     key={index}
-                    code={item?.code}
-                    name={item?.code_value}
-                    icon={<FontAwesomeIcon icon={faXmark} />}
-                    onIconClick={() => {
-                      const previousValues = diffDiag;
-                      const updatedArray = previousValues?.filter(
-                        (item, idx) => {
-                          return idx !== index;
-                        }
-                      );
-                      form.setValue("diffDiag", updatedArray);
+                    className="flex flex-col rounded-md"
+                    style={{
+                      backgroundColor: companyMetaData?.accentOneLight,
                     }}
-                  />
+                  >
+                    <Pill
+                      key={index}
+                      code={item?.code}
+                      name={item?.display}
+                      className="px-0 py-0"
+                      icon={<FontAwesomeIcon icon={faXmark} />}
+                      onIconClick={() => {
+                        const previousValues = diffDiag;
+                        const updatedArray = previousValues?.filter(
+                          (item, idx) => {
+                            return idx !== index;
+                          }
+                        );
+                        form.setValue("diffDiag", updatedArray);
+                      }}
+                    />
+                    <HeTextInput
+                      form={form}
+                      fieldName={`diffDiag[${index}].reason`}
+                      labelName={"Reason"}
+                      placeholder={"Notes..."}
+                      className={"flex flex-col gap-2 rounded-md px-4 pb-2"}
+                      innerTextClass={"border-none px-2 rounded-md"}
+                    />
+                  </div>
                 );
               })
             ) : (
@@ -143,7 +160,7 @@ const Diagnosis = ({ form }) => {
                   >
                     <Pill
                       code={item?.code}
-                      name={item?.code_value}
+                      name={item?.display}
                       className="px-0 py-0"
                       icon={<FontAwesomeIcon icon={faXmark} />}
                       onIconClick={() => {
@@ -210,7 +227,7 @@ const Diagnosis = ({ form }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     icon={<FontAwesomeIcon icon={faXmark} />}
                     onIconClick={() => {
                       const previousValues = workDiag;
@@ -238,7 +255,7 @@ const Diagnosis = ({ form }) => {
                   <Pill
                     key={index}
                     code={item?.code}
-                    name={item?.code_value}
+                    name={item?.display}
                     pillColor={companyMetaData?.accentGray}
                   />
                 );
@@ -250,15 +267,15 @@ const Diagnosis = ({ form }) => {
             )}
           </div>
         )}
+        {editWorkDiag && (
+          <HeAutoCompleteSearch
+            form={form}
+            fieldName={"workDiag"}
+            searchType={"diagnoses"}
+            dataArray={autoCompleteDataDiagnoses}
+          />
+        )}
       </div>
-      {editWorkDiag && (
-        <HeAutoCompleteSearch
-          form={form}
-          fieldName={"workDiag"}
-          searchType={"diagnoses"}
-          dataArray={autoCompleteDataDiagnoses}
-        />
-      )}
     </div>
   );
 };

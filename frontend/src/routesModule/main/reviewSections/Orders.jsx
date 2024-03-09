@@ -18,7 +18,7 @@ const Orders = ({ form }) => {
 
   const { autoCompleteDataLabs } = useSelector((state) => state.authReducer);
   const attributes = {
-    inClinic: "",
+    order_fulfilment: "",
   };
 
   const [edit, setEdit] = useState(false);
@@ -64,7 +64,7 @@ const Orders = ({ form }) => {
                 <ViewOrder
                   key={index}
                   code={item?.code}
-                  code_value={item?.code_value}
+                  code_value={item?.display}
                   data={item?.inClinic}
                 />
               );

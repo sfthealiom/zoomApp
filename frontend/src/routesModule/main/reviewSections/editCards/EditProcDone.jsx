@@ -25,13 +25,13 @@ const EditProcDone = ({ form, fieldName, index, item }) => {
         }}
       />
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{item?.code_value}</h1>
+        <h1 className="max-w-xs font-semibold">{item?.display}</h1>
         <p>{item?.code}</p>
       </div>
       <div className="w-full mt-2">
         <HeTextInput
           form={form}
-          fieldName={`procDone[${index}].orderReason`}
+          fieldName={`procDone[${index}].reason`}
           labelName={`Notes`}
           placeholder={"Notes..."}
           className={"flex flex-col gap-2 rounded-md"}

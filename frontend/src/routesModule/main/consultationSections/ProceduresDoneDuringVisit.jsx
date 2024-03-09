@@ -45,12 +45,14 @@ const ProceduresDoneDuringVisit = ({ form, aiData }) => {
             fieldName={"procDone"}
             searchType={"procedures_done"}
             dataArray={autoCompleteProcDone}
+            attributes={{ reason: "" }}
           />
           <HeAISuggesstions
             form={form}
             fieldName={"procDone"}
             prevValue={watchProcDone}
             aiData={aiData}
+            attributes={{ reason: "" }}
           />
         </div>
       </div>
