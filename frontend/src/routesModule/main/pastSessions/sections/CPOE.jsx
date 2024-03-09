@@ -16,7 +16,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                       <h1 className="font-semibold text-xl">
                         Diagnosis Options
                       </h1>
-                      {isCopied === "diagnoses" ? (
+                      {/* {isCopied === "diagnoses" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -36,7 +36,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[200px] overflow-y-scroll flex flex-col gap-2 mt-4 scrollbar">
                       {!isObjectEmpty(aiPreds)
@@ -63,7 +63,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                       <h1 className="font-semibold text-xl">
                         Medication Options
                       </h1>
-                      {isCopied === "medications" ? (
+                      {/* {isCopied === "medications" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -83,7 +83,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[200px] overflow-y-scroll flex flex-col gap-2 mt-4 scrollbar">
                       {!isObjectEmpty(aiPreds)
@@ -112,7 +112,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                       <h1 className="font-semibold text-xl">
                         Procedure Options
                       </h1>
-                      {isCopied === "procedures" ? (
+                      {/* {isCopied === "procedures" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -132,7 +132,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[200px] overflow-y-scroll flex flex-col gap-2 mt-4 scrollbar">
                       {!isObjectEmpty(aiPreds)
@@ -159,7 +159,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Symptom Options</h1>
-                      {isCopied === "symptoms" ? (
+                      {/* {isCopied === "symptoms" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -179,7 +179,7 @@ const CPOE = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[200px] overflow-y-scroll flex flex-col gap-2 mt-4 scrollbar">
                       {!isObjectEmpty(aiPreds)

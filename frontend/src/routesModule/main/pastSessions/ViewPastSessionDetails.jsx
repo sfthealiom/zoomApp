@@ -108,7 +108,7 @@ const ViewPastSessionDetails = () => {
             <h1 className="font-semibold text-xl">
               Transcription with Long Lookback
             </h1>
-            {isCopied === "transcript" ? (
+            {/* {isCopied === "transcript" ? (
               <div className="flex text-slate-400 items-center">
                 <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
                 <span>Copied</span>
@@ -123,7 +123,7 @@ const ViewPastSessionDetails = () => {
                   }}
                 />
               </button>
-            )}
+            )} */}
           </div>
           <textarea
             name="json-response"

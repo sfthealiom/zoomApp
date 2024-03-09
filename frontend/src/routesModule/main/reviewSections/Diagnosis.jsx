@@ -153,7 +153,7 @@ const Diagnosis = ({ form }) => {
                 return (
                   <div
                     key={index}
-                    className="px-4 py-3 flex flex-col gap-2 rounded-md"
+                    className="flex flex-col rounded-md"
                     style={{
                       backgroundColor: companyMetaData?.accentOneLight,
                     }}
@@ -179,7 +179,7 @@ const Diagnosis = ({ form }) => {
                       fieldName={`diffDiag[${index}].reason`}
                       labelName={"Reason"}
                       placeholder={"Notes..."}
-                      className={"flex flex-col gap-2 rounded-md"}
+                      className={"flex flex-col gap-2 rounded-md px-4 pb-2"}
                       innerTextClass={"border-none px-2 rounded-md"}
                     />
                   </div>
