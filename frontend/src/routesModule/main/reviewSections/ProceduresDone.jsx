@@ -25,10 +25,7 @@ const ProceduresDone = ({ form }) => {
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
-        <HeHeading2
-          title={"Procedures Done During Visit"}
-          className={`md:text-[18px]`}
-        />
+        <HeHeading2 title={"Procedures"} className={`md:text-[18px]`} />
         {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}

@@ -63,8 +63,7 @@ const Splash = () => {
                 jwtToken,
                 patientUid,
                 toast,
-                navigate,
-                "refresh"
+                navigate
               )
             );
           } else {

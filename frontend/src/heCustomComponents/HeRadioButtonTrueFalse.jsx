@@ -39,7 +39,7 @@ const HeRadioButtonTrueFalse = ({
                 }
               >
                 <FormControl>
-                  <RadioGroupItem value={value1} />
+                  <RadioGroupItem value={true} />
                 </FormControl>
                 <FormLabel>
                   {/* {getLabels(
@@ -56,7 +56,7 @@ const HeRadioButtonTrueFalse = ({
                 }
               >
                 <FormControl>
-                  <RadioGroupItem value={value2} />
+                  <RadioGroupItem value={false} />
                 </FormControl>
                 <FormLabel>
                   {/* {getLabels(

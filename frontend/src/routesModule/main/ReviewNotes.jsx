@@ -57,7 +57,7 @@ const ReviewNotes = () => {
       .int({ message: "Required" })
       .positive({ message: "Required" }),
     frequency: z.string().optional(),
-    substitutions_allowed: z.string({
+    substitutions_allowed: z.boolean({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
@@ -87,8 +87,8 @@ const ReviewNotes = () => {
     display: z.string().min(1, "Required"),
   });
   const FormSchema = z.object({
-    subjective: z.string(),
-    objective: z.string(),
+    subjective: z.string().optional(),
+    objective: z.string().optional(),
     diffDiag: z.array(diffDiagSchema).optional(),
     workDiag: z.array(workDiagSchema).optional(),
     medications: z.array(medicationsSchema).optional(),

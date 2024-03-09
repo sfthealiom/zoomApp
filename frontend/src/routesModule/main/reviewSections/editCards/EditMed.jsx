@@ -31,7 +31,7 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
       />
       <div className="flex items-start gap-1 justify-between">
         <h1 className="max-w-xs font-semibold">{watchMeds[index]?.display}</h1>
-        <p>{watchMeds[index]?.code}</p>
+        <p>{watchMeds[index]?.code?.split(":")[1] || watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">
         <HeTextInput
@@ -52,7 +52,6 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
           type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
-          required={true}
         />
         <HeTextInput
           form={form}
@@ -102,7 +101,6 @@ const EditMed = ({ form, fieldName, index, watchMeds }) => {
         placeholder={"Take..."}
         className={"flex flex-col gap-2 rounded-md"}
         innerTextClass={"border-none px-2 rounded-md"}
-        required={true}
       />
       <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
         <HeRadioButtonTrueFalse

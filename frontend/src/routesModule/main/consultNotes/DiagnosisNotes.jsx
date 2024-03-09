@@ -20,7 +20,10 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
             title={"Differential Diagnosis (DDx)"}
             className={`md:text-[18px]`}
           />
-          <HeCopy targetText={JSON.stringify(diffDiag)} targetId={"diffDiag"} />
+          <HeCopy
+            targetText={JSON.stringify(JSON.stringify(diffDiag))}
+            targetId={"diffDiag"}
+          />
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
           {diffDiag.length > 0 ? (
@@ -29,7 +32,7 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
                 <Pill
                   key={index}
                   code={item?.code}
-                  name={item?.code_value}
+                  name={item?.display || item?.code_value}
                   pillColor={companyMetaData?.accentGray}
                 />
               );
@@ -49,7 +52,10 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
             title={"Working Diagnosis"}
             className={`md:text-[18px]`}
           />
-          <HeCopy targetText={JSON.stringify(workDiag)} targetId={"workDiag"} />
+          <HeCopy
+            targetText={JSON.stringify(JSON.stringify(workDiag))}
+            targetId={"workDiag"}
+          />
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
           {workDiag.length > 0 ? (
@@ -58,7 +64,7 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
                 <Pill
                   key={index}
                   code={item?.code}
-                  name={item?.code_value}
+                  name={item?.display || item?.code_value}
                   pillColor={companyMetaData?.accentGray}
                 />
               );

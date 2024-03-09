@@ -217,7 +217,7 @@ const ConsultationScreen = () => {
       .int({ message: "Required" })
       .positive({ message: "Required" }),
     frequency: z.string().optional(),
-    substitutions_allowed: z.string({
+    substitutions_allowed: z.boolean({
       invalid_type_error: "Invalid",
       required_error: "Required",
     }),
@@ -388,7 +388,12 @@ const ConsultationScreen = () => {
                 aiData={webSocketAiPreds?.subjectiveClinicalSummary}
               />
               <Objective aiData={webSocketAiPreds?.objectiveClinicalSummary} />
-              <Diagnosis form={form} aiData={aiSuggestions?.diagnoses} />
+              <Diagnosis
+                form={form}
+                aiData={[
+                  { code: "HASD:98798", code_value: "JKAS ASDIAUB ASIUD" },
+                ]}
+              />
               <Medications form={form} aiData={aiSuggestions?.medications} />
               <Orders form={form} />
               <ProceduresDoneDuringVisit

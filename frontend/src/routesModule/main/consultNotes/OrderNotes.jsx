@@ -1,14 +1,9 @@
 /** library imports */
-import React, { useState } from "react";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
 /** custom imports */
-import {
-  HeAutoCompleteSearch,
-  HeCopy,
-  HeHeading2,
-} from "../../../heCustomComponents";
+import { HeCopy, HeHeading2 } from "../../../heCustomComponents";
+import ViewOrder from "../reviewSections/viewCards/ViewOrder";
 
 /** shadcn import */
 
@@ -22,14 +17,24 @@ const OrderNotes = ({ orderNotes }) => {
           title={"Orders (Labs, Imaging and Procedures to be done)"}
           className={`md:text-[18px]`}
         />
-        <HeCopy targetText={JSON.stringify(orderNotes)} targetId={"orders"} />
+        <HeCopy
+          targetText={JSON.stringify(JSON.stringify(orderNotes))}
+          targetId={"orders"}
+        />
       </div>
       <div className="w-full flex flex-col gap-2">
         <div className="w-full flex flex-col gap-2">
           {orderNotes?.length > 0 ? (
             <div className="flex flex-col gap-2">
               {orderNotes?.map((item, index) => {
-                return <OrderRec data={item} key={index} />;
+                return (
+                  <ViewOrder
+                    key={index}
+                    code={item?.code}
+                    code_value={item?.display || item?.code_value}
+                    data={item?.order_fulfillment}
+                  />
+                );
               })}
             </div>
           ) : (
@@ -39,10 +44,6 @@ const OrderNotes = ({ orderNotes }) => {
       </div>
     </div>
   );
-};
-
-const OrderRec = () => {
-  return null;
 };
 
 export default OrderNotes;
