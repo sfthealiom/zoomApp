@@ -87,7 +87,7 @@ const ConsultationNotes = () => {
             style={{ backgroundColor: companyMetaData?.accentWhite }}
           >
             <div className="w-full flex flex-col gap-4">
-              <HeButton
+              {/* <HeButton
                 title={"Copy to Clipboard"}
                 titleClass={"text-slate-600 text-base"}
                 className={
@@ -99,7 +99,7 @@ const ConsultationNotes = () => {
                     JSON.stringify({ object: "notes" })
                   )
                 }
-              />
+              /> */}
               <SubjectiveNotes subjectiveData={"Final subjective notes...."} />
             </div>
             <ObjectiveNotes objectiveData={"Final objective notes...."} />

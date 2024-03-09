@@ -14,10 +14,10 @@ const ProcedureNotes = ({ procedureNotes }) => {
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Procedures"} className={`md:text-[18px]`} />
-        <HeCopy
+        {/* <HeCopy
           targetText={JSON.stringify(JSON.stringify(procedureNotes))}
           targetId={"orders"}
-        />
+        /> */}
       </div>
       <div className="w-full flex flex-col gap-2">
         <div className="w-full flex flex-col gap-2">

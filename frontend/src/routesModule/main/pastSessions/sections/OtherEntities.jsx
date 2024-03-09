@@ -10,7 +10,7 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
         <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
           <div className="flex justify-between items-center">
             <h1 className="font-semibold text-xl">Vital Options</h1>
-            {isCopied === "vitals" ? (
+            {/* {isCopied === "vitals" ? (
               <div className="flex items-center text-slate-400">
                 <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
                 <span>Copied</span>
@@ -25,7 +25,7 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
                   }}
                 />
               </button>
-            )}
+            )} */}
           </div>
           <ul className="list-disc pl-6 mt-2 h-[100px] text-slate-600 overflow-y-scroll">
             {!isObjectEmpty(vitals)
@@ -48,7 +48,7 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
             <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-xl">Personal Demographics</h1>
-                {isCopied === "personalDetails" ? (
+                {/* {isCopied === "personalDetails" ? (
                   <div className="flex items-center text-slate-400">
                     <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
                     <span>Copied</span>
@@ -65,7 +65,7 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
                       }}
                     />
                   </button>
-                )}
+                )} */}
               </div>
               <ul className="list-disc pl-6 mt-2 h-[100px] text-slate-600 overflow-y-scroll">
                 {!isObjectEmpty(personalDetails)

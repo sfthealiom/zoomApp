@@ -13,7 +13,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Subjective</h1>
-                      {isCopied === "subjective" ? (
+                      {/* {isCopied === "subjective" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -33,7 +33,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -55,7 +55,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Objective</h1>
-                      {isCopied === "objective" ? (
+                      {/* {isCopied === "objective" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -75,7 +75,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -97,7 +97,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Assessment</h1>
-                      {isCopied === "assessment" ? (
+                      {/* {isCopied === "assessment" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -117,7 +117,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -139,7 +139,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Plan</h1>
-                      {isCopied === "carePlan" ? (
+                      {/* {isCopied === "carePlan" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -159,7 +159,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                             }}
                           />
                         </button>
-                      )}
+                      )} */}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
