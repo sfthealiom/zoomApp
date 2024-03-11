@@ -21,6 +21,7 @@ import {
   setWebSocketAiPreds,
   completeEncounter,
   submitEncounterNote,
+  setInitialValues,
 } from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
@@ -297,6 +298,10 @@ const ConsultationScreen = () => {
       value: "/consultation-screen",
     });
   }, []);
+
+  // useEffect(() => {
+  //   setInitialValues();
+  // }, []);
 
   return loader ? (
     <LoaderSpin />

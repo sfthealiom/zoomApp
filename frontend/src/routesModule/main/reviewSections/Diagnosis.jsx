@@ -155,7 +155,7 @@ const Diagnosis = ({ form }) => {
                     key={index}
                     className="flex flex-col rounded-md"
                     style={{
-                      backgroundColor: companyMetaData?.accentOneLight,
+                      backgroundColor: companyMetaData?.accentGray,
                     }}
                   >
                     <Pill

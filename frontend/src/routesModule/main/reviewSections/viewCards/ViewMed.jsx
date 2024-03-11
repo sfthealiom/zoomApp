@@ -22,9 +22,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
       }}
     >
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">
-          {watchMeds[index]?.code_value}
-        </h1>
+        <h1 className="max-w-xs font-semibold">{watchMeds[index]?.display}</h1>
         <p>{watchMeds[index]?.code?.split(":")[1] || watchMeds[index]?.code}</p>
       </div>
       <div className="flex flex-col items-start gap-2 sm:flex-row">

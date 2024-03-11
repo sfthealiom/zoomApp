@@ -25,7 +25,7 @@ const Objective = ({ aiData }) => {
               color: companyMetaData?.aiDark,
             }}
           >
-            {aiData}
+            {aiData?.join(" ")}
           </p>
         ) : (
           <div className="flex items-center px-4 py-2 font-semibold">
