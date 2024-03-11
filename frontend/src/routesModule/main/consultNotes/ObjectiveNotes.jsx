@@ -19,8 +19,8 @@ const Objective = ({ objectiveData }) => {
             {objectiveData}
           </p>
         ) : (
-          <span className="text-sm text-slate-400">
-            No Objective notes added
+          <span className="text-sm text-slate-500">
+            No Objective notes added.
           </span>
         )}
       </div>

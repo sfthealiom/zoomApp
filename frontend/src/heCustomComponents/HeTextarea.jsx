@@ -32,7 +32,7 @@ const HeTextarea = ({
             <Textarea
               disabled={disabledStatus}
               placeholder={placeholder}
-              className={`resize-none ${innerTextClass}`}
+              className={`${innerTextClass}`}
               {...field}
             />
           </FormControl>

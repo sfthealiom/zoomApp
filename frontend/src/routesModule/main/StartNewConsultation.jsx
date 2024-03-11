@@ -18,13 +18,13 @@ import {
   HeInfoText,
 } from "../../heCustomComponents";
 import { companyMetaData } from "../../assets/myCompanyData";
+
 /** shadcn imports */
 import { toast } from "sonner";
-import axios from "axios";
+
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
-import moment from "moment";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
@@ -41,6 +41,7 @@ const StartNewConsultation = () => {
   const navigate = useNavigate();
   const jwtToken = sessionStorage.getItem("jwtToken");
   useEffect(() => {
+    window.scrollTo(0, 0);
     setToSessionStore({
       key: "lastPage",
       value: "/start-new-consultation",
@@ -55,12 +56,12 @@ const StartNewConsultation = () => {
     <LoaderSpin />
   ) : (
     <section className="w-full flex items-center justify-center">
-      <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4">
+      <div className="w-[95%] max-w-[1024px] items-center flex flex-col gap-2 justify-between h-full md:p-4">
         <div
           className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8"
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
-          <div>
+          <div className="flex flex-col items-center">
             <HeHeading1
               title={`Hi, ${currentUserData?.first_name}`}
               className={`text-center`}
@@ -114,47 +115,30 @@ const StartNewConsultation = () => {
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
           <HeHeading2 title={"Past Sessions"} className={"text-left"} />
-          {listOfTranscripts?.length > 0
-            ? listOfTranscripts?.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="w-full text-sm h-fit cursor-pointer border border-slate-400 p-2 rounded-md"
-                    style={{
-                      backgroundColor: companyMetaData?.primaryLightest,
-                    }}
-                    onClick={() => {
-                      navigate(`/history/conversation/${item?.name}`);
-                    }}
-                  >
-                    <div className="break-words font-semibold">
-                      conversation id: ...
-                      {item?.name?.split("__")[2]?.slice(-8)}
-                    </div>
-                    <div className="">{item?.timestamp}</div>
+          {listOfTranscripts?.length > 0 ? (
+            listOfTranscripts?.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="w-full text-sm h-fit cursor-pointer border border-slate-400 p-2 rounded-md"
+                  style={{
+                    backgroundColor: companyMetaData?.primaryLightest,
+                  }}
+                  onClick={() => {
+                    navigate(`/history/conversation/${item?.name}`);
+                  }}
+                >
+                  <div className="break-words font-semibold">
+                    conversation id: ...
+                    {item?.name?.split("__")[2]?.slice(-8)}
                   </div>
-                );
-              })
-            : // <p className="text-center text-slate-400 font-semibold">
-              //   No data found.
-              // </p>
-              null}
-          <div
-            className="w-full text-sm h-fit cursor-pointer border border-slate-400 p-2 rounded-md"
-            style={{
-              backgroundColor: companyMetaData?.primaryLightest,
-            }}
-            // onClick={() => {
-            //   navigate(`/history/conversation/copilot__17729187391`);
-            // }}
-          >
-            <div className="break-words font-semibold">
-              conversation id: ...{17729187391}
-            </div>
-            <div className="">
-              {moment().format("dddd, MMMM Do YYYY, h:mm:ss a")}
-            </div>
-          </div>
+                  <div className="">{item?.timestamp}</div>
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-slate-400 text-sm">No data found</p>
+          )}
         </div>
       </div>
     </section>

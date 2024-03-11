@@ -77,10 +77,10 @@ const SignIn = ({ data }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleAccountCreation)}
-          className="w-full max-w-xs md:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4"
+          className="w-[95%] max-w-[1024px] items-center flex flex-col gap-2 justify-between h-full md:p-4"
         >
           <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
-            <div className="text-center">
+            <div className="text-center flex flex-col items-center">
               <HeHeading1 title={"Welcome back!"} />
               <HeInfoText
                 message={

@@ -179,114 +179,126 @@ export const convertEpochToLocal = (ids) => {
 export const dispensedUnitData = [
   {
     item: "Applicator",
-    id: 35,
+    id: "Applicator",
   },
   {
     item: "Caplet",
-    id: 44,
+    id: "Caplet",
   },
   {
     item: "Each",
-    id: 32,
+    id: "Each",
   },
   {
     item: "Gram",
-    id: 8,
+    id: "Gram",
   },
   {
     item: "Implant",
-    id: 54,
+    id: "Implant",
   },
   {
     item: "Kit",
-    id: 11,
+    id: "Kit",
   },
   {
     item: "Lozenge",
-    id: 13,
+    id: "Lozenge",
   },
   {
     item: "Packet",
-    id: 21,
+    id: "Packet",
   },
   {
     item: "Patch",
-    id: 28,
+    id: "Patch",
   },
   {
     item: "Ring",
-    id: 70,
+    id: "Ring",
   },
   {
     item: "Stick",
-    id: 75,
+    id: "Stick",
   },
   {
     item: "Suppository",
-    id: 23,
+    id: "Suppository",
   },
   {
     item: "Tablet",
-    id: 26,
+    id: "Tablet",
   },
   {
     item: "Unspecified",
-    id: 19,
+    id: "Unspecified",
   },
   {
     item: "Blister",
-    id: 39,
+    id: "Blister",
   },
   {
     item: "Capsule",
-    id: 4,
+    id: "Capsule",
   },
   {
     item: "Film",
-    id: 52,
+    id: "Film",
   },
   {
     item: "Gum",
-    id: 33,
+    id: "Gum",
   },
   {
     item: "Insert",
-    id: 57,
+    id: "Insert",
   },
   {
     item: "Lancet",
-    id: 90,
+    id: "Lancet",
   },
   {
     item: "Milliliter",
-    id: 15,
+    id: "Milliliter",
   },
   {
     item: "Pad",
-    id: 64,
+    id: "Pad",
   },
   {
     item: "Pen Needle",
-    id: 73,
+    id: "Pen Needle",
   },
   {
     item: "Sponge",
-    id: 73,
+    id: "Sponge",
   },
   {
     item: "Strip",
-    id: 76,
+    id: "Strip",
   },
   {
     item: "Swab",
-    id: 77,
+    id: "Swab",
   },
   {
     item: "Troche",
-    id: 81,
+    id: "Troche",
   },
   {
     item: "Wafer",
-    id: 82,
+    id: "Wafer",
   },
+];
+
+export const route_static_data = [
+  {
+    id: "Intravenous (IV)",
+    item: "Intravenous (IV)",
+  },
+  { id: "Intramuscular (IM)", item: "Intramuscular (IM)" },
+  { id: "Inhalation", item: "Inhalation" },
+  { id: "Oral", item: "Oral" },
+  { id: "Rectal", item: "Rectal" },
+  { id: "Intraosseus (IO)", item: "Intraosseus (IO)" },
 ];

@@ -9,7 +9,9 @@ const Pill = ({ code, name }) => {
         backgroundColor: companyMetaData?.primaryLightest,
       }}
     >
-      <h1 className="text-slate-700 font-semibold">{name}</h1>
+      <h1 className="text-slate-700 font-semibold" title={name}>
+        {name}
+      </h1>
       <h2 className="text-slate-500">{code?.split(":")[1] || code}</h2>
     </div>
   );

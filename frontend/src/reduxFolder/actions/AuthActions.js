@@ -327,7 +327,7 @@ export const getEncounterNote = (
         }
       })
       .catch((error) => {
-        error;
+        return error;
       });
   };
 };

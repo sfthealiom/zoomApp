@@ -24,7 +24,7 @@ const CareTaskNotes = ({ careNotes }) => {
           </p>
         ) : (
           <p className="text-sm text-slate-500">
-            No care task and directives added.
+            No care task or directives added.
           </p>
         )}
       </div>

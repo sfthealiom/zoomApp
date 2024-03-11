@@ -8,7 +8,7 @@ import {
   getLabels,
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
-import { HeButton, HeFormSubmitButton } from "../../heCustomComponents";
+import { HeButton } from "../../heCustomComponents";
 import {
   CareTaskNotes,
   DiagnosisNotes,
@@ -22,12 +22,11 @@ import { companyMetaData } from "../../assets/myCompanyData";
 import { getEncounterNote } from "../../reduxFolder/actions/AuthActions";
 
 /** shadcn imports */
-import encounterNotes from "./consultationSections/data.json";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
 
 const ConsultationNotes = () => {
   const dispatch = useDispatch();
@@ -40,38 +39,6 @@ const ConsultationNotes = () => {
   } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
   const jwtToken = sessionStorage.getItem("jwtToken");
-  const diffDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
-  const workDiag = encounterNotes?.ai_preds?.entities?.diagnoses;
-  const medications = [
-    {
-      code: "IDA:7789",
-      display: "Paracetamol",
-      quantity_unit: 1,
-      refills: 0,
-      days_supply: 5,
-      dispense_unit: "Oral",
-      route: "Oral",
-      frequnecy: "Daily",
-      substitutions_allowed: "Yes",
-      reason: "Order notes",
-      pharmacy_notes: "Reason notes",
-    },
-  ];
-  const orderNotes = [
-    {
-      code: "ASH:9798",
-      display: "Order",
-      order_fulfilment: "No",
-    },
-  ];
-  const procDoneNotes = [
-    {
-      code: "ASH:9798",
-      display: "Procedure",
-      reason: "Procedure notes",
-    },
-  ];
-  const careNotes = "ASJdkahduAHSDiuabsiduabsdiaus";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -96,7 +63,7 @@ const ConsultationNotes = () => {
     <LoaderSpin />
   ) : (
     <section className="w-full flex items-center justify-center">
-      <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
+      <div className="w-[95%] max-w-[1024px] items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
         <div className="w-full flex flex-col gap-2">
           <div
             className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
@@ -140,8 +107,10 @@ const ConsultationNotes = () => {
           >
             <HeButton
               title={"New Recording"}
-              icon={<FontAwesomeIcon icon={faMicrophone} className="h-4 w-4" />}
-              className={`w-full mt-4`}
+              icon={
+                <FontAwesomeIcon icon={faMicrophoneLines} className="h-4 w-4" />
+              }
+              className={`w-full mt-4 flex-row-reverse`}
               onPress={() => navigate("/start-new-consultation")}
             />
           </div>

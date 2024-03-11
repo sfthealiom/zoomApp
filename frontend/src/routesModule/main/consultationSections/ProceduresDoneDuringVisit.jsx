@@ -24,7 +24,7 @@ const ProceduresDoneDuringVisit = ({ form, aiData }) => {
         <HeHeading2 title={"Procedures"} className={`md:text-[18px]`} />
       </div>
       <div className="w-full flex flex-col gap-2">
-        {watchProcDone?.length > 0 && (
+        {watchProcDone?.length > 0 ? (
           <div className="flex flex-col gap-2">
             {watchProcDone?.map((item, index) => {
               return (
@@ -38,6 +38,8 @@ const ProceduresDoneDuringVisit = ({ form, aiData }) => {
               );
             })}
           </div>
+        ) : (
+          <p className="text-sm text-slate-500">No procedures added.</p>
         )}
         <div className="flex flex-col gap-2">
           <HeAutoCompleteSearch

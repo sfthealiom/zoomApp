@@ -56,14 +56,8 @@ const ReviewNotes = () => {
       .number()
       .int({ message: "Required" })
       .positive({ message: "Required" }),
-    dispense_unit: z.coerce
-      .number()
-      .int({ message: "Required" })
-      .positive({ message: "Required" }),
-    route: z.coerce
-      .number()
-      .int({ message: "Required" })
-      .positive({ message: "Required" }),
+    dispense_unit: z.string().min(1, "Required"),
+    route: z.string().min(1, "Required"),
     frequency: z.string().optional(),
     substitutions_allowed: z.boolean({
       invalid_type_error: "Invalid",
@@ -180,7 +174,7 @@ const ReviewNotes = () => {
     <LoaderSpin />
   ) : (
     <section className="w-full flex items-center justify-center">
-      <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
+      <div className="w-[95%] max-w-[1024px] items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleData)}

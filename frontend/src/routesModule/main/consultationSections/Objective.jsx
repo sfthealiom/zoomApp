@@ -20,7 +20,7 @@ const Objective = ({ aiData }) => {
       >
         {aiData?.length > 0 ? (
           <p
-            className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 py-3"
+            className="h-[200px] overflow-y-scroll text-slate-600 scrollbar px-4 py-3"
             style={{
               color: companyMetaData?.aiDark,
             }}

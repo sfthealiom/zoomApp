@@ -12,6 +12,7 @@ import { HeHeading2, HeTextarea } from "../../../heCustomComponents";
 
 const CareTaskDirectives = ({ form }) => {
   const [edit, setEdit] = useState(false);
+  const watchCareTaskNotes = form.watch("careTaskNotes");
 
   return (
     <div className="w-full flex flex-col gap-2">
@@ -28,13 +29,32 @@ const CareTaskDirectives = ({ form }) => {
           />
         ) : null}
       </div>
-      <HeTextarea
-        form={form}
-        fieldName={`careTaskNotes`}
-        placeholder={"Sometimes I feel..."}
-        disabledStatus={!edit}
-        innerTextClass={"border-slate-300 disbled:cursor-not-allowed"}
-      />
+
+      <div className="rounded-md">
+        {watchCareTaskNotes?.length > 0 ? (
+          <HeTextarea
+            form={form}
+            fieldName={`subjective`}
+            disabledStatus={!edit}
+            placeholder={"Sometimes I feel..."}
+            innerTextClass={
+              "border-slate-300 min-h-[200px] disbled:cursor-not-allowed"
+            }
+          />
+        ) : edit ? (
+          <HeTextarea
+            form={form}
+            fieldName={`careTaskNotes`}
+            placeholder={"Sometimes I feel..."}
+            disabledStatus={!edit}
+            innerTextClass={"border-slate-300 min-h-[200px]"}
+          />
+        ) : (
+          <span className="text-sm text-slate-500">
+            No care task or directives added.
+          </span>
+        )}
+      </div>
     </div>
   );
 };
