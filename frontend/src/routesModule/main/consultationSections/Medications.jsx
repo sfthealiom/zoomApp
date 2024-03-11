@@ -36,7 +36,7 @@ const Medications = ({ form, aiData }) => {
         <HeHeading2 title={"Medication Orders"} className={`md:text-[18px]`} />
       </div>
       <div className="w-full flex flex-col gap-2">
-        {watchMeds?.length > 0 && (
+        {watchMeds?.length > 0 ? (
           <div className="flex flex-col gap-2">
             {watchMeds?.map((item, index) => {
               return (
@@ -50,6 +50,8 @@ const Medications = ({ form, aiData }) => {
               );
             })}
           </div>
+        ) : (
+          <p className="text-sm text-slate-500">No medications added.</p>
         )}
         <div className="flex flex-col gap-2">
           <HeAutoCompleteSearch

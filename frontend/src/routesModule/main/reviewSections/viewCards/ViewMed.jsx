@@ -8,7 +8,10 @@ import {
 } from "../../../../heCustomComponents";
 import { companyMetaData } from "../../../../assets/myCompanyData";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
-import { dispensedUnitData } from "../../../../reduxFolder/CommonFunctions";
+import {
+  dispensedUnitData,
+  route_static_data,
+} from "../../../../reduxFolder/CommonFunctions";
 
 const ViewMed = ({ form, fieldName, index, watchMeds }) => {
   return (
@@ -68,7 +71,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`medications[${index}].route`}
-          dataArray={dispensedUnitData}
+          dataArray={route_static_data}
           placeholder="Route"
           disabledStatus={true}
           labelName={`Route`}
@@ -86,16 +89,15 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
         />
       </div>
-      <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
-        <HeRadioButtonTrueFalse
-          form={form}
-          fieldName={`medications[${index}].substitutions_allowed`}
-          labelName={`Allow Substitution`}
-          value1={"Yes"}
-          value2={"No"}
-          disabledStatus={true}
-        />
-      </div>
+      <HeRadioButtonTrueFalse
+        form={form}
+        fieldName={`medications[${index}].substitutions_allowed`}
+        labelName={`Allow Substitution`}
+        className={"md:w-1/2"}
+        value1={"Yes"}
+        value2={"No"}
+        disabledStatus={true}
+      />
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full md:w-1/2">
           <HeTextInput

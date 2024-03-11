@@ -13,13 +13,13 @@ const Pill = ({
 }) => {
   return (
     <div
-      className={`w-full h-fit rounded-md flex flex-col lg:flex-row gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm cursor-pointer ${className}`}
+      className={`w-full h-fit rounded-md flex gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm cursor-pointer ${className}`}
       style={{
         backgroundColor: pillColor || companyMetaData?.accentOneLight,
       }}
       onClick={onPress}
     >
-      <div className="w-full flex items-start justify-between">
+      <div className="w-full flex flex-col items-start justify-between">
         <h1
           title={name}
           className="font-semibold text-wrap"
@@ -29,31 +29,23 @@ const Pill = ({
         >
           {name}
         </h1>
-        {icon && (
-          <span
-            className="md:hidden flex items-center justify-center cursor-pointer"
-            onClick={onIconClick}
-          >
-            {icon}
-          </span>
-        )}
+        <h2>{code?.split(":")[1] || code}</h2>
       </div>
-      <div
+      {/* <div
         className="w-full md:w-fit flex items-center justify-between gap-1"
         style={{
           color: textColor || "black",
         }}
       >
-        <h2>{code?.split(":")[1] || code}</h2>
-        {icon && (
-          <span
-            className="hidden md:flex items-center justify-center cursor-pointer ml-1"
-            onClick={onIconClick}
-          >
-            {icon}
-          </span>
-        )}
-      </div>
+      </div> */}
+      {icon && (
+        <span
+          className="flex items-center justify-center cursor-pointer"
+          onClick={onIconClick}
+        >
+          {icon}
+        </span>
+      )}
     </div>
   );
 };

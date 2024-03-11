@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { companyMetaData } from "../../assets/myCompanyData";
 import { Checkbox } from "../../components/ui/Checkbox";
 
@@ -11,11 +11,15 @@ const CheckboxPill = ({
   pillColor,
   textColor,
 }) => {
+  const [checkedValues, setCheckedValues] = useState([]);
+
   return (
     <div
-      className="w-full h-fit rounded-md flex flex-col lg:flex-row gap-1  lg:gap-4 items-start justify-between px-4 py-2 text-sm"
+      className="w-full h-fit rounded-md flex flex-col lg:flex-row gap-1 lg:gap-4 items-start justify-between px-4 py-2 text-sm"
       style={{
-        backgroundColor: pillColor || companyMetaData?.accentOneLight,
+        backgroundColor: checkedValues?.includes(code)
+          ? companyMetaData?.accentOneLight
+          : pillColor || companyMetaData?.accentGray,
       }}
     >
       <div className="flex items-start gap-2">
@@ -23,6 +27,7 @@ const CheckboxPill = ({
           className="bg-white border border-slate-500 rounded-sm"
           onCheckedChange={(checked) => {
             if (checked) {
+              setCheckedValues((prev) => [...prev, code]);
               form.setValue(fieldName, [
                 ...prevValue,
                 {
@@ -34,6 +39,8 @@ const CheckboxPill = ({
               const updatedArray = prevValue?.filter((item, idx) => {
                 return code !== item?.code;
               });
+              const updatedCodes = updatedArray?.map((item) => item?.code);
+              setCheckedValues(updatedCodes);
               form.setValue(fieldName, [...updatedArray]);
             }
           }}

@@ -15,13 +15,13 @@ const Objective = ({ form }) => {
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Objective Summary"} className={`md:text-[18px]`} />
-        <div className="flex items-center gap-2 md:gap-4">
+        {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
             className="cursor-pointer h-5 w-5 text-slate-300"
             onClick={() => setEdit(true)}
           />
-        </div>
+        ) : null}{" "}
       </div>
       <div className="rounded-md">
         {watchObjective?.length > 0 ? (
@@ -39,13 +39,11 @@ const Objective = ({ form }) => {
             form={form}
             fieldName={`objective`}
             placeholder={"Sometimes I feel..."}
-            innerTextClass={
-              "border-slate-300 min-h-[200px] disbled:cursor-not-allowed"
-            }
+            innerTextClass={"border-slate-300 min-h-[200px]"}
           />
         ) : (
-          <span className="text-sm text-slate-400">
-            No Objective notes added
+          <span className="text-sm text-slate-500">
+            No Objective notes added.
           </span>
         )}
       </div>

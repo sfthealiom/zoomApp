@@ -17,8 +17,8 @@ const Subjective = ({ subjectiveData }) => {
             {subjectiveData}
           </p>
         ) : (
-          <span className="text-sm text-slate-400">
-            No Subjective notes added
+          <span className="text-sm text-slate-500">
+            No Subjective notes added.
           </span>
         )}
       </div>

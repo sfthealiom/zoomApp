@@ -196,14 +196,8 @@ const ConsultationScreen = () => {
       .number()
       .int({ message: "Required" })
       .positive({ message: "Required" }),
-    dispense_unit: z.coerce
-      .number()
-      .int({ message: "Required" })
-      .positive({ message: "Required" }),
-    route: z.coerce
-      .number()
-      .int({ message: "Required" })
-      .positive({ message: "Required" }),
+    dispense_unit: z.string().min(1, "Required"),
+    route: z.string().min(1, "Required"),
     frequency: z.string().optional(),
     substitutions_allowed: z.boolean({
       invalid_type_error: "Invalid",
@@ -257,6 +251,8 @@ const ConsultationScreen = () => {
   });
 
   const handleData = (data, e) => {
+    console.log(data);
+    toast.success("Encounter completed successfully!");
     var updateData_temp = encounterCallDetails;
 
     const notes = {
@@ -295,6 +291,7 @@ const ConsultationScreen = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setToSessionStore({
       key: "lastPage",
       value: "/consultation-screen",
@@ -305,7 +302,7 @@ const ConsultationScreen = () => {
     <LoaderSpin />
   ) : (
     <section className="w-full flex items-center justify-center">
-      <div className="w-full max-w-xs sm:max-w-xl items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
+      <div className="w-[95%] max-w-[1024px] items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
         <div
           className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
           style={{ backgroundColor: companyMetaData?.accentWhite }}

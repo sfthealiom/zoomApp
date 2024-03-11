@@ -17,7 +17,7 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <HeHeading2
-            title={"Differential Diagnosis (DDx)"}
+            title={"Differential Diagnoses (DDx)"}
             className={`md:text-[18px]`}
           />
           {/* <HeCopy
@@ -49,7 +49,7 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <HeHeading2
-            title={"Working Diagnosis"}
+            title={"Working Diagnoses"}
             className={`md:text-[18px]`}
           />
           {/* <HeCopy

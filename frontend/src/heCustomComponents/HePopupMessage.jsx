@@ -16,7 +16,9 @@ const HePopupMessage = ({
     >
       <div>
         {title && <h1 className="font-semibold text-sm">{title}</h1>}
-        {message && <p className="max-w-xs text-sm">{message}</p>}
+        {message && (
+          <p className="max-w-xs text-sm text-slate-600">{message}</p>
+        )}
         {buttonText && (
           <button
             type="button"

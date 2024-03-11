@@ -27,7 +27,7 @@ const AddOrder = ({ form, fieldName, index, item }) => {
         }}
       />
       <div className="flex items-start gap-1 justify-between">
-        <h1 className="max-w-xs font-semibold">{item?.display}</h1>
+        <h1 className="font-semibold">{item?.display}</h1>
         <p>{item?.code}</p>
       </div>
       <HeRadioButtonTrueFalse

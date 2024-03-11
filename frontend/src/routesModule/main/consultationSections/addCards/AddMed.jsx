@@ -11,7 +11,10 @@ import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
-import { dispensedUnitData } from "../../../../reduxFolder/CommonFunctions";
+import {
+  dispensedUnitData,
+  route_static_data,
+} from "../../../../reduxFolder/CommonFunctions";
 
 const AddMed = ({ form, fieldName, index, watchMeds }) => {
   const [showOrdRea, setShowOrdRea] = useState(false);
@@ -88,7 +91,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         <HeSearchableSelect
           form={form}
           fieldName={`${fieldName}[${index}].route`}
-          dataArray={dispensedUnitData}
+          dataArray={route_static_data}
           placeholder="Route"
           labelName={`Route`}
           className={"w-full md:w-1/2 gap-2"}
@@ -108,15 +111,14 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         className={"flex flex-col gap-2 rounded-md"}
         innerTextClass={"border-none px-2 rounded-md"}
       />
-      <div className="w-full md:w-1/2 flex flex-col md:flex-row items-start justify-between gap-2">
-        <HeRadioButtonTrueFalse
-          form={form}
-          fieldName={`${fieldName}[${index}].substitutions_allowed`}
-          labelName={`Allow Substitution`}
-          value1={"Yes"}
-          value2={"No"}
-        />
-      </div>
+      <HeRadioButtonTrueFalse
+        form={form}
+        fieldName={`${fieldName}[${index}].substitutions_allowed`}
+        labelName={`Allow Substitution`}
+        className={"md:w-1/2"}
+        value1={"Yes"}
+        value2={"No"}
+      />
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full md:w-1/2">
           {showOrdRea ? (

@@ -27,7 +27,7 @@ const Orders = ({ form }) => {
         />
       </div>
       <div className="w-full flex flex-col gap-2">
-        {watchOrders?.length > 0 && (
+        {watchOrders?.length > 0 ? (
           <div className="flex flex-col gap-2">
             {watchOrders?.map((item, index) => {
               return (
@@ -41,6 +41,8 @@ const Orders = ({ form }) => {
               );
             })}
           </div>
+        ) : (
+          <p className="text-sm text-slate-500">No orders added.</p>
         )}
         <HeAutoCompleteSearch
           form={form}

@@ -66,6 +66,8 @@ const Splash = () => {
                 navigate
               )
             );
+          } else if (lastPageExist === "/code-sent") {
+            navigate("/code-sent");
           } else {
             navigate("/sign-in");
           }

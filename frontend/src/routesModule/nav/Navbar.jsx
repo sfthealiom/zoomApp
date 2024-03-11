@@ -57,10 +57,10 @@ const Navbar = () => {
             <DropdownMenuLabel>
               {currentUserData?.first_name} {currentUserData?.last_name}
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer">
               <span>Profile</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer"

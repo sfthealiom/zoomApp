@@ -1,6 +1,6 @@
 /* globals zoomSdk */
 /** library imports */
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ import {
   setToSessionStore,
 } from "../../reduxFolder/CommonFunctions";
 import {
+  HeButton,
   HeFormSubmitButton,
   HeHeading1,
   HeHeading3,
@@ -277,36 +278,36 @@ const Welcome = (props) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleAccountCreation)}
-          className="w-full max-w-xs md:max-w-xl items-center flex flex-col gap-2 justify-between h-full md:p-4"
+          className="w-[95%] max-w-[1024px] items-center flex flex-col gap-2 justify-between h-full md:p-4"
         >
           <div
             className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8"
             style={{ backgroundColor: companyMetaData?.accentWhite }}
           >
-            <div className="text-center">
+            <div className="text-center flex flex-col items-center">
               <HeHeading3 title={"Already registered?"} />
               <HeInfoText
                 message={
-                  "To start, let's get you verified and start taking encounters!"
+                  "Greetings! Let's kick off your journey with a quick verification, and then we're all set to perform clinical encounters!"
                 }
-                className={"text-xs md:text-sm mt-2 md:mt-4"}
+                className={"text-xs md:text-sm mt-2"}
               />
-              <div
-                className="mt-3 text-blue-600 font-semibold text-sm cursor-pointer"
-                onClick={() => {
+              <HeButton
+                title={"Click here to login"}
+                className={"mt-3"}
+                bgColor={companyMetaData?.primary}
+                onPress={() => {
                   const item = {
                     name: "getMeetingContext",
                   };
                   invokeZoomAppsSdk(item);
                   navigate("/sign-in");
                 }}
-              >
-                Click here to login
-              </div>
+              />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2 md:gap-4 border border-slate-300 rounded-xl shadow-md p-4 md:p-8 bg-white">
-            <div className="text-center">
+            <div className="text-center flex flex-col items-center">
               <HeHeading1 title={"Welcome!"} />
               <HeInfoText
                 message={

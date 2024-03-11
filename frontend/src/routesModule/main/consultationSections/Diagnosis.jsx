@@ -184,6 +184,7 @@ const Diagnosis = ({ form, aiData }) => {
               return (
                 <CheckboxPill
                   key={index}
+                  index={index}
                   code={item?.code}
                   name={item?.display}
                   form={form}
