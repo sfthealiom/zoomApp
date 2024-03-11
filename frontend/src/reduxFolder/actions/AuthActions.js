@@ -520,10 +520,15 @@ export const encounterStartCall = (
             hrv: "",
           },
         });
-        axios.post("/api/zoomapp/livestream", {
-          meetingId: meetingId,
-          care_request_id: response.data[0].data?.care_request_id,
-        });
+        try {
+          axios.post("/api/zoomapp/livestream", {
+            meetingId: meetingId,
+            care_request_id: response.data[0].data?.care_request_id,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
         dispatch({
           type: SET_LOADER,
           payload: false,

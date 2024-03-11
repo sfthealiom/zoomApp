@@ -69,9 +69,13 @@ const Navbar = () => {
               className="cursor-pointer"
               onClick={() => {
                 dispatch(signOut(navigate, toast));
-                axios.post("/api/zoomapp/stoplivestream", {
-                  meetingId: meetingId,
-                });
+                try {
+                  axios.post("/api/zoomapp/stoplivestream", {
+                    meetingId: meetingId,
+                  });
+                } catch (error) {
+                  console.log(error);
+                }
               }}
             >
               <span>Logout</span>
