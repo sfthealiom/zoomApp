@@ -242,103 +242,109 @@ module.exports = {
   },
 
   async startLiveStream(req, res, next) {
-    const user = await store.getUser(req.session.user);
-    const tokenResponse = await zoomApi.refreshZoomAccessToken(
-      user.refreshToken
-    )
-    await store.updateUser(req.session.user, {
-      accessToken: tokenResponse.data.access_token,
-      refreshToken: tokenResponse.data.refresh_token,
-      expired_at: Date.now() + tokenResponse.data.expires_in * 1000,
-    })
-    const zoomAccessToken = tokenResponse.data.access_token;
-    const zoomRefreshToken = tokenResponse.data.refresh_token;
-    const meetingId = req.body.meetingId;
-    const care_request_id = req.body.care_request_id;
-    const domain = process.env.ZOOM_HOST // https://zoom.us
-
-    let Startdata = JSON.stringify({
-      "page_url": "http://3.19.211.46:8000/admin/streams",
-      "stream_key": care_request_id,
-      "stream_url": "rtmp://3.19.211.46:1935/live",
-      "resolution": "1080p"
-    });
-
-    let startConfig = {
-      method: 'patch',
-      maxBodyLength: Infinity,
-      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream`,
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${zoomAccessToken}`, 
-      },
-      data : Startdata
-    };
-
-    let data = JSON.stringify({
-      "action": "start"
-    });
-
-    let config = {
-      method: 'patch',
-      maxBodyLength: Infinity,
-      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${zoomAccessToken}`, 
-      },
-      data : data
-    };
-
-    axios.request(startConfig)
-    .then((response) => {
-      axios.request(config).then((res)=> {
-        console.log('test');
-        return res.send({status:'success'});
-      }).catch((err)=>{
-        return res.send({status: 'error'});
+    try {
+      const user = await store.getUser(req.session.user);
+      const tokenResponse = await zoomApi.refreshZoomAccessToken(
+        user.refreshToken
+      )
+      await store.updateUser(req.session.user, {
+        accessToken: tokenResponse.data.access_token,
+        refreshToken: tokenResponse.data.refresh_token,
+        expired_at: Date.now() + tokenResponse.data.expires_in * 1000,
       })
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.send({status:'error'});
-    })
-
+      const zoomAccessToken = tokenResponse.data.access_token;
+      const zoomRefreshToken = tokenResponse.data.refresh_token;
+      const meetingId = req.body.meetingId;
+      const care_request_id = req.body.care_request_id;
+      const domain = process.env.ZOOM_HOST // https://zoom.us
+  
+      let Startdata = JSON.stringify({
+        "page_url": "http://3.19.211.46:8000/admin/streams",
+        "stream_key": care_request_id,
+        "stream_url": "rtmp://3.19.211.46:1935/live",
+        "resolution": "1080p"
+      });
+  
+      let startConfig = {
+        method: 'patch',
+        maxBodyLength: Infinity,
+        url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream`,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${zoomAccessToken}`, 
+        },
+        data : Startdata
+      };
+  
+      let data = JSON.stringify({
+        "action": "start"
+      });
+  
+      let config = {
+        method: 'patch',
+        maxBodyLength: Infinity,
+        url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${zoomAccessToken}`, 
+        },
+        data : data
+      };
+  
+      axios.request(startConfig)
+      .then((response) => {
+        axios.request(config).then((res)=> {
+          console.log('test');
+          return res.send({status:'success'});
+        }).catch((err)=>{
+          return res.send({status: 'error'});
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.send({status:'error'});
+      })
+    } catch (error) {
+      console.log("something went wrong");
+    }
   },
 
   async stopLiveStream(req, res, next) {
-    const user = await store.getUser(req.session.user);
-    const zoomAccessToken = user.accessToken;
-    const zoomRefreshToken = user.refreshToken;
-    const meetingId = req.body.meetingId;
-    const care_request_id = req.body.care_request_id;
-    const domain = process.env.ZOOM_HOST // https://zoom.us
+    try {
+      const user = await store.getUser(req.session.user);
+      const zoomAccessToken = user.accessToken;
+      const zoomRefreshToken = user.refreshToken;
+      const meetingId = req.body.meetingId;
+      const care_request_id = req.body.care_request_id;
+      const domain = process.env.ZOOM_HOST // https://zoom.us
+  
+      // 2b. Set path
+      const path = 'zoom/authorize';
+  
+      let data = JSON.stringify({
+        "action": "stop"
+      });
+  
+      let config = {
+        method: 'patch',
+        maxBodyLength: Infinity,
+        url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${zoomAccessToken}`, 
+        },
+        data : data
+      };
 
-    // 2b. Set path
-    const path = 'zoom/authorize';
-
-    let data = JSON.stringify({
-      "action": "stop"
-    });
-
-    let config = {
-      method: 'patch',
-      maxBodyLength: Infinity,
-      url: `https://api.zoom.us/v2/meetings/${meetingId}/livestream/status`,
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${zoomAccessToken}`, 
-      },
-      data : data
-    };
-
-    
-      axios.request(config).then((res)=> {
-        console.log('test');
-        return res.send({status:'success'});
-      }).catch((err)=>{
-        return res.send({status: 'error'});
-      })
+        axios.request(config).then((res)=> {
+          console.log('test');
+          return res.send({status:'success'});
+        }).catch((err)=>{
+          return res.send({status: 'error'});
+        });
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   // ZOOM APP HOME URL HANDLER ==================================================
