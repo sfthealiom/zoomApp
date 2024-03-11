@@ -61,7 +61,7 @@ const ProceduresDone = ({ form }) => {
                   key={index}
                   code={item?.code}
                   code_value={item?.display}
-                  data={item?.orderReason}
+                  data={item?.reason}
                 />
               );
             })}

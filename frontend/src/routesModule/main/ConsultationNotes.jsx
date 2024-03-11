@@ -19,7 +19,10 @@ import {
   SubjectiveNotes,
 } from "./consultNotes";
 import { companyMetaData } from "../../assets/myCompanyData";
-import { getEncounterNote } from "../../reduxFolder/actions/AuthActions";
+import {
+  getEncounterNote,
+  setInitialValues,
+} from "../../reduxFolder/actions/AuthActions";
 
 /** shadcn imports */
 
@@ -111,7 +114,10 @@ const ConsultationNotes = () => {
                 <FontAwesomeIcon icon={faMicrophoneLines} className="h-4 w-4" />
               }
               className={`w-full mt-4 flex-row-reverse`}
-              onPress={() => navigate("/start-new-consultation")}
+              onPress={() => {
+                dispatch(setInitialValues());
+                navigate("/start-new-consultation");
+              }}
             />
           </div>
         </div>

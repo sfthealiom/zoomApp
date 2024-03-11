@@ -1,7 +1,7 @@
 import React from "react";
 import { companyMetaData } from "../../assets/myCompanyData";
 
-const Pill = ({ code, name }) => {
+const ViewPill = ({ code, name }) => {
   return (
     <div
       className="w-full h-fit rounded-md flex gap-4 items-start justify-between px-4 py-2 text-sm"
@@ -17,4 +17,4 @@ const Pill = ({ code, name }) => {
   );
 };
 
-export default Pill;
+export default ViewPill;

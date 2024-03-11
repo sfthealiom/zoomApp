@@ -161,6 +161,7 @@ const Diagnosis = ({ form }) => {
                     <Pill
                       code={item?.code}
                       name={item?.display}
+                      pillColor={companyMetaData?.accentGray}
                       className="px-0 py-0"
                       icon={<FontAwesomeIcon icon={faXmark} />}
                       onIconClick={() => {
