@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/Dropdown-Menu";
 import { toast } from "sonner";
+import axios from "axios";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +26,9 @@ import { signOut } from "../../reduxFolder/actions/AuthActions";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { currentUserData } = useSelector((state) => state.authReducer);
+  const { currentUserData, meetingId } = useSelector(
+    (state) => state.authReducer
+  );
   const navigate = useNavigate();
 
   return (
@@ -64,7 +67,12 @@ const Navbar = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => dispatch(signOut(navigate, toast))}
+              onClick={() => {
+                dispatch(signOut(navigate, toast));
+                axios.post("/api/zoomapp/stoplivestream", {
+                  meetingId: meetingId,
+                });
+              }}
             >
               <span>Logout</span>
             </DropdownMenuItem>

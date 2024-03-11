@@ -243,14 +243,19 @@ module.exports = {
 
   async startLiveStream(req, res, next) {
     const user = await store.getUser(req.session.user);
-    const zoomAccessToken = user.accessToken;
-    const zoomRefreshToken = user.refreshToken;
+    const tokenResponse = await zoomApi.refreshZoomAccessToken(
+      user.refreshToken
+    )
+    await store.updateUser(req.session.user, {
+      accessToken: tokenResponse.data.access_token,
+      refreshToken: tokenResponse.data.refresh_token,
+      expired_at: Date.now() + tokenResponse.data.expires_in * 1000,
+    })
+    const zoomAccessToken = tokenResponse.data.access_token;
+    const zoomRefreshToken = tokenResponse.data.refresh_token;
     const meetingId = req.body.meetingId;
     const care_request_id = req.body.care_request_id;
     const domain = process.env.ZOOM_HOST // https://zoom.us
-
-    // 2b. Set path
-    const path = 'zoom/authorize';
 
     let Startdata = JSON.stringify({
       "page_url": "http://3.19.211.46:8000/admin/streams",

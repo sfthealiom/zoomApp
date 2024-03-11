@@ -73,7 +73,6 @@ export const setAiSuggestionNotes = (data) => {
 };
 
 export const setAllTranscript = (transcript, count) => {
-  console.log(count, "this is countcountcount");
   return (dispatch) => {
     dispatch({
       type: SET_ALL_TRANSCRIPT,
@@ -89,6 +88,47 @@ export const setCC = (cc) => {
       payload: cc,
     });
   };
+};
+
+const setInitialValues = () => {
+  dispatch(setCC(""));
+  dispatch(setAllTranscript("", 0));
+  const newAiSuggestions = {
+    diagnoses: [],
+    medications: [],
+    procedures: [],
+    procedures_done: [],
+  };
+  dispatch(setAiSuggestionNotes(newAiSuggestions));
+  dispatch(setWebSocketAiPreds({}, JSON.parse(JSON.stringify({}))));
+  dispatch(setEncounterNote());
+  const notes = {
+    subjective_clinical_summary: null,
+    ai_predictions: true,
+    patient_location: null,
+    diagnoses: [],
+    diagnoses_comments: null,
+    working_diagnoses: [],
+    medications: [],
+    medication_comments: null,
+    generic_medication: null,
+    lab_imaging: [],
+    lab_imaging_comments: null,
+    procedures: [],
+    procedures_done: [],
+    procedure_comments: null,
+    referal_data: [],
+    referal_comment: null,
+    follow_up: {},
+    follow_up_comments: null,
+    patient_education: {},
+    care_task_directives: null,
+    comment: null,
+  };
+  dispatch({
+    type: SET_ENCOUNTER_NOTES,
+    payload: notes,
+  });
 };
 
 export const setWebSocketAiPreds = (aiPreds, currentAiPreds) => {
@@ -115,7 +155,6 @@ export const setWebSocketAiPreds = (aiPreds, currentAiPreds) => {
     if (aiPreds?.carePlanSuggested && aiPreds?.carePlanSuggested?.length) {
       newAIPreds["carePlanSuggested"] = aiPreds?.carePlanSuggested;
     }
-    console.log(aiPreds, "ksadhjfakshlfjafdhljfhakljds");
     dispatch({
       type: SET_WEBSOCKET_AI_PREDS,
       payload: aiPreds,
@@ -386,7 +425,6 @@ export const completeEncounter = (
         );
       })
       .catch((error) => {
-        console.log(error, "this is response data completed_encounter");
         dispatch({ type: SET_LOADER, payload: false });
         return error;
       });
@@ -443,18 +481,9 @@ export const encounterStartCall = (
       care_request_id: care_request_id === "" ? sessionname : care_request_id,
       provider_wait_time: provider_wait_time,
     };
-    console.log(updateData, header, "this is loglog", careReqType);
     let apiCall = axios
       .post(url, updateData, { headers: header })
       .then((response) => {
-        console.log(
-          JSON.stringify(response.data),
-          "This is create temp Patient 4th api encounterStartCall"
-        );
-        console.log(
-          response.data,
-          "This is create temp Patient 5th api encounterStartCall"
-        );
         dispatch({
           type: SET_ENCOUNTER_CALL_DETAILS,
           payload: response.data[0].data,
@@ -463,11 +492,7 @@ export const encounterStartCall = (
           key: "encounterCallDetails",
           value: JSON.stringify(response.data[0].data),
         });
-        console.log(
-          "SET_TRIAGE_AI_SUGGESTION",
-          response?.data[0]?.data?.triage_ai_suggestions
-        );
-
+        setInitialValues();
         dispatch({
           type: SET_AI_PREDS,
           payload: response?.data[0]?.data?.ai_preds || [],
@@ -492,11 +517,6 @@ export const encounterStartCall = (
             hrv: "",
           },
         });
-
-        const meetingContext = {
-          name: "getMeetingContext",
-        };
-
         axios.post("/api/zoomapp/livestream", {
           meetingId: meetingId,
           care_request_id: response.data[0].data?.care_request_id,
@@ -544,14 +564,9 @@ export const onlyTranscribe = (
       he_type: he_type,
     };
     const url = API_URL + "/carerequest_flow_provider?patient_id=" + patient_id;
-    console.log(header, "header", url);
     let apiCall = axios
       .post(url, {}, { headers: header })
       .then(async (response) => {
-        console.log(
-          response.data,
-          "This is create temp Patient 3rd api onlyTranscribe"
-        );
         var conss = {
           encounter_time: null,
           transcript: null,
