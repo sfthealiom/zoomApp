@@ -80,12 +80,12 @@ const ConsultationScreen = () => {
   // };
 
   useEffect(() => {
+    var wss = new WebSocket(
+      "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
+    );
     const providerWebSocketFunction = (count) => {
       count = count++;
       console.log(count, "this is countttt");
-      var wss = new WebSocket(
-        "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
-      );
       wss.onopen = () => {
         wss.send(
           JSON.stringify({
@@ -98,11 +98,11 @@ const ConsultationScreen = () => {
         );
       };
 
-      wss.onclose = (error) => {
-        if (error.code !== "1000" || error.code !== 1000) {
-          providerWebSocketFunction(count);
-        }
-      };
+      // wss.onclose = (error) => {
+      //   if (error.code !== "1000" || error.code !== 1000) {
+      //     providerWebSocketFunction(count);
+      //   }
+      // };
 
       wss.onmessage = (event) => {
         var res = JSON.parse(event.data);
@@ -147,8 +147,11 @@ const ConsultationScreen = () => {
         console.log(error, "this is websocket error");
       };
     };
-
     providerWebSocketFunction();
+    return () => {
+      console.log("closeddd websocket");
+      wss.close();
+    };
   }, []);
 
   const medicationsSchema = z.object({
