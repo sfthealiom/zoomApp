@@ -18,17 +18,8 @@ import {
   DialogClose,
 } from "../components/ui/Dialog";
 import { Button } from "../components/ui/Button";
-import { toast } from "sonner";
-
-/** redux states */
-import { useDispatch, useSelector } from "react-redux";
 
 const DeleteUIDData = ({ cancelText, confirmText, onPress }) => {
-  const dispatch = useDispatch();
-  const { currentUserData, jwtToken } = useSelector(
-    (state) => state.authReducer
-  );
-
   return (
     <Dialog>
       <DialogTrigger asChild>

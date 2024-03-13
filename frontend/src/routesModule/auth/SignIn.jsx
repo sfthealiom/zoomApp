@@ -39,9 +39,7 @@ import { getUserToken } from "../../reduxFolder/CommonActions";
 
 const SignIn = ({ data }) => {
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage, meetingId } = useSelector(
-    (state) => state.authReducer
-  );
+  const { loader } = useSelector((state) => state.authReducer);
 
   const navigate = useNavigate();
 

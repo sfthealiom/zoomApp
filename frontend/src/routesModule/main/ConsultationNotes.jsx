@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
-import {
-  getLabels,
-  setToSessionStore,
-} from "../../reduxFolder/CommonFunctions";
+import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
 import { HeButton } from "../../heCustomComponents";
 import {
   CareTaskNotes,
@@ -22,26 +19,25 @@ import { companyMetaData } from "../../assets/myCompanyData";
 import {
   getEncounterNote,
   setInitialValues,
+  getHistoryTranscriptions,
 } from "../../reduxFolder/actions/AuthActions";
-
 /** shadcn imports */
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { toast } from "sonner";
 
 const ConsultationNotes = () => {
   const dispatch = useDispatch();
-  const {
-    loader,
-    labelData,
-    appLanguage,
-    encounterCallDetails,
-    encounter_notes,
-  } = useSelector((state) => state.authReducer);
+  const { loader, encounterCallDetails, encounter_notes } = useSelector(
+    (state) => state.authReducer
+  );
   const navigate = useNavigate();
   const jwtToken = sessionStorage.getItem("jwtToken");
+  const providerUID = sessionStorage.getItem("currentUserUid");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,11 +52,12 @@ const ConsultationNotes = () => {
       getEncounterNote(
         jwtToken,
         encounterCallDetails.encounterid,
-        companyMetaData?.organizationId,
-        "patient"
+        companyMetaData.organizationId,
+        "patient",
+        navigate
       )
     );
-  }, []);
+  }, [dispatch, encounterCallDetails.encounterid, jwtToken, navigate]);
 
   return loader ? (
     <LoaderSpin />
@@ -73,34 +70,42 @@ const ConsultationNotes = () => {
             style={{ backgroundColor: companyMetaData?.accentWhite }}
           >
             <div className="w-full flex flex-col gap-4">
-              {/* <HeButton
-                title={"Copy to Clipboard"}
-                titleClass={"text-slate-600 text-base"}
-                className={
-                  "w-full h-12 border-2 border-slate-400 text-slate-600"
-                }
-                bgColor={companyMetaData?.accentGray}
-                onPress={() =>
-                  navigator.clipboard.writeText(
-                    JSON.stringify({ object: "notes" })
-                  )
-                }
-              /> */}
+              <CopyToClipboard
+                text={encounter_notes.subjective_clinical_summary}
+              >
+                <HeButton
+                  title={"Copy to Clipboard"}
+                  titleClass={"text-slate-600 text-base"}
+                  className={
+                    "w-full h-12 border-2 border-slate-400 text-slate-600"
+                  }
+                  bgColor={companyMetaData?.accentGray}
+                  onPress={() => console.log("test")}
+                />
+              </CopyToClipboard>
               <SubjectiveNotes
                 subjectiveData={encounter_notes.subjective_clinical_summary}
               />
             </div>
-            <ObjectiveNotes
-              objectiveData={encounter_notes?.objective_clinical_summary}
-            />
-            <DiagnosisNotes
-              diffDiag={encounter_notes?.diagnoses}
-              workDiag={encounter_notes?.working_diagnoses}
-            />
-            <MedicationNotes medications={encounter_notes?.medications} />
-            <OrderNotes orderNotes={encounter_notes?.procedures} />
-            <ProcedureNotes procedureNotes={encounter_notes?.procedures_done} />
-            <CareTaskNotes careNotes={encounter_notes?.care_task_directives} />
+            {Object.keys(encounter_notes).length > 0 ? (
+              <>
+                <ObjectiveNotes
+                  objectiveData={encounter_notes?.objective_clinical_summary}
+                />
+                <DiagnosisNotes
+                  diffDiag={encounter_notes?.diagnoses}
+                  workDiag={encounter_notes?.working_diagnoses}
+                />
+                <MedicationNotes medications={encounter_notes?.medications} />
+                <OrderNotes orderNotes={encounter_notes?.procedures} />
+                <ProcedureNotes
+                  procedureNotes={encounter_notes?.procedures_done}
+                />
+                <CareTaskNotes
+                  careNotes={encounter_notes?.care_task_directives}
+                />
+              </>
+            ) : null}
           </div>
           <div
             className="w-full rounded-md"
@@ -116,6 +121,15 @@ const ConsultationNotes = () => {
               className={`w-full mt-4 flex-row-reverse`}
               onPress={() => {
                 dispatch(setInitialValues());
+                dispatch(
+                  getHistoryTranscriptions(
+                    jwtToken,
+                    companyMetaData.organizationId,
+                    "Provider",
+                    providerUID,
+                    toast
+                  )
+                );
                 navigate("/start-new-consultation");
               }}
             />

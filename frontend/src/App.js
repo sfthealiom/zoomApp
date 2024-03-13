@@ -31,7 +31,6 @@ const App = () => {
 
   // const history = useHistory();
   // const location = useLocation();
-  const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
   const [runningContext, setRunningContext] = useState(null);
   const [connected, setConnected] = useState(false);
@@ -39,6 +38,7 @@ const App = () => {
   const [preMeeting, setPreMeeting] = useState(true); // start with pre-meeting code
   const [userContextStatus, setUserContextStatus] = useState("");
   const [data, setData] = useState("");
+
   useEffect(() => {
     async function configureSdk() {
       // to account for the 2 hour timeout for config
@@ -89,7 +89,6 @@ const App = () => {
         });
       } catch (error) {
         console.log(error);
-        setError("There was an error configuring the JS SDK");
       }
       return () => {
         clearTimeout(configTimer);
@@ -166,13 +165,13 @@ const App = () => {
     if (connected === false) {
       connectInstances();
     }
-  }, [connected, "", preMeeting, runningContext]);
+  }, [connected, preMeeting, runningContext]);
 
   useEffect(() => {
     if (isObjectEmpty(staticData) || isObjectEmpty(labelData)) {
       navigate("/");
     }
-  }, []);
+  }, [labelData, navigate]);
 
   return (
     <div
@@ -189,7 +188,6 @@ const App = () => {
             path="/welcome"
             element={
               <Welcome
-                handleError={setError}
                 handleUserContextStatus={setUserContextStatus}
                 handleUser={setUser}
                 user={user}

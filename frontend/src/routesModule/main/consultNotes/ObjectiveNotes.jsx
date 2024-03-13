@@ -10,7 +10,7 @@ const Objective = ({ objectiveData }) => {
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Objective Summary"} className={`md:text-[18px]`} />
         <div className="flex items-center gap-2 md:gap-4">
-          {/* <HeCopy targetText={objectiveData} targetId={"Objective"} /> */}
+          <HeCopy targetText={objectiveData} targetId={"Objective"} />
         </div>
       </div>
       <div>

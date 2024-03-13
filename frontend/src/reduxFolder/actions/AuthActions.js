@@ -1,4 +1,3 @@
-/* globals zoomSdk */
 import axios from "axios";
 import { configSecret } from "../../assets/awsSecrets";
 import {
@@ -25,8 +24,9 @@ import {
 } from "./ActionTypes";
 import { setToSessionStore } from "../CommonFunctions";
 import { getUserToken } from "../CommonActions";
+import { companyMetaData } from "../../assets/myCompanyData";
 
-const { API_URL, AI_SERVER } = configSecret;
+const { API_URL } = configSecret;
 
 export const setAppLang = (value) => {
   return async (dispatch) => {
@@ -35,14 +35,6 @@ export const setAppLang = (value) => {
       payload: value,
     });
   };
-};
-
-const invokeZoomAppsSdk = (api) => async () => {
-  const { name, buttonName = "", options = null } = api;
-  const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk);
-
-  const response = await zoomAppsSdkApi(options);
-  return response;
 };
 
 export const setJWTToken = (value) => {
@@ -170,7 +162,8 @@ export const submitEncounterNote = (
   organization_id,
   he_type,
   navigate,
-  meetingId
+  meetingId,
+  encounterId
 ) => {
   return (dispatch) => {
     const header = {
@@ -181,16 +174,6 @@ export const submitEncounterNote = (
     var url = API_URL + "/encounter_note";
 
     var new_notes = JSON.parse(JSON.stringify(updateData.encounter_note));
-    var abrMap = {
-      quantity_unit: "",
-      route: "",
-      frequency: "",
-      dispense_unit: "",
-      refills: "",
-      generic: "",
-      days_supply: "",
-      substitutions_allowed: "",
-    };
     if (new_notes.medications) {
       var temp_medications = new_notes.medications.map((item) => {
         var temp_item = {
@@ -229,10 +212,13 @@ export const submitEncounterNote = (
         encounter_note: new_notes,
       },
     };
-    let apiCall = axios(config)
+    axios(config)
       .then((response) => {
         navigate("/consultation-notes");
-        dispatch({ type: SET_LOADER, payload: false });
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
       })
       .catch((error) => {
         dispatch({
@@ -248,7 +234,7 @@ export const getEncounterNote = (
   encounter_id,
   organization_id,
   he_type,
-  edit_key
+  navigate
 ) => {
   return async (dispatch) => {
     var header = {
@@ -257,85 +243,19 @@ export const getEncounterNote = (
       he_type: he_type,
     };
     const url = API_URL + "/get_encounter_notes?encounter_id=" + encounter_id;
-    let apiCall = axios
+    dispatch({
+      type: SET_ENCOUNTER_NOTES,
+      payload: [],
+    });
+    axios
       .get(url, { headers: header })
       .then((response) => {
         if (response.data.length !== 0) {
           var temp_notes = JSON.parse(JSON.stringify(response.data));
-          var abrMap = {
-            quantity_unit: "",
-            route: "",
-            frequency: "",
-            dispense_unit: "",
-            refills: "",
-            generic: "",
-            days_supply: "",
-            substitutions_allowed: "",
-          };
-          if (temp_notes.medications && edit_key) {
-            var temp_medications = temp_notes.medications.map((item) => {
-              const temp_item = {
-                code: item.code,
-                dispense_unit: item.dispense_unit
-                  ? abrMap.dispense_unit + item.dispense_unit
-                  : null,
-                display: item.display,
-                frequency: item.frequency
-                  ? abrMap.frequency + item.frequency
-                  : null,
-                quantity_unit: item.quantity_unit
-                  ? abrMap.quantity_unit + item.quantity_unit
-                  : null,
-                reason: item.reason,
-                refills: item.refills ? abrMap.refills + item.refills : null,
-                route: item.route ? abrMap.route + item.route : null,
-                days_supply: item.days_supply
-                  ? abrMap.days_supply + item.days_supply
-                  : null,
-                pharmacy_notes: item.pharmacy_notes,
-                status: item.status,
-                suggested_ai: item.suggested_ai,
-                generic: item.generic,
-                substitutions_allowed: item.substitutions_allowed,
-              };
-              return temp_item;
-            });
-            temp_notes.medications = temp_medications;
-          }
           dispatch({
             type: SET_ENCOUNTER_NOTES,
             payload: temp_notes,
           });
-          // if (
-          //   response.data.medications &&
-          //   response.data.medications.length != 0
-          // ) {
-          //   var tempMedicationUi = response.data.medications.map(item => {
-          //     return {
-          //       renderQuantity: false,
-          //       renderRoute: false,
-          //       renderFrequency: false,
-          //       renderDispense: false,
-          //       renderRefills: false,
-          //       renderGeneric: false,
-          //       renderFirstLine: 0,
-          //       renderSecondLine: 0,
-          //     };
-          //   });
-          //   dispatch({type: SET_MEDICATION_UI, payload: tempMedicationUi});
-          // }
-
-          // if (
-          //   response.data.procedures &&
-          //   response.data.procedures.length != 0
-          // ) {
-          //   var tempProcedureUi = response.data.procedures.map(item => {
-          //     return {
-          //       renderFulfil: false,
-          //     };
-          //   });
-          //   dispatch({type: SET_PROCEDURE_UI, payload: tempProcedureUi});
-          // }
         } else {
           dispatch({
             type: SET_ENCOUNTER_NOTES,
@@ -363,12 +283,18 @@ export const getEncounterNote = (
               comment: null,
             },
           });
-          // dispatch({type: SET_PROCEDURE_UI, payload: []});
-          // dispatch({type: SET_MEDICATION_UI, payload: []});
         }
+
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
       })
       .catch((error) => {
-        return error;
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
       });
   };
 };
@@ -410,7 +336,7 @@ export const completeEncounter = (
       providerid: providerid,
       predicted_suggestions: aiSuggestions,
     };
-    let apiCall = axios
+    axios
       .post(url, insertData, { headers: header })
       .then((response) => {
         var updateData_temp = encounterCallDetails;
@@ -422,7 +348,8 @@ export const completeEncounter = (
             organization_id,
             he_type,
             navigate,
-            meetingId
+            meetingId,
+            encounterid
           )
         );
       })
@@ -455,7 +382,8 @@ export const encounterStartCall = (
   sessionIdleTimeoutMins,
   navigate,
   careReqType,
-  meetingId
+  meetingId,
+  toast
 ) => {
   return async (dispatch) => {
     var header = {
@@ -483,7 +411,7 @@ export const encounterStartCall = (
       care_request_id: care_request_id === "" ? sessionname : care_request_id,
       provider_wait_time: provider_wait_time,
     };
-    let apiCall = axios
+    axios
       .post(url, updateData, { headers: header })
       .then((response) => {
         dispatch({
@@ -528,7 +456,6 @@ export const encounterStartCall = (
         } catch (error) {
           console.log(error);
         }
-
         dispatch({
           type: SET_LOADER,
           payload: false,
@@ -536,6 +463,9 @@ export const encounterStartCall = (
         navigate("/consultation-screen");
       })
       .catch((error) => {
+        toast.error(
+          `Something went wrong while creating your encounter!${error}, ${care_request_id} ${sessionname}`
+        );
         dispatch({
           type: SET_LOADER,
           payload: false,
@@ -561,7 +491,9 @@ export const onlyTranscribe = (
   navigate,
   provider_id,
   display_name,
-  meetingId
+  meetingId,
+  careReqType,
+  toast
 ) => {
   return (dispatch) => {
     dispatch({ type: SET_LOADER, payload: true });
@@ -571,8 +503,8 @@ export const onlyTranscribe = (
       organization_id: organization_id,
       he_type: he_type,
     };
-    const url = API_URL + "/carerequest_flow_provider?patient_id=" + patient_id;
-    let apiCall = axios
+    const url = `${API_URL}/carerequest_flow_provider?patient_id=${patient_id}&care_request_type=${careReqType}`;
+    axios
       .post(url, {}, { headers: header })
       .then(async (response) => {
         var conss = {
@@ -619,11 +551,15 @@ export const onlyTranscribe = (
             sessionIdleTimeoutMins,
             navigate,
             "zoom encounter",
-            meetingId
+            meetingId,
+            toast
           )
         );
       })
       .catch((err) => {
+        toast.error(
+          `Something went wrong while creating your transcribe!${err}`
+        );
         dispatch({
           type: SET_LOADER,
           payload: false,
@@ -671,7 +607,8 @@ export const guestUserSignUp = (
   jwtToken,
   provUid,
   display_name,
-  meetingId
+  meetingId,
+  careReqType
 ) => {
   return async (dispatch) => {
     dispatch({
@@ -733,11 +670,14 @@ export const guestUserSignUp = (
             navigate,
             provUid,
             display_name,
-            meetingId
+            meetingId,
+            careReqType,
+            toast
           )
         );
       })
       .catch((err) => {
+        toast.error("Something went wrong while creating your user!");
         if (err.code === "ERR_BAD_REQUEST") {
           dispatch(getRefreshToken(toast));
         } else {
@@ -971,7 +911,15 @@ export const getUserData = (
             payload: false,
           });
         }
-        dispatch(getHistoryTranscriptions(providerUid));
+        dispatch(
+          getHistoryTranscriptions(
+            jwtToken,
+            companyMetaData.organizationId,
+            "Provider",
+            providerUid,
+            toast
+          )
+        );
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
@@ -1146,53 +1094,147 @@ export const emptyHistoryList = () => {
   };
 };
 
-export const getHistoryTranscriptions = (uid, type) => {
+export const getHistoryTranscriptions = (
+  jwtAuthToken,
+  organization_id,
+  he_type,
+  provider_id,
+  toast
+) => {
   return async (dispatch) => {
     dispatch({
       type: SET_LOADER,
       payload: true,
     });
-    const config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: AI_SERVER + `/dev/history?uid=${uid}`,
-      headers: {},
-    };
-    axios.request(config).then((res) => {
-      dispatch({
-        type: SET_LOADER,
-        payload: false,
-      });
-      dispatch({
-        type: SET_HISTORY_LIST,
-        payload: res?.data,
-      });
+
+    var data = JSON.stringify({
+      page: 1,
+      per_page: 10,
+      keys: [
+        "encounterid",
+        "providerid",
+        "care_request_id",
+        "create_dt",
+        "update_dt",
+        "status",
+        "video_urls",
+        "care_req_type",
+      ],
+      query: provider_id,
     });
+
+    var header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
+    };
+    const config = {
+      method: "post",
+      url: API_URL + `/get_encounters`,
+      headers: header,
+      data: data,
+    };
+    axios
+      .request(config)
+      .then((res) => {
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+        dispatch({
+          type: SET_HISTORY_LIST,
+          payload: res?.data?.items?.results,
+        });
+      })
+      .catch((err) => {
+        toast.error(`Something went wrong here!${err}`);
+      });
   };
 };
 
-export const getSelectedTranscriptDetails = (conversation_id) => {
+export const getSelectedTranscriptDetails = (
+  encounter_id,
+  jwtAuthToken,
+  organization_id,
+  he_type,
+  toast,
+  navigate
+) => {
   return async (dispatch) => {
     dispatch({
       type: SET_LOADER,
       payload: true,
     });
-    const config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: AI_SERVER + `/dev/history?conversation_id=${conversation_id}`,
-      headers: {},
+
+    var header = {
+      Authorization: "Bearer " + jwtAuthToken,
+      organization_id: organization_id,
+      he_type: he_type,
     };
-    axios.request(config).then((res) => {
-      dispatch({
-        type: SET_LOADER,
-        payload: false,
+    const url = API_URL + "/get_encounter_notes?encounter_id=" + encounter_id;
+    axios
+      .get(url, { headers: header })
+      .then((response) => {
+        if (response.data.length !== 0) {
+          var temp_notes = JSON.parse(JSON.stringify(response.data));
+          var abrMap = {
+            quantity_unit: "",
+            route: "",
+            frequency: "",
+            dispense_unit: "",
+            refills: "",
+            generic: "",
+            days_supply: "",
+            substitutions_allowed: "",
+          };
+          if (temp_notes.medications) {
+            var temp_medications = temp_notes.medications.map((item) => {
+              const temp_item = {
+                code: item.code,
+                dispense_unit: item.dispense_unit
+                  ? abrMap.dispense_unit + item.dispense_unit
+                  : null,
+                display: item.display,
+                frequency: item.frequency
+                  ? abrMap.frequency + item.frequency
+                  : null,
+                quantity_unit: item.quantity_unit
+                  ? abrMap.quantity_unit + item.quantity_unit
+                  : null,
+                reason: item.reason,
+                refills: item.refills ? abrMap.refills + item.refills : null,
+                route: item.route ? abrMap.route + item.route : null,
+                days_supply: item.days_supply
+                  ? abrMap.days_supply + item.days_supply
+                  : null,
+                pharmacy_notes: item.pharmacy_notes,
+                status: item.status,
+                suggested_ai: item.suggested_ai,
+                generic: item.generic,
+                substitutions_allowed: item.substitutions_allowed,
+              };
+              return temp_item;
+            });
+            temp_notes.medications = temp_medications;
+          }
+          dispatch({
+            type: SET_SEL_HISTORY_DATA,
+            payload: temp_notes,
+          });
+        }
+
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
+        navigate(`/history/conversation/${encounter_id}`);
+      })
+      .catch((error) => {
+        toast.error(`We have encounter error . ${error}`);
+        dispatch({
+          type: SET_LOADER,
+          payload: false,
+        });
       });
-      // navigate(`/history/conversation/${conversation_id}`);
-      dispatch({
-        type: SET_SEL_HISTORY_DATA,
-        payload: res?.data,
-      });
-    });
   };
 };

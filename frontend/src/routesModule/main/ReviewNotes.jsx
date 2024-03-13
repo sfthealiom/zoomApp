@@ -7,10 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
-import {
-  getLabels,
-  setToSessionStore,
-} from "../../reduxFolder/CommonFunctions";
+import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
 import { completeEncounter } from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton } from "../../heCustomComponents";
 import {
@@ -34,8 +31,6 @@ const ReviewNotes = () => {
   const dispatch = useDispatch();
   const {
     loader,
-    labelData,
-    appLanguage,
     encounter_notes,
     encounterCallDetails,
     aiSuggestions,

@@ -28,7 +28,7 @@ const HeDateInput = ({
       input = `${input.slice(0, 5)}/${input.slice(5)}`;
     }
     form.setValue(fieldName, input);
-  }, [watchDate, form]);
+  }, [watchDate, form, fieldName]);
 
   return (
     <FormField

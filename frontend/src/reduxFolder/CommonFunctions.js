@@ -159,9 +159,9 @@ export const filterJSON = (jsonData, excludeKeys) => {
 };
 
 export const convertEpochToLocal = (ids) => {
-  return ids.map((id) => {
+  return ids?.map((id) => {
     // Splitting each ID and extracting the epoch time
-    const parts = id.split("__");
+    const parts = id?.split("__");
     const epochTime = parseInt(parts[2], 10); // Convert string to integer
 
     // Creating a new Date object for the epoch time and converting to local time string

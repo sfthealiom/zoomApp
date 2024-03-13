@@ -1,5 +1,5 @@
 /** library imports */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
@@ -10,18 +10,13 @@ import axios from "axios";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
-import {
-  getLabels,
-  setToSessionStore,
-} from "../../reduxFolder/CommonFunctions";
+import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
 import {
   setAiSuggestionNotes,
   setAllTranscript,
   setCC,
   setWebSocketAiPreds,
   completeEncounter,
-  submitEncounterNote,
-  setInitialValues,
 } from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
@@ -34,7 +29,6 @@ import {
   Subjective,
 } from "./consultationSections";
 import { companyMetaData } from "../../assets/myCompanyData";
-import encounterNotes from "./consultationSections/data.json";
 
 /** shadcn imports */
 import { Form } from "../../components/ui/Form";
@@ -42,15 +36,12 @@ import { toast } from "sonner";
 
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
-import { configSecret } from "../../assets/awsSecrets";
 import { SET_ENCOUNTER_NOTES } from "../../reduxFolder/actions/ActionTypes";
 
 const ConsultationScreen = () => {
   const dispatch = useDispatch();
   const {
     loader,
-    labelData,
-    appLanguage,
     encounterCallDetails,
     aiSuggestions,
     closedCaptions,
@@ -61,62 +52,40 @@ const ConsultationScreen = () => {
     meetingId,
   } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
-  const { WEBSOCKET_URL, TRANSCRIPT_SOCKET_URL, ADMIN_RTMP_URL, RTMP_URL } =
-    configSecret;
-
-  const [endSession, setEndSession] = useState(false);
-  const [webSocketSignal, setWebSocketSignal] = useState(false);
   const providerUID = sessionStorage.getItem("currentUserUid");
   const jwtToken = sessionStorage.getItem("jwtToken");
-  const [data, setdata] = useState("");
-  const [jsonData, setJsonData] = useState("");
 
-  const splitCode = (oldArray) => {
-    // var newArray = []
-    var newArray = oldArray.map((item, index) => {
-      return {
-        code: item?.code?.split(":")[1],
-        code_value: item?.code_value,
-        source: item?.source,
-      };
-    });
-
-    return newArray;
-  };
-
-  const leaveProvCall = () => {
-    dispatch(
-      completeEncounter(
-        jwtToken,
-        encounterCallDetails.care_request_id,
-        encounterCallDetails.encounterid,
-        encounterCallDetails.patient_msg_id,
-        encounterCallDetails.patientid,
-        encounterCallDetails.provider_msg_id,
-        encounterCallDetails.provider_wait_time,
-        encounterCallDetails.providerid,
-        aiSuggestions,
-        companyMetaData?.organizationId,
-        "provider",
-        navigate,
-        encounter_notes,
-        "zoom encounter",
-        encounterCallDetails
-      )
-    );
-  };
+  // const leaveProvCall = () => {
+  //   dispatch(
+  //     completeEncounter(
+  //       jwtToken,
+  //       encounterCallDetails.care_request_id,
+  //       encounterCallDetails.encounterid,
+  //       encounterCallDetails.patient_msg_id,
+  //       encounterCallDetails.patientid,
+  //       encounterCallDetails.provider_msg_id,
+  //       encounterCallDetails.provider_wait_time,
+  //       encounterCallDetails.providerid,
+  //       aiSuggestions,
+  //       companyMetaData?.organizationId,
+  //       "provider",
+  //       navigate,
+  //       encounter_notes,
+  //       "zoom encounter",
+  //       encounterCallDetails
+  //     )
+  //   );
+  // };
 
   useEffect(() => {
     var wss = new WebSocket(
       "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
     );
-    var count = 0;
     const providerWebSocketFunction = (count) => {
       count = count++;
       console.log(count, "this is countttt");
 
       wss.onopen = () => {
-        setWebSocketSignal(true);
         wss.send(
           JSON.stringify({
             stream_key: encounterCallDetails.care_request_id,
@@ -129,8 +98,6 @@ const ConsultationScreen = () => {
       };
 
       wss.onclose = (error) => {
-        setWebSocketSignal(false);
-
         if (error.code !== "1000" || error.code !== 1000) {
           providerWebSocketFunction(count);
         }
@@ -170,9 +137,9 @@ const ConsultationScreen = () => {
               )
             );
           }
-          if (!res?.success && res?.issue === "time-exceeded") {
-            leaveProvCall(true);
-          }
+          // if (!res?.success && res?.issue === "time-exceeded") {
+          //   leaveProvCall(true);
+          // }
         }
       };
       wss.onerror = (error) => {
@@ -183,7 +150,17 @@ const ConsultationScreen = () => {
     if (encounterCallDetails) {
       providerWebSocketFunction();
     }
-  }, [encounterCallDetails?.care_request_id?.length > 0]);
+  }, [
+    aiSuggestions?.diagnoses,
+    aiSuggestions?.medications,
+    aiSuggestions?.procedures,
+    aiSuggestions?.procedures_done,
+    dispatch,
+    encounterCallDetails,
+    providerUID,
+    transcriptMessageCount,
+    webSocketAiPreds,
+  ]);
 
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),

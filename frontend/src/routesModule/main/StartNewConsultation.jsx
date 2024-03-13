@@ -6,11 +6,7 @@ import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
 
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
-import {
-  convertEpochToLocal,
-  getLabels,
-  setToSessionStore,
-} from "../../reduxFolder/CommonFunctions";
+import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
 import {
   HeButton,
   HeHeading1,
@@ -21,23 +17,21 @@ import { companyMetaData } from "../../assets/myCompanyData";
 
 /** shadcn imports */
 import { toast } from "sonner";
-
+import moment from "moment";
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
-import { guestUserSignUp } from "../../reduxFolder/actions/AuthActions";
+import {
+  guestUserSignUp,
+  getSelectedTranscriptDetails,
+} from "../../reduxFolder/actions/AuthActions";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
   const [listOfTranscripts, setListOfTranscripts] = useState([]);
 
-  const {
-    loader,
-    labelData,
-    appLanguage,
-    currentUserData,
-    meetingId,
-    historyList,
-  } = useSelector((state) => state.authReducer);
+  const { loader, currentUserData, meetingId, historyList } = useSelector(
+    (state) => state.authReducer
+  );
   const navigate = useNavigate();
   const jwtToken = sessionStorage.getItem("jwtToken");
   useEffect(() => {
@@ -49,7 +43,7 @@ const StartNewConsultation = () => {
   }, []);
 
   useEffect(() => {
-    setListOfTranscripts(convertEpochToLocal(historyList));
+    setListOfTranscripts(historyList);
   }, [historyList]);
 
   return loader ? (
@@ -98,7 +92,8 @@ const StartNewConsultation = () => {
                     jwtToken,
                     currentUserData.uid,
                     currentUserData.display_name,
-                    meetingId
+                    meetingId,
+                    "zoom encounter"
                   )
                 );
                 // const response = axios.post("/api/zoomapp/livestream", {
@@ -125,14 +120,26 @@ const StartNewConsultation = () => {
                     backgroundColor: companyMetaData?.primaryLightest,
                   }}
                   onClick={() => {
-                    navigate(`/history/conversation/${item?.name}`);
+                    dispatch(
+                      getSelectedTranscriptDetails(
+                        item?.encounter_id,
+                        jwtToken,
+                        companyMetaData?.organizationId,
+                        "patient",
+                        toast,
+                        navigate
+                      )
+                    );
                   }}
                 >
                   <div className="break-words font-semibold">
-                    conversation id: ...
-                    {item?.name?.split("__")[2]?.slice(-8)}
+                    Encounter Id:
+                    {item?.care_request_id?.split("__")[2]?.slice(-6)}
                   </div>
-                  <div className="">{item?.timestamp}</div>
+                  <div className="">
+                    {moment(item?.create_tm, "HH:mm:ss.SSSSSS").format("HH:mm")}{" "}
+                    {item?.create_dt}
+                  </div>
                 </div>
               );
             })

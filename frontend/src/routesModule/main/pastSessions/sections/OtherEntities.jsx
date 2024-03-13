@@ -2,6 +2,7 @@ import React from "react";
 import { isObjectEmpty } from "../../../../reduxFolder/CommonFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
   return (
@@ -10,22 +11,22 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
         <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
           <div className="flex justify-between items-center">
             <h1 className="font-semibold text-xl">Vital Options</h1>
-            {/* {isCopied === "vitals" ? (
+            {isCopied === "vitals" ? (
               <div className="flex items-center text-slate-400">
                 <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
                 <span>Copied</span>
               </div>
             ) : (
               <button onClick={() => setIsCopied("vitals")}>
-                <FontAwesomeIcon
-                  icon={faCopy}
-                  className="h-6 w-6 text-slate-300 cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(JSON.stringify(vitals));
-                  }}
-                />
+                <CopyToClipboard text={JSON.stringify(vitals)}>
+                  <FontAwesomeIcon
+                    icon={faCopy}
+                    className="h-6 w-6 text-slate-300 cursor-pointer"
+                    onClick={() => {}}
+                  />
+                </CopyToClipboard>
               </button>
-            )} */}
+            )}
           </div>
           <ul className="list-disc pl-6 mt-2 h-[100px] text-slate-600 overflow-y-scroll">
             {!isObjectEmpty(vitals)
@@ -48,24 +49,22 @@ const OtherEntities = ({ vitals, personalDetails, isCopied, setIsCopied }) => {
             <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-xl">Personal Demographics</h1>
-                {/* {isCopied === "personalDetails" ? (
+                {isCopied === "personalDetails" ? (
                   <div className="flex items-center text-slate-400">
                     <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
                     <span>Copied</span>
                   </div>
                 ) : (
                   <button onClick={() => setIsCopied("personalDetails")}>
-                    <FontAwesomeIcon
-                      icon={faCopy}
-                      className="h-6 w-6 text-slate-300 cursor-pointer"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          JSON.stringify(personalDetails)
-                        );
-                      }}
-                    />
+                    <CopyToClipboard text={JSON.stringify(personalDetails)}>
+                      <FontAwesomeIcon
+                        icon={faCopy}
+                        className="h-6 w-6 text-slate-300 cursor-pointer"
+                        onClick={() => {}}
+                      />
+                    </CopyToClipboard>
                   </button>
-                )} */}
+                )}
               </div>
               <ul className="list-disc pl-6 mt-2 h-[100px] text-slate-600 overflow-y-scroll">
                 {!isObjectEmpty(personalDetails)

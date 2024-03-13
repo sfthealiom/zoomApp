@@ -17,10 +17,10 @@ const OrderNotes = ({ orderNotes }) => {
           title={"Orders (Labs, Imaging and Procedures to be done)"}
           className={`md:text-[18px]`}
         />
-        {/* <HeCopy
+        <HeCopy
           targetText={JSON.stringify(JSON.stringify(orderNotes))}
           targetId={"orders"}
-        /> */}
+        />
       </div>
       <div className="w-full flex flex-col gap-2">
         <div className="w-full flex flex-col gap-2">

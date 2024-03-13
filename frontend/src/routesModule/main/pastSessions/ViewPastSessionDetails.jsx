@@ -1,38 +1,37 @@
 /** library imports */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, useParams } from "react-router-dom";
 
 /** custom imports */
 import { LoaderSpin } from "../../../components/helpers";
+import { HeButton } from "../../../heCustomComponents";
 import {
-  setToSessionStore,
-  isObjectEmpty,
-  filterJSON,
-} from "../../../reduxFolder/CommonFunctions";
-import { Summaries, CPOE, OtherEntities } from "./sections";
+  CareTaskNotes,
+  DiagnosisNotes,
+  MedicationNotes,
+  ObjectiveNotes,
+  OrderNotes,
+  ProcedureNotes,
+  SubjectiveNotes,
+} from "../consultNotes";
 import { companyMetaData } from "../../../assets/myCompanyData";
 
 /** shadcn imports */
-import { Separator } from "../../../components/ui/Separator";
 
 /** redux imports */
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getSelectedTranscriptDetails,
-  setSelHistoryData,
-} from "../../../reduxFolder/actions/AuthActions";
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophoneLines } from "@fortawesome/free-solid-svg-icons";
+import { setSelHistoryData } from "../../../reduxFolder/actions/AuthActions";
+import { setToSessionStore } from "../../../reduxFolder/CommonFunctions";
+import BackButton from "../../common/BackButton";
 
 const ViewPastSessionDetails = () => {
-  const dispatch = useDispatch();
   const { loader, selHistoryData } = useSelector((state) => state.authReducer);
-
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // states for response data
-  const [transcript, setTranscript] = useState("");
-  const [aiPreds, setAiPreds] = useState({});
   const [isCopied, setIsCopied] = useState("");
 
   useEffect(() => {
@@ -48,126 +47,63 @@ const ViewPastSessionDetails = () => {
       key: "lastPage",
       value: `/history/conversation/${id}`,
     });
-    dispatch(getSelectedTranscriptDetails(id));
   }, [id]);
-
-  useEffect(() => {
-    if (selHistoryData) {
-      setTranscript(selHistoryData?.transcript);
-      setAiPreds(selHistoryData?.ai_preds);
-    }
-  }, [selHistoryData]);
-
-  const otherAIPredsEntities = !isObjectEmpty(aiPreds)
-    ? filterJSON(aiPreds, ["entities", "summaries"])
-    : null;
-
-  const vitals = !isObjectEmpty(otherAIPredsEntities)
-    ? filterJSON(otherAIPredsEntities, [
-        "age",
-        "gender",
-        "height",
-        "weight",
-        "ethnicity",
-        "insurance",
-        "physicalActivityExercise",
-      ])
-    : null;
-
-  const personalDetails = !isObjectEmpty(otherAIPredsEntities)
-    ? filterJSON(otherAIPredsEntities, [
-        "bmi",
-        "bloodPressure",
-        "pulse",
-        "respiratoryRate",
-        "bodyTemperature",
-        "substanceAbuse",
-      ])
-    : null;
 
   return loader ? (
     <LoaderSpin />
   ) : (
-    <div className="flex flex-col gap-4 items-center justify-between my-8">
-      <section className="w-full max-w-xs md:max-w-lg lg:max-w-2xl xl:max-w-4xl flex flex-col gap-2 items-center justify-center">
-        <h1
-          className="font-semibold text-2xl md:text-4xl text-center"
-          style={{ color: companyMetaData?.base }}
-        >
-          Complete Details
-        </h1>
-        <span className="break-all text-center font-semibold">{id}</span>
-      </section>
-      <Separator className="max-w-xs md:nax-w-lg lg:max-w-2xl xl:max-w-4xl" />
-      {transcript && (
-        <section
-          className="w-full max-w-xs md:max-w-lg lg:max-w-2xl xl:max-w-4xl flex flex-col gap-2 shadow-md rounded-md p-4"
-          style={{ backgroundColor: companyMetaData?.accentWhite }}
-        >
-          <div className="flex justify-between items-center">
-            <h1 className="font-semibold text-xl">
-              Transcription with Long Lookback
-            </h1>
-            {/* {isCopied === "transcript" ? (
-              <div className="flex text-slate-400 items-center">
-                <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
-                <span>Copied</span>
-              </div>
-            ) : (
-              <button onClick={() => setIsCopied("transcript")}>
-                <FontAwesomeIcon
-                  icon={faCopy}
-                  className="h-6 w-6 text-slate-300 cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(transcript);
-                  }}
+    <div>
+      <BackButton onClick={() => navigate("/start-new-consultation")} />
+      <section className="w-full flex items-center justify-center">
+        <div className="w-[95%] max-w-[1024px] items-center flex flex-col gap-6 md:gap-8 justify-between h-full">
+          <div className="w-full flex flex-col gap-2">
+            <div
+              className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
+              style={{ backgroundColor: companyMetaData?.accentWhite }}
+            >
+              <div className="w-full flex flex-col gap-4">
+                <SubjectiveNotes
+                  subjectiveData={selHistoryData.subjective_clinical_summary}
                 />
-              </button>
-            )} */}
+              </div>
+              <ObjectiveNotes
+                objectiveData={selHistoryData?.objective_clinical_summary}
+              />
+              <DiagnosisNotes
+                diffDiag={selHistoryData?.diagnoses}
+                workDiag={selHistoryData?.working_diagnoses}
+              />
+              <MedicationNotes medications={selHistoryData?.medications} />
+              <OrderNotes orderNotes={selHistoryData?.procedures} />
+              <ProcedureNotes
+                procedureNotes={selHistoryData?.procedures_done}
+              />
+              <CareTaskNotes careNotes={selHistoryData?.care_task_directives} />
+            </div>
+
+            <div
+              className="w-full rounded-md"
+              style={{
+                boxShadow: `0px 8px 8px ${companyMetaData?.primaryLight}`,
+              }}
+            >
+              <HeButton
+                title={"New Recording"}
+                icon={
+                  <FontAwesomeIcon
+                    icon={faMicrophoneLines}
+                    className="h-4 w-4"
+                  />
+                }
+                className={`w-full mt-4 flex-row-reverse`}
+                onPress={() => {
+                  navigate("/start-new-consultation");
+                }}
+              />
+            </div>
           </div>
-          <textarea
-            name="json-response"
-            id="json-response"
-            rows="10"
-            placeholder="Transcipted text..."
-            className="w-full resize-none outline-none text-slate-600 disabled:bg-transparent scrollbar"
-            value={transcript}
-            disabled
-          ></textarea>
-        </section>
-      )}
-
-      {/* summaries */}
-      {!isObjectEmpty(aiPreds) && (
-        <Summaries
-          aiPreds={aiPreds}
-          isCopied={isCopied}
-          setIsCopied={setIsCopied}
-        />
-      )}
-
-      {/* ai preds entities section */}
-      {!isObjectEmpty(aiPreds) && (
-        <CPOE aiPreds={aiPreds} isCopied={isCopied} setIsCopied={setIsCopied} />
-      )}
-
-      {/* other ai preds entities section */}
-      {(!isObjectEmpty(vitals) || !isObjectEmpty(personalDetails)) && (
-        <OtherEntities
-          vitals={vitals}
-          personalDetails={personalDetails}
-          isCopied={isCopied}
-          setIsCopied={setIsCopied}
-        />
-      )}
-
-      {!isObjectEmpty(selHistoryData)
-        ? selHistoryData?.text === "Transcription not found" && (
-            <p className="text-center text-slate-400 font-semibold">
-              No data found.
-            </p>
-          )
-        : null}
+        </div>
+      </section>
     </div>
   );
 };

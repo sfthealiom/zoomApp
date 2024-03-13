@@ -9,7 +9,7 @@ const Subjective = ({ subjectiveData }) => {
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Subjective Summary"} className={`md:text-[18px]`} />
-        {/* <HeCopy targetText={subjectiveData} targetId={"subjective"} /> */}
+        <HeCopy targetText={subjectiveData} targetId={"subjective"} />
       </div>
       <div>
         {subjectiveData?.length > 0 ? (

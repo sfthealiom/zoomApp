@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -16,7 +16,6 @@ import { SET_MEETING_ID } from "../../reduxFolder/actions/ActionTypes";
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
 import {
-  getLabels,
   phoneRegex,
   hasUpperCase,
   hasLowerCase,
@@ -56,17 +55,9 @@ import {
 } from "../../reduxFolder/actions/AuthActions";
 
 const Welcome = (props) => {
-  const {
-    handleError,
-    handleUser,
-    handleUserContextStatus,
-    user,
-    userContextStatus,
-  } = props;
+  const { handleUser, handleUserContextStatus, userContextStatus } = props;
   const dispatch = useDispatch();
-  const { loader, labelData, appLanguage, meetingId } = useSelector(
-    (state) => state.authReducer
-  );
+  const { loader } = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -144,7 +135,7 @@ const Welcome = (props) => {
         form.setValue("check4", true);
       }
     }
-  }, [watchPasswordField]);
+  }, [watchPasswordField, form]);
 
   const handleAccountCreation = (data, e) => {
     const item = {
@@ -176,8 +167,6 @@ const Welcome = (props) => {
   };
 
   const [userAuthorized, setUserAuthorized] = useState(null);
-  const [showInClientOAuthPrompt, setShowInClientOAuthPrompt] = useState(false);
-  const [inGuestMode, setInGuestMode] = useState(false);
 
   useEffect(() => {
     // this is not the best way to make sure > 1 instances are not registered
@@ -210,10 +199,9 @@ const Welcome = (props) => {
         setUserAuthorized(true);
 
         // the error === string
-        handleError(null);
       });
     });
-  }, [handleError]);
+  }, []);
 
   useEffect(() => {
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
@@ -226,25 +214,21 @@ const Welcome = (props) => {
         if (response.status !== 200) throw new Error();
         const user = await response.json();
         handleUser(user);
-        setShowInClientOAuthPrompt(false);
       } catch (error) {
         console.error(error);
         console.log(
           "Request to Zoom REST API has failed ^, likely because no Zoom access token exists for this user. You must use the authorize API to get an access token"
         );
-        setShowInClientOAuthPrompt(true);
         // setError("There was an error getting your user information");
       }
     }
 
     if (userContextStatus === "authorized") {
-      setInGuestMode(false);
       fetchUser();
     } else if (
       userContextStatus === "unauthenticated" ||
       userContextStatus === "authenticated"
     ) {
-      setInGuestMode(true);
     }
   }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
 
@@ -271,6 +255,14 @@ const Welcome = (props) => {
 
     return response;
   };
+
+  useEffect(() => {
+    const item = {
+      name: "getMeetingContext",
+    };
+    invokeZoomAppsSdk(item);
+  }, []);
+
   return loader ? (
     <LoaderSpin />
   ) : (

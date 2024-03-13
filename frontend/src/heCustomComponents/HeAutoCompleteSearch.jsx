@@ -27,7 +27,7 @@ const HeAutoCompleteSearch = ({
 
   useEffect(() => {
     dispatch(autoCompleteSearch(searchType, search, toast));
-  }, [search]);
+  }, [search, dispatch, searchType]);
 
   return (
     <Command className="rounded-md border shadow-sm">

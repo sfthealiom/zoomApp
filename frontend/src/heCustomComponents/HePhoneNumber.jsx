@@ -35,7 +35,7 @@ const HePhoneNumber = ({
       input = `${input.slice(0, 7)}-${input.slice(7)}`;
     }
     form.setValue(phoneNumField, input);
-  }, [watchPhone, form]);
+  }, [watchPhone, form, phoneNumField]);
 
   return (
     <div>

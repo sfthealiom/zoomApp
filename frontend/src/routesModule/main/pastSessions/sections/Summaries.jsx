@@ -2,6 +2,7 @@ import React from "react";
 import { isObjectEmpty } from "../../../../reduxFolder/CommonFunctions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
   return !isObjectEmpty(aiPreds)
@@ -13,7 +14,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Subjective</h1>
-                      {/* {isCopied === "subjective" ? (
+                      {isCopied === "subjective" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -23,17 +24,19 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                         </div>
                       ) : (
                         <button onClick={() => setIsCopied("subjective")}>
-                          <FontAwesomeIcon
-                            icon={faCopy}
-                            className="h-6 w-6 text-slate-300 cursor-pointer"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                aiPreds?.summaries?.subjectiveClinicalSummary
-                              );
-                            }}
-                          />
+                          <CopyToClipboard
+                            text={JSON.stringify(
+                              aiPreds?.summaries?.subjectiveClinicalSummary
+                            )}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCopy}
+                              className="h-6 w-6 text-slate-300 cursor-pointer"
+                              onClick={() => {}}
+                            />
+                          </CopyToClipboard>
                         </button>
-                      )} */}
+                      )}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -55,7 +58,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Objective</h1>
-                      {/* {isCopied === "objective" ? (
+                      {isCopied === "objective" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -65,17 +68,19 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                         </div>
                       ) : (
                         <button onClick={() => setIsCopied("objective")}>
-                          <FontAwesomeIcon
-                            icon={faCopy}
-                            className="h-6 w-6 text-slate-300 cursor-pointer"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                aiPreds?.summaries?.objectiveClinicalSummary
-                              );
-                            }}
-                          />
+                          <CopyToClipboard
+                            text={JSON.stringify(
+                              aiPreds?.summaries?.objectiveClinicalSummary
+                            )}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCopy}
+                              className="h-6 w-6 text-slate-300 cursor-pointer"
+                              onClick={() => {}}
+                            />
+                          </CopyToClipboard>
                         </button>
-                      )} */}
+                      )}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -97,7 +102,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Assessment</h1>
-                      {/* {isCopied === "assessment" ? (
+                      {isCopied === "assessment" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -107,17 +112,19 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                         </div>
                       ) : (
                         <button onClick={() => setIsCopied("assessment")}>
-                          <FontAwesomeIcon
-                            icon={faCopy}
-                            className="h-6 w-6 text-slate-300 cursor-pointer"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                aiPreds?.summaries?.clinicalAssessment
-                              );
-                            }}
-                          />
+                          <CopyToClipboard
+                            text={JSON.stringify(
+                              aiPreds?.summaries?.clinicalAssessment
+                            )}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCopy}
+                              className="h-6 w-6 text-slate-300 cursor-pointer"
+                              onClick={() => {}}
+                            />
+                          </CopyToClipboard>
                         </button>
-                      )} */}
+                      )}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)
@@ -139,7 +146,7 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                   <div className="w-full h-fit max-h-[300px] shadow-md rounded-md p-4 bg-white">
                     <div className="flex justify-between items-center">
                       <h1 className="font-semibold text-xl">Plan</h1>
-                      {/* {isCopied === "carePlan" ? (
+                      {isCopied === "carePlan" ? (
                         <div className="flex items-center text-slate-400">
                           <FontAwesomeIcon
                             icon={faCheck}
@@ -149,17 +156,19 @@ const Summaries = ({ aiPreds, isCopied, setIsCopied }) => {
                         </div>
                       ) : (
                         <button onClick={() => setIsCopied("carePlan")}>
-                          <FontAwesomeIcon
-                            icon={faCopy}
-                            className="h-6 w-6 text-slate-300 cursor-pointer"
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                aiPreds?.summaries?.carePlanSuggested
-                              );
-                            }}
-                          />
+                          <CopyToClipboard
+                            text={JSON.stringify(
+                              aiPreds?.summaries?.carePlanSuggested
+                            )}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCopy}
+                              className="h-6 w-6 text-slate-300 cursor-pointer"
+                              onClick={() => {}}
+                            />
+                          </CopyToClipboard>
                         </button>
-                      )} */}
+                      )}
                     </div>
                     <div className="h-[150px] text-slate-600 overflow-y-scroll scrollbar mt-2">
                       {!isObjectEmpty(aiPreds)

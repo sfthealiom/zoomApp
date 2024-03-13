@@ -1,6 +1,7 @@
 import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const HeCopy = ({ targetText, targetId }) => {
   const [isCopied, setIsCopied] = useState("");
@@ -19,15 +20,17 @@ const HeCopy = ({ targetText, targetId }) => {
           <span>Copied</span>
         </div>
       ) : (
-        <button onClick={() => setIsCopied(targetId)}>
-          <FontAwesomeIcon
-            icon={faCopy}
-            className="cursor-pointer h-5 w-5 text-slate-300"
-            onClick={() => {
-              navigator.clipboard.writeText(targetText);
-            }}
-          />
-        </button>
+        <CopyToClipboard text={targetText}>
+          <button onClick={() => setIsCopied(targetId)}>
+            <FontAwesomeIcon
+              icon={faCopy}
+              className="cursor-pointer h-5 w-5 text-slate-300"
+              onClick={() => {
+                console.log("copied");
+              }}
+            />
+          </button>
+        </CopyToClipboard>
       )}
     </div>
   );

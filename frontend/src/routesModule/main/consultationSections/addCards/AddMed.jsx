@@ -3,13 +3,12 @@ import React, { useState } from "react";
 
 /** custom imports */
 import {
-  HeButton,
   HeSearchableSelect,
   HeTextInput,
 } from "../../../../heCustomComponents";
 import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
 import {
   dispensedUnitData,

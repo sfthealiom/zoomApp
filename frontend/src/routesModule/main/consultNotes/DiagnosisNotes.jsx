@@ -20,13 +20,13 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
             title={"Differential Diagnoses (DDx)"}
             className={`md:text-[18px]`}
           />
-          {/* <HeCopy
+          <HeCopy
             targetText={JSON.stringify(JSON.stringify(diffDiag))}
             targetId={"diffDiag"}
-          /> */}
+          />
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-          {diffDiag.length > 0 ? (
+          {diffDiag?.length > 0 ? (
             diffDiag?.map((item, index) => {
               return (
                 <Pill
@@ -52,10 +52,10 @@ const Diagnosis = ({ diffDiag, workDiag }) => {
             title={"Working Diagnoses"}
             className={`md:text-[18px]`}
           />
-          {/* <HeCopy
+          <HeCopy
             targetText={JSON.stringify(JSON.stringify(workDiag))}
             targetId={"workDiag"}
-          /> */}
+          />
         </div>
         <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
           {workDiag.length > 0 ? (

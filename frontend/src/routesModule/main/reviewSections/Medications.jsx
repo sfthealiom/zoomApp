@@ -6,10 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 /** custom imports */
 import { HeAutoCompleteSearch, HeHeading2 } from "../../../heCustomComponents";
 import EditMed from "./editCards/EditMed";
-import { companyMetaData } from "../../../assets/myCompanyData";
-
-/** shadcn import */
-import { toast } from "sonner";
 
 /** redux imports */
 import { useSelector } from "react-redux";
