@@ -1,5 +1,5 @@
 /** library imports */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +17,7 @@ import {
   setCC,
   setWebSocketAiPreds,
   completeEncounter,
+  setInitialValues,
 } from "../../reduxFolder/actions/AuthActions";
 import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
@@ -40,6 +41,7 @@ import { SET_ENCOUNTER_NOTES } from "../../reduxFolder/actions/ActionTypes";
 
 const ConsultationScreen = () => {
   const dispatch = useDispatch();
+  const [startEncounter, setStartEncounter] = useState(true);
   const {
     loader,
     encounterCallDetails,
@@ -78,13 +80,12 @@ const ConsultationScreen = () => {
   // };
 
   useEffect(() => {
-    var wss = new WebSocket(
-      "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
-    );
     const providerWebSocketFunction = (count) => {
       count = count++;
       console.log(count, "this is countttt");
-
+      var wss = new WebSocket(
+        "wss://fluidstack-3090-1.healiom-service.com/asr/dev/v1/websocket"
+      );
       wss.onopen = () => {
         wss.send(
           JSON.stringify({
@@ -147,20 +148,8 @@ const ConsultationScreen = () => {
       };
     };
 
-    if (encounterCallDetails) {
-      providerWebSocketFunction();
-    }
-  }, [
-    aiSuggestions?.diagnoses,
-    aiSuggestions?.medications,
-    aiSuggestions?.procedures,
-    aiSuggestions?.procedures_done,
-    dispatch,
-    encounterCallDetails,
-    providerUID,
-    transcriptMessageCount,
-    webSocketAiPreds,
-  ]);
+    providerWebSocketFunction();
+  }, []);
 
   const medicationsSchema = z.object({
     code: z.string().min(1, "Required"),
@@ -229,8 +218,6 @@ const ConsultationScreen = () => {
   });
 
   const handleData = (data, e) => {
-    console.log(data);
-    toast.success("Encounter completed successfully!");
     var updateData_temp = encounterCallDetails;
 
     const notes = {
@@ -276,9 +263,9 @@ const ConsultationScreen = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   setInitialValues();
-  // }, []);
+  useEffect(() => {
+    dispatch(setInitialValues());
+  }, []);
 
   return loader ? (
     <LoaderSpin />

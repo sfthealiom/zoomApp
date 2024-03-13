@@ -100,7 +100,7 @@ const ReviewNotes = () => {
     // put your redux state variables here
     defaultValues: {
       subjective: encounter_notes.subjective_clinical_summary?.join(""),
-      objective: encounter_notes.objectiveClinicalSummary?.join(""),
+      objective: encounter_notes.objective_clinical_summary?.join(""),
       diffDiag: encounter_notes.diagnoses,
       workDiag: encounter_notes.working_diagnoses,
       medications: encounter_notes.medications,

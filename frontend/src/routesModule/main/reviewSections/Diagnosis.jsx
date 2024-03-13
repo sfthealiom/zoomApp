@@ -223,7 +223,7 @@ const Diagnosis = ({ form }) => {
         </div>
         {editWorkDiag ? (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-            {workDiag.length > 0 ? (
+            {workDiag?.length > 0 ? (
               workDiag?.map((item, index) => {
                 return (
                   <Pill
@@ -251,7 +251,7 @@ const Diagnosis = ({ form }) => {
           </div>
         ) : (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
-            {workDiag.length > 0 ? (
+            {workDiag?.length > 0 ? (
               workDiag?.map((item, index) => {
                 return (
                   <Pill
