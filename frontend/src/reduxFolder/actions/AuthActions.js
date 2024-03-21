@@ -469,7 +469,7 @@ export const encounterStartCall = (
             "Error while starting the livestream. Kindly restart or refresh the app"
           );
         }
-        navigate("/consultation-screen");
+        // navigate("/consultation-screen");
         dispatch({
           type: SET_LOADER,
           payload: false,
