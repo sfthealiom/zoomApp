@@ -1119,7 +1119,7 @@ export const getHistoryTranscriptions = (
       type: SET_LOADER,
       payload: true,
     });
-    var data = JSON.stringify({
+    var data = {
       page: 1,
       per_page: 10,
       keys: [
@@ -1134,7 +1134,7 @@ export const getHistoryTranscriptions = (
         "encounter_note",
       ],
       query: provider_id,
-    });
+    };
     var header = {
       Authorization: "Bearer " + jwtAuthToken,
       organization_id: organization_id,
