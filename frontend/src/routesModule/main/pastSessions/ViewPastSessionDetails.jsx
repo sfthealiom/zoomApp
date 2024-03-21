@@ -12,6 +12,7 @@ import {
   ObjectiveNotes,
   OrderNotes,
   ProcedureNotes,
+  RelativeDiagnosesNotes,
   SubjectiveNotes,
 } from "../consultNotes";
 import { companyMetaData } from "../../../assets/myCompanyData";
@@ -69,6 +70,9 @@ const ViewPastSessionDetails = () => {
                 </div>
                 <ObjectiveNotes
                   objectiveData={selHistoryData?.objective_clinical_summary}
+                />
+                <RelativeDiagnosesNotes
+                  diffDiag={selHistoryData?.previous_diagnoses}
                 />
                 <DiagnosisNotes
                   diffDiag={selHistoryData?.diagnoses}
