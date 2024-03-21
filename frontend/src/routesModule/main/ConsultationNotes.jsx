@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 /** custom imports */
 import { LoaderSpin } from "../../components/helpers";
 import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
-import { HeButton } from "../../heCustomComponents";
+import { HeButton, HeHeading2 } from "../../heCustomComponents";
 import {
   CareTaskNotes,
   DiagnosisNotes,
@@ -13,6 +13,7 @@ import {
   ObjectiveNotes,
   OrderNotes,
   ProcedureNotes,
+  RelativeDiagnosesNotes,
   SubjectiveNotes,
 } from "./consultNotes";
 import { companyMetaData } from "../../assets/myCompanyData";
@@ -58,7 +59,7 @@ const ConsultationNotes = () => {
       )
     );
   }, [dispatch, encounterCallDetails.encounterid, jwtToken, navigate]);
-
+  console.log("encounter_notes", encounter_notes);
   return loader ? (
     <LoaderSpin />
   ) : (
@@ -70,19 +71,12 @@ const ConsultationNotes = () => {
             style={{ backgroundColor: companyMetaData?.accentWhite }}
           >
             <div className="w-full flex flex-col gap-4">
-              <CopyToClipboard
-                text={encounter_notes.subjective_clinical_summary}
-              >
-                <HeButton
-                  title={"Copy to Clipboard"}
-                  titleClass={"text-slate-600 text-base"}
-                  className={
-                    "w-full h-12 border-2 border-slate-400 text-slate-600"
-                  }
-                  bgColor={companyMetaData?.accentGray}
-                  onPress={() => console.log("test")}
-                />
-              </CopyToClipboard>
+              <HeHeading2
+                title={`ID: ${encounterCallDetails.care_request_id
+                  ?.split("__")[2]
+                  ?.slice(-6)}`}
+                className={`md:text-[18px]`}
+              />
               <SubjectiveNotes
                 subjectiveData={encounter_notes.subjective_clinical_summary}
               />
@@ -91,6 +85,9 @@ const ConsultationNotes = () => {
               <>
                 <ObjectiveNotes
                   objectiveData={encounter_notes?.objective_clinical_summary}
+                />
+                <RelativeDiagnosesNotes
+                  diffDiag={encounter_notes?.previous_diagnoses}
                 />
                 <DiagnosisNotes
                   diffDiag={encounter_notes?.diagnoses}
@@ -114,10 +111,10 @@ const ConsultationNotes = () => {
             }}
           >
             <HeButton
-              title={"New Recording"}
-              icon={
-                <FontAwesomeIcon icon={faMicrophoneLines} className="h-4 w-4" />
-              }
+              title={"Done"}
+              // icon={
+              //   <FontAwesomeIcon icon={faMicrophoneLines} className="h-4 w-4" />
+              // }
               className={`w-full mt-4 flex-row-reverse`}
               onPress={() => {
                 dispatch(setInitialValues());

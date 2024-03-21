@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
@@ -37,7 +37,13 @@ const HeAISuggesstions = ({
                   name={item?.code_value}
                   icon={<FontAwesomeIcon icon={faPlus} />}
                   pillColor={companyMetaData?.accentWhite}
-                  textColor={companyMetaData?.aiDark}
+                  textColor={
+                    form
+                      ?.getValues(fieldName)
+                      ?.some((fieldItem) => fieldItem?.code === item?.code)
+                      ? companyMetaData?.aiDeselect
+                      : companyMetaData?.aiDark
+                  }
                   onPress={() => {
                     const previousValues = form?.getValues(fieldName);
                     const existingItems = previousValues.filter(
@@ -45,20 +51,20 @@ const HeAISuggesstions = ({
                     );
                     if (!existingItems.length) {
                       form.setValue(fieldName, [
-                        ...previousValues,
                         {
                           code: item?.code,
                           display: item?.code_value,
                           ...attributes,
                         },
+                        ...previousValues,
                       ]);
                       if (fieldName2) {
                         form.setValue(fieldName2, [
-                          ...previousValues,
                           {
                             code: item?.code,
                             display: item?.code_value,
                           },
+                          ...previousValues,
                         ]);
                       }
                     }

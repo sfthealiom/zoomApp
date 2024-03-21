@@ -8,7 +8,10 @@ const Objective = ({ objectiveData }) => {
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
-        <HeHeading2 title={"Objective Summary"} className={`md:text-[18px]`} />
+        <HeHeading2
+          title={"Objective Summary / Physical Exam"}
+          className={`md:text-[18px]`}
+        />
         <div className="flex items-center gap-2 md:gap-4">
           <HeCopy targetText={objectiveData} targetId={"Objective"} />
         </div>

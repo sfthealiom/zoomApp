@@ -15,7 +15,9 @@ const ProcedureNotes = ({ procedureNotes }) => {
       <div className="flex justify-between items-center">
         <HeHeading2 title={"Procedures"} className={`md:text-[18px]`} />
         <HeCopy
-          targetText={JSON.stringify(JSON.stringify(procedureNotes))}
+          targetText={JSON.stringify(
+            procedureNotes?.map((item) => item?.display)
+          )}
           targetId={"orders"}
         />
       </div>
@@ -29,7 +31,7 @@ const ProcedureNotes = ({ procedureNotes }) => {
                     key={index}
                     code={item?.code}
                     code_value={item?.display || item?.code_value}
-                    data={item?.reason}
+                    value={item?.reason}
                   />
                 );
               })}

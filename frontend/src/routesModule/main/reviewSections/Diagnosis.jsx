@@ -1,7 +1,7 @@
 /** library imports */
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 /** custom imports */
 import { companyMetaData } from "../../../assets/myCompanyData";
@@ -96,10 +96,16 @@ const Diagnosis = ({ form }) => {
           {!editDiffDiag ? (
             <FontAwesomeIcon
               icon={faEdit}
-              className="cursor-pointer h-5 w-5 text-slate-300"
+              className="cursor-pointer h-5 w-5 text-gray-500"
               onClick={() => setEditDiffDiag(true)}
             />
-          ) : null}
+          ) : (
+            <FontAwesomeIcon
+              icon={faCheck}
+              className="cursor-pointer h-5 w-5 text-gray-500"
+              onClick={() => setEditDiffDiag(false)}
+            />
+          )}
         </div>
         {editDiffDiag ? (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">
@@ -136,6 +142,7 @@ const Diagnosis = ({ form }) => {
                       placeholder={"Notes..."}
                       className={"flex flex-col gap-2 rounded-md px-4 pb-2"}
                       innerTextClass={"border-none px-2 rounded-md"}
+                      value={diffDiag[index].reason}
                     />
                   </div>
                 );
@@ -183,6 +190,7 @@ const Diagnosis = ({ form }) => {
                       disabledStatus={true}
                       className={"flex flex-col gap-2 rounded-md px-4 pb-2"}
                       innerTextClass={"border-none px-2 rounded-md"}
+                      value={diffDiag[index].reason}
                     />
                   </div>
                 );
@@ -216,10 +224,16 @@ const Diagnosis = ({ form }) => {
           {!editWorkDiag ? (
             <FontAwesomeIcon
               icon={faEdit}
-              className="cursor-pointer h-5 w-5 text-slate-300"
+              className="cursor-pointer h-5 w-5 text-gray-500"
               onClick={() => setEditWorkDiag(true)}
             />
-          ) : null}
+          ) : (
+            <FontAwesomeIcon
+              icon={faCheck}
+              className="cursor-pointer h-5 w-5 text-gray-500"
+              onClick={() => setEditWorkDiag(false)}
+            />
+          )}
         </div>
         {editWorkDiag ? (
           <div className="w-full h-fit max-h-[200px] overflow-scroll flex flex-col gap-2 scrollbar rounded-md">

@@ -25,7 +25,7 @@ const Medications = ({ form, aiData }) => {
     dispense_unit: "",
     route: "",
     frequency: "",
-    substitutions_allowed: "",
+    substitutions_allowed: false,
     reason: "",
     pharmacy_notes: "",
   };

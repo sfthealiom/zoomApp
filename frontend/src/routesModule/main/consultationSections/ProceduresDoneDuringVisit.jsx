@@ -34,6 +34,7 @@ const ProceduresDoneDuringVisit = ({ form, aiData }) => {
                   fieldName={"procDone"}
                   index={index}
                   item={item}
+                  value={watchProcDone[index].reason}
                 />
               );
             })}

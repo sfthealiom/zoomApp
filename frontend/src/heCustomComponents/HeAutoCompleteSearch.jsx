@@ -13,6 +13,7 @@ import { toast } from "sonner";
 /** redux imports */
 import { useDispatch } from "react-redux";
 import { autoCompleteSearch } from "../reduxFolder/CommonActions";
+import { companyMetaData } from "../assets/myCompanyData";
 
 const HeAutoCompleteSearch = ({
   form,
@@ -68,31 +69,40 @@ const HeAutoCompleteSearch = ({
                   name={item?.item}
                   icon={<FontAwesomeIcon icon={faPlus} />}
                   onPress={() => {
+                    setSearch("");
                     const previousValues = form?.getValues(fieldName);
                     const existingItems = previousValues.filter(
                       (prev) => prev.code === item?.id
                     );
                     if (!existingItems.length) {
                       form.setValue(fieldName, [
-                        ...previousValues,
                         {
                           code: item?.id,
                           display: item?.item,
                           ...attributes,
                         },
+                        ...previousValues,
                       ]);
                       if (fieldName2) {
                         form.setValue(fieldName2, [
-                          ...previousValues,
                           {
                             code: item?.id,
                             display: item?.item,
+                            ...attributes,
                           },
+                          ...previousValues,
                         ]);
                       }
                     }
                   }}
                   className={"my-2"}
+                  textColor={
+                    form
+                      ?.getValues(fieldName)
+                      ?.some((fieldItem) => fieldItem?.code === item?.id)
+                      ? companyMetaData?.accentBlackLight
+                      : companyMetaData?.accentBlack
+                  }
                 />
               ))}
             </CommandGroup>

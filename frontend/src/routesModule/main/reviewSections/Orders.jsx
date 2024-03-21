@@ -1,6 +1,6 @@
 /** library imports */
 import React, { useState } from "react";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /** custom imports */
@@ -33,10 +33,16 @@ const Orders = ({ form }) => {
         {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
-            className="cursor-pointer h-5 w-5 text-slate-300"
+            className="cursor-pointer h-5 w-5 text-gray-500"
             onClick={() => setEdit(true)}
           />
-        ) : null}
+        ) : (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className="cursor-pointer h-5 w-5 text-gray-500"
+            onClick={() => setEdit(false)}
+          />
+        )}
       </div>
       <div className="w-full flex flex-col gap-2">
         {edit ? (
@@ -50,6 +56,7 @@ const Orders = ({ form }) => {
                     fieldName={"orders"}
                     index={index}
                     item={item}
+                    value={watchOrders[index].order_fulfilment}
                   />
                 );
               })}
@@ -66,6 +73,7 @@ const Orders = ({ form }) => {
                   code={item?.code}
                   code_value={item?.display}
                   data={item?.inClinic}
+                  value={watchOrders[index].order_fulfilment}
                 />
               );
             })}

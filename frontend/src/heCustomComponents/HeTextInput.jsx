@@ -19,6 +19,7 @@ const HeTextInput = ({
   className,
   maxLength,
   innerTextClass,
+  value,
 }) => {
   return (
     <FormField
@@ -39,6 +40,7 @@ const HeTextInput = ({
               placeholder={placeholder}
               {...field}
               disabled={disabledStatus}
+              value={value}
             />
           </FormControl>
           <FormMessage />

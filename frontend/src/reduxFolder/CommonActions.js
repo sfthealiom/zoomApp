@@ -6,6 +6,7 @@ import {
   SET_AUTOCOMPLETE_LABS_DATA,
   SET_AUTOCOMPLETE_MED_DATA,
   SET_AUTOCOMPLETE_PROC_DONE_DATA,
+  SET_AUTOCOMPLETE_RELATIVE_DIAGNOSES_DATA,
   SET_LABEL_DATA,
   SET_LOADER,
 } from "./actions/ActionTypes";
@@ -141,14 +142,16 @@ export const getUserToken = async (data, dispatch, toast, navigate, type) => {
 /** autocomplete API for searching anything with title and text */
 export const autoCompleteSearch = (title, text, toast) => {
   return async (dispatch) => {
+    const titleMappings = {
+      procedures_done: "procedures",
+      relativeDiagnoses: "diagnoses",
+    };
+
+    let realTitle = titleMappings[title] || title;
     const config = {
       method: "get",
       maxBodyLength: Infinity,
-      url:
-        API_URL +
-        `/encounter_autocomplete?title=${
-          title === "procedures_done" ? "procedures" : title
-        }&text=${text}`,
+      url: API_URL + `/encounter_autocomplete?title=${realTitle}&text=${text}`,
       headers: {},
     };
     axios
@@ -161,6 +164,12 @@ export const autoCompleteSearch = (title, text, toast) => {
               id: item?.code,
               item: item?.code_value,
             };
+          });
+        }
+        if (title === "relativeDiagnoses") {
+          dispatch({
+            type: SET_AUTOCOMPLETE_RELATIVE_DIAGNOSES_DATA,
+            payload: data,
           });
         }
         if (title === "diagnoses") {

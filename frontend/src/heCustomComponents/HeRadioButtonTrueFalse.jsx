@@ -16,7 +16,9 @@ const HeRadioButtonTrueFalse = ({
   value1,
   value2,
   className,
+  value,
 }) => {
+  console.log("defaultValue", value);
   return (
     <FormField
       control={form.control}
@@ -29,7 +31,7 @@ const HeRadioButtonTrueFalse = ({
           <FormControl className="mt-2">
             <RadioGroup
               onValueChange={field.onChange}
-              defaultValue={field.value}
+              defaultValue={value}
               disabled={disabledStatus}
               className="flex justify-between"
             >

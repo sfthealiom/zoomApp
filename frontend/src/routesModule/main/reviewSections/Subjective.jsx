@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 /** custom imports */
 import { HeHeading2, HeTextarea } from "../../../heCustomComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const Subjective = ({ form }) => {
   const watchSubjective = form.watch("subjective");
@@ -25,10 +25,16 @@ const Subjective = ({ form }) => {
         {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
-            className="cursor-pointer h-5 w-5 text-slate-300"
+            className="cursor-pointer h-5 w-5 text-gray-500"
             onClick={() => setEdit(true)}
           />
-        ) : null}
+        ) : (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className="cursor-pointer h-5 w-5 text-gray-500"
+            onClick={() => setEdit(false)}
+          />
+        )}
       </div>
       <div className="rounded-md">
         {watchSubjective?.length > 0 ? (
@@ -38,7 +44,7 @@ const Subjective = ({ form }) => {
             disabledStatus={!edit}
             placeholder={"Sometimes I feel..."}
             innerTextClass={
-              "border-slate-300 min-h-[200px] disbled:cursor-not-allowed"
+              "border-slate-300 min-h-[120px] disbled:cursor-not-allowed"
             }
           />
         ) : edit ? (
@@ -46,7 +52,7 @@ const Subjective = ({ form }) => {
             form={form}
             fieldName={`subjective`}
             placeholder={"Sometimes I feel..."}
-            innerTextClass={"border-slate-300 min-h-[200px]"}
+            innerTextClass={"border-slate-300 min-h-[120px]"}
           />
         ) : (
           <span className="text-sm text-slate-500">

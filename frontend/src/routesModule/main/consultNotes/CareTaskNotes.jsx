@@ -12,10 +12,7 @@ const CareTaskNotes = ({ careNotes }) => {
           title={"Care Task and Directives"}
           className={`md:text-[18px]`}
         />
-        <HeCopy
-          targetText={JSON.stringify(JSON.stringify(careNotes))}
-          targetId={"careTask"}
-        />
+        <HeCopy targetText={JSON.stringify(careNotes)} targetId={"careTask"} />
       </div>
       <div className="rounded-md">
         {careNotes?.length > 0 ? (

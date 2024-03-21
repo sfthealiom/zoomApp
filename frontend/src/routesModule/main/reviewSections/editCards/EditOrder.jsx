@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import HeRadioButtonTrueFalse from "../../../../heCustomComponents/HeRadioButtonTrueFalse";
 
-const EditOrder = ({ form, fieldName, index, item }) => {
+const EditOrder = ({ form, fieldName, index, item, value }) => {
   return (
     <div
       className="px-4 py-3 flex flex-col gap-1 rounded-md"
@@ -35,6 +35,7 @@ const EditOrder = ({ form, fieldName, index, item }) => {
         value1={"Yes"}
         value2={"No"}
         className={`max-w-sm mt-2`}
+        value={value}
       />
     </div>
   );

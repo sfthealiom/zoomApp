@@ -10,6 +10,7 @@ const Pill = ({
   className,
   onPress,
   onIconClick,
+  reason,
 }) => {
   return (
     <div
@@ -29,7 +30,20 @@ const Pill = ({
         >
           {name}
         </h1>
-        <h2>{code?.split(":")[1] || code}</h2>
+        <h2
+          style={{
+            color: textColor || "black",
+          }}
+        >
+          {code?.split(":")[1] || code}
+        </h2>
+        <h2
+          style={{
+            color: textColor || "black",
+          }}
+        >
+          {reason ?? ""}
+        </h2>
       </div>
       {/* <div
         className="w-full md:w-fit flex items-center justify-between gap-1"
@@ -42,6 +56,7 @@ const Pill = ({
         <span
           className="flex items-center justify-center cursor-pointer"
           onClick={onIconClick}
+          color={textColor || "black"}
         >
           {icon}
         </span>

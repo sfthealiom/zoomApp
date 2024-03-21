@@ -5,3 +5,4 @@ export { default as Medications } from "./Medications";
 export { default as Orders } from "./Orders";
 export { default as ProceduresDoneDuringVisit } from "./ProceduresDoneDuringVisit";
 export { default as CareTaskDirectives } from "./CareTaskDirectives";
+export { default as RelativeDiagnoses } from "./RelativeDiagnosis";

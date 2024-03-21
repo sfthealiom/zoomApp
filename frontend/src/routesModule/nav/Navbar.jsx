@@ -22,8 +22,11 @@ import axios from "axios";
 /** redux imports */
 import { useDispatch, useSelector } from "react-redux";
 import { isObjectEmpty } from "../../reduxFolder/CommonFunctions";
-import { signOut } from "../../reduxFolder/actions/AuthActions";
-
+import {
+  setInitialValues,
+  signOut,
+} from "../../reduxFolder/actions/AuthActions";
+import companyLogo from "../../assets/images/companyLogo.png";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { currentUserData, meetingId } = useSelector(
@@ -34,14 +37,21 @@ const Navbar = () => {
   return (
     <div
       className="bg-white flex items-center justify-between select-none shadow-sm"
-      style={{ backgroundColor: companyMetaData?.primary }}
+      style={{ backgroundColor: companyMetaData?.bgColor }}
     >
       {/* logo */}
       <div
         className="flex gap-2 items-center px-4 py-2 cursor-pointer"
-        // onClick={() => navigate("/start-new-consultation")}
+        onClick={() =>
+          !isObjectEmpty(currentUserData) && navigate("/start-new-consultation")
+        }
       >
-        <h1 className="font-bold text-lg md:text-2xl text-white">
+        <img
+          src={companyLogo}
+          alt="company.png"
+          className="w-[30px] rounded-md p-1"
+        />
+        <h1 className="font-bold text-lg md:text-2xl text-black">
           {companyMetaData.companyName}
         </h1>
       </div>
@@ -52,7 +62,8 @@ const Navbar = () => {
               icon={faGear}
               className="text-slate-200 h-4 w-4 p-2 rounded-md cursor-pointer"
               style={{
-                backgroundColor: companyMetaData?.secondary,
+                backgroundColor: companyMetaData?.accentGray,
+                color: "black",
               }}
             />
           </DropdownMenuTrigger>
@@ -69,6 +80,7 @@ const Navbar = () => {
               className="cursor-pointer"
               onClick={() => {
                 dispatch(signOut(navigate, toast));
+                dispatch(setInitialValues());
                 try {
                   axios.post("/api/zoomapp/stoplivestream", {
                     meetingId: meetingId,

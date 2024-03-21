@@ -18,7 +18,7 @@ const OrderNotes = ({ orderNotes }) => {
           className={`md:text-[18px]`}
         />
         <HeCopy
-          targetText={JSON.stringify(JSON.stringify(orderNotes))}
+          targetText={JSON.stringify(orderNotes?.map((item) => item?.display))}
           targetId={"orders"}
         />
       </div>
@@ -32,7 +32,7 @@ const OrderNotes = ({ orderNotes }) => {
                     key={index}
                     code={item?.code}
                     code_value={item?.display || item?.code_value}
-                    data={item?.order_fulfillment}
+                    value={item?.order_fulfillment}
                   />
                 );
               })}

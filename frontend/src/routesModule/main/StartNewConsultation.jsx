@@ -1,3 +1,4 @@
+/* globals zoomSdk */
 /** library imports */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +25,7 @@ import {
   guestUserSignUp,
   getSelectedTranscriptDetails,
 } from "../../reduxFolder/actions/AuthActions";
+import { SET_MEETING_ID } from "../../reduxFolder/actions/ActionTypes";
 
 const StartNewConsultation = () => {
   const dispatch = useDispatch();
@@ -46,6 +48,32 @@ const StartNewConsultation = () => {
     setListOfTranscripts(historyList);
   }, [historyList]);
 
+  const invokeZoomAppsSdk = (api) => {
+    const { name, buttonName = "", options = null } = api;
+    const zoomAppsSdkApi = zoomSdk[name].bind(zoomSdk);
+    const response = zoomAppsSdkApi(options)
+      .then((clientResponse) => {
+        dispatch({
+          type: SET_MEETING_ID,
+          payload: clientResponse?.meetingID,
+        });
+      })
+      .catch((clientError) => {
+        console.log(
+          `${buttonName || name} error: ${JSON.stringify(clientError)}`
+        );
+      });
+
+    return response;
+  };
+
+  useEffect(() => {
+    const item = {
+      name: "getMeetingContext",
+    };
+    invokeZoomAppsSdk(item);
+  }, []);
+
   return loader ? (
     <LoaderSpin />
   ) : (
@@ -57,7 +85,7 @@ const StartNewConsultation = () => {
         >
           <div className="flex flex-col items-center">
             <HeHeading1
-              title={`Hi, ${currentUserData?.first_name}`}
+              title={`Hi, ${currentUserData?.first_name ?? ""}`}
               className={`text-center`}
             />
             <HeInfoText
@@ -96,9 +124,6 @@ const StartNewConsultation = () => {
                     "zoom encounter"
                   )
                 );
-                // const response = axios.post("/api/zoomapp/livestream", {
-                //   meetingId: "83362685615",
-                // });
               }}
             />
           </div>
@@ -109,7 +134,7 @@ const StartNewConsultation = () => {
           className="w-full flex flex-col gap-2 border border-slate-300 rounded-xl shadow-md p-4 md:p-8"
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
-          <HeHeading2 title={"Past Sessions"} className={"text-left"} />
+          <HeHeading2 title={"Past Consultations"} className={"text-left"} />
           {listOfTranscripts?.length > 0 ? (
             listOfTranscripts?.map((item, index) => {
               return (
@@ -117,7 +142,7 @@ const StartNewConsultation = () => {
                   key={index}
                   className="w-full text-sm h-fit cursor-pointer border border-slate-400 p-2 rounded-md"
                   style={{
-                    backgroundColor: companyMetaData?.primaryLightest,
+                    backgroundColor: companyMetaData?.accentGray,
                   }}
                   onClick={() => {
                     dispatch(
@@ -132,13 +157,23 @@ const StartNewConsultation = () => {
                     );
                   }}
                 >
-                  <div className="break-words font-semibold">
-                    Encounter Id:
-                    {item?.care_request_id?.split("__")[2]?.slice(-6)}
+                  <div className="text-sm">
+                    {`${moment(
+                      item?.create_dt,
+                      "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
+                    ).format("YYYY-MM-DD")} ${moment(
+                      item?.create_tm,
+                      "HH:mm:ss.SSSSSS"
+                    ).format("HH:mm")} `}
+                    <span className="text-gray-500 text-sm">
+                      {moment(item?.create_dt).fromNow()}
+                    </span>
                   </div>
-                  <div className="">
-                    {moment(item?.create_tm, "HH:mm:ss.SSSSSS").format("HH:mm")}{" "}
-                    {item?.create_dt}
+                  <div className="text-sm">{`Encounter ID: ${item?.care_request_id
+                    ?.split("__")[2]
+                    ?.slice(-6)}`}</div>
+                  <div className="w-full truncate">
+                    {item?.subjective_summary}
                   </div>
                 </div>
               );

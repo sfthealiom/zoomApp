@@ -27,6 +27,7 @@ import {
   Objective,
   Orders,
   ProceduresDoneDuringVisit,
+  RelativeDiagnoses,
   Subjective,
 } from "./consultationSections";
 import { companyMetaData } from "../../assets/myCompanyData";
@@ -184,6 +185,11 @@ const ConsultationScreen = () => {
       required_error: "Required",
     }),
   });
+  const relativeDiagSchema = z.object({
+    code: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    reason: z.string().optional(),
+  });
   const procDoneSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
@@ -204,6 +210,7 @@ const ConsultationScreen = () => {
     medications: z.array(medicationsSchema).optional(),
     orders: z.array(ordersSchema).optional(),
     procDone: z.array(procDoneSchema).optional(),
+    relativeDiagnoses: z.array(relativeDiagSchema).optional(),
     // careTaskNotes: z.string().optional(),
   });
 
@@ -216,6 +223,7 @@ const ConsultationScreen = () => {
       medications: [],
       orders: [],
       procDone: [],
+      relativeDiagnoses: [],
       // careTaskNotes: "",
     },
   });
@@ -228,6 +236,7 @@ const ConsultationScreen = () => {
       ai_predictions: true,
       patient_location: null,
       diagnoses: data.diffDiag,
+      previous_diagnoses: data.relativeDiagnoses,
       diagnoses_comments: null,
       medications: data.medications,
       working_diagnoses: data.workDiag,
@@ -252,9 +261,14 @@ const ConsultationScreen = () => {
       type: SET_ENCOUNTER_NOTES,
       payload: notes,
     });
-    axios.post("/api/zoomapp/stoplivestream", {
-      meetingId: meetingId,
-    });
+    try {
+      axios.post("/api/zoomapp/stoplivestream", {
+        meetingId: meetingId,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     navigate("/review-consultation-notes");
   };
 
@@ -279,6 +293,17 @@ const ConsultationScreen = () => {
           className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
+          <HeHeading2
+            title={`ID: ${encounterCallDetails.care_request_id
+              ?.split("__")[2]
+              ?.slice(-6)}`}
+            className={`md:text-[18px]`}
+          />
+        </div>
+        <div
+          className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
+          style={{ backgroundColor: companyMetaData?.accentWhite }}
+        >
           <HeHeading2 title={"Note Builder"} className={`md:text-[18px]`} />
           <div
             className="rounded-md flex flex-col gap-2"
@@ -291,7 +316,7 @@ const ConsultationScreen = () => {
               />
               <span>Live CC</span>
             </div>
-            <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
+            <p className="h-[120px] overflow-y-scroll text-slate-600 scrollbar px-4 py-3 text-left">
               {closedCaptions}
             </p>
           </div>
@@ -306,7 +331,7 @@ const ConsultationScreen = () => {
               />
               <span>Live Transcription with Long Lookback</span>
             </div>
-            <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 pb-3">
+            <p className="h-[120px] overflow-y-scroll text-slate-600 scrollbar px-4 py-3 text-left">
               {allTranscript}
             </p>
           </div>
@@ -322,6 +347,7 @@ const ConsultationScreen = () => {
                 aiData={webSocketAiPreds?.subjectiveClinicalSummary}
               />
               <Objective aiData={webSocketAiPreds?.objectiveClinicalSummary} />
+              <RelativeDiagnoses form={form} />
               <Diagnosis form={form} aiData={aiSuggestions?.diagnoses} />
               <Medications form={form} aiData={aiSuggestions?.medications} />
               <Orders form={form} />

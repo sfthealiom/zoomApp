@@ -5,3 +5,4 @@ export { default as MedicationNotes } from "./MedicationNotes";
 export { default as OrderNotes } from "./OrderNotes";
 export { default as ProcedureNotes } from "./ProcedureNotes";
 export { default as CareTaskNotes } from "./CareTaskNotes";
+export { default as RelativeDiagnosesNotes } from "./RelativeDiagnosisNotes";

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 /** custom imports */
 import { HeHeading2, HeTextarea } from "../../../heCustomComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const Objective = ({ form }) => {
   const watchObjective = form.watch("objective");
@@ -14,14 +14,23 @@ const Objective = ({ form }) => {
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
-        <HeHeading2 title={"Objective Summary"} className={`md:text-[18px]`} />
+        <HeHeading2
+          title={"Objective Summary / Physical Exam"}
+          className={`md:text-[18px]`}
+        />
         {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
-            className="cursor-pointer h-5 w-5 text-slate-300"
+            className="cursor-pointer h-5 w-5 text-gray-500"
             onClick={() => setEdit(true)}
           />
-        ) : null}{" "}
+        ) : (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className="cursor-pointer h-5 w-5 text-gray-500"
+            onClick={() => setEdit(false)}
+          />
+        )}
       </div>
       <div className="rounded-md">
         {watchObjective?.length > 0 ? (
@@ -31,7 +40,7 @@ const Objective = ({ form }) => {
             fieldName={`objective`}
             placeholder={"Sometimes I feel..."}
             innerTextClass={
-              "border-slate-300 min-h-[200px] disbled:cursor-not-allowed"
+              "border-slate-300 min-h-[120px] disbled:cursor-not-allowed"
             }
           />
         ) : edit ? (
@@ -39,7 +48,7 @@ const Objective = ({ form }) => {
             form={form}
             fieldName={`objective`}
             placeholder={"Sometimes I feel..."}
-            innerTextClass={"border-slate-300 min-h-[200px]"}
+            innerTextClass={"border-slate-300 min-h-[120px]"}
           />
         ) : (
           <span className="text-sm text-slate-500">

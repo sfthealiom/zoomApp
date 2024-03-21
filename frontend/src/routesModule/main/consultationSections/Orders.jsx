@@ -15,14 +15,14 @@ const Orders = ({ form }) => {
 
   const { autoCompleteDataLabs } = useSelector((state) => state.authReducer);
   const attributes = {
-    orderReason: "",
+    order_fulfilment: false,
   };
 
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <HeHeading2
-          title={"Orders (Labs, Imaging and Procedures to be done)"}
+          title={"Orders (Labs, Imaging and Procedures)"}
           className={`md:text-[18px]`}
         />
       </div>
@@ -37,6 +37,7 @@ const Orders = ({ form }) => {
                   fieldName={"orders"}
                   index={index}
                   item={item}
+                  value={watchOrders[index].order_fulfilment}
                 />
               );
             })}

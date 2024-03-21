@@ -293,16 +293,14 @@ module.exports = {
   
       axios.request(startConfig)
       .then((response) => {
-        axios.request(config).then((res)=> {
-          console.log('test');
-          return res.send({status:'success'});
+        axios.request(config).then((apiResponse)=> {
+          return res.status(200).json({sucess: true, message: "LiveStream started!"});
         }).catch((err)=>{
-          return res.send({status: 'error'});
+          return res.status(202).json({error: true, message: err?.code})
         })
       })
       .catch((error) => {
-        console.log(error);
-        return res.send({status:'error'});
+        return res.status(202).json({error: true, message: error?.code})
       })
     } catch (error) {
       console.log("something went wrong");

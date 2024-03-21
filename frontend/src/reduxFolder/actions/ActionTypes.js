@@ -18,6 +18,8 @@ export const SET_PATIENT_USER_DATA = "set_patient_user_data";
 
 /** provider */
 export const SET_AUTOCOMPLETE_DIAGNOSES_DATA = "set_autcomplete_diagnoses_data";
+export const SET_AUTOCOMPLETE_RELATIVE_DIAGNOSES_DATA =
+  "set_autcomplete_relative_diagnoses_data";
 export const SET_AUTOCOMPLETE_MED_DATA = "set_autcomplete_med_data";
 export const SET_AUTOCOMPLETE_ALLERGY_DATA = "set_autcomplete_allergy_data";
 export const SET_AUTOCOMPLETE_LABS_DATA = "set_autcomplete_labs_data";

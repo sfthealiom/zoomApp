@@ -122,6 +122,10 @@ export const setInitialValues = () => {
       type: SET_ENCOUNTER_NOTES,
       payload: notes,
     });
+    dispatch({
+      type: SET_HISTORY_LIST,
+      payload: [],
+    });
   };
 };
 
@@ -411,9 +415,9 @@ export const encounterStartCall = (
       care_request_id: care_request_id === "" ? sessionname : care_request_id,
       provider_wait_time: provider_wait_time,
     };
-    axios
+    await axios
       .post(url, updateData, { headers: header })
-      .then((response) => {
+      .then(async (response) => {
         dispatch({
           type: SET_ENCOUNTER_CALL_DETAILS,
           payload: response.data[0].data,
@@ -449,18 +453,27 @@ export const encounterStartCall = (
           },
         });
         try {
-          axios.post("/api/zoomapp/livestream", {
+          const streamResponse = await axios.post("/api/zoomapp/livestream", {
             meetingId: meetingId,
             care_request_id: response.data[0].data?.care_request_id,
           });
+          if (streamResponse.status === 200) {
+            navigate("/consultation-screen");
+          } else {
+            toast.error(
+              "Error while starting the livestream. Kindly restart or refresh the app"
+            );
+          }
         } catch (error) {
-          console.log(error);
+          toast.error(
+            "Error while starting the livestream. Kindly restart or refresh the app"
+          );
         }
+        navigate("/consultation-screen");
         dispatch({
           type: SET_LOADER,
           payload: false,
         });
-        navigate("/consultation-screen");
       })
       .catch((error) => {
         toast.error(
@@ -1106,7 +1119,6 @@ export const getHistoryTranscriptions = (
       type: SET_LOADER,
       payload: true,
     });
-
     var data = JSON.stringify({
       page: 1,
       per_page: 10,
@@ -1119,10 +1131,10 @@ export const getHistoryTranscriptions = (
         "status",
         "video_urls",
         "care_req_type",
+        "encounter_note",
       ],
       query: provider_id,
     });
-
     var header = {
       Authorization: "Bearer " + jwtAuthToken,
       organization_id: organization_id,

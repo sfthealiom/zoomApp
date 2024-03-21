@@ -15,7 +15,7 @@ const HeCopy = ({ targetText, targetId }) => {
   return (
     <div>
       {isCopied === targetId ? (
-        <div className="flex items-center text-slate-500">
+        <div className="flex items-center text-gray-500">
           <FontAwesomeIcon icon={faCheck} className="h-4 w-4 mr-1" />
           <span>Copied</span>
         </div>
@@ -24,7 +24,7 @@ const HeCopy = ({ targetText, targetId }) => {
           <button onClick={() => setIsCopied(targetId)}>
             <FontAwesomeIcon
               icon={faCopy}
-              className="cursor-pointer h-5 w-5 text-slate-300"
+              className="cursor-pointer h-5 w-5 text-gray-500"
               onClick={() => {
                 console.log("copied");
               }}

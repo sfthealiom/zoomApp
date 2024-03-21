@@ -14,6 +14,7 @@ import {
 } from "../../../../reduxFolder/CommonFunctions";
 
 const ViewMed = ({ form, fieldName, index, watchMeds }) => {
+  console.log("watchMes", watchMeds);
   return (
     <div
       className="px-4 py-3 flex flex-col gap-2 rounded-md"
@@ -28,12 +29,13 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
       <div className="flex flex-col items-start gap-2 md:flex-row">
         <HeTextInput
           form={form}
-          fieldName={`medications[${index}].quantity`}
+          fieldName={`medications[${index}].quantity_unit`}
           labelName={`Quantity`}
           placeholder={"1"}
           disabledStatus={true}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+          value={watchMeds[index].quantity_unit}
         />
         <HeTextInput
           form={form}
@@ -43,15 +45,17 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
           disabledStatus={true}
+          value={watchMeds[index].refills}
         />
         <HeTextInput
           form={form}
-          fieldName={`medications[${index}].daySupply`}
+          fieldName={`medications[${index}].days_supply`}
           labelName={`Days supply`}
           placeholder={"5"}
           disabledStatus={true}
           className={"flex flex-col rounded-md"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+          value={watchMeds[index].days_supply}
         />
       </div>
       <div className="w-full flex items-start justify-between gap-2">
@@ -65,6 +69,7 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
+          value={watchMeds[index].dispense_unit}
         />
         <HeSearchableSelect
           form={form}
@@ -76,15 +81,17 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
           className={"w-full md:w-1/3"}
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
+          value={watchMeds[index].route}
         />
         <HeTextInput
           form={form}
-          fieldName={`medications[${index}].directions`}
+          fieldName={`medications[${index}].frequency`}
           labelName={`Directions`}
           placeholder={"Take..."}
           disabledStatus={true}
           className={"flex flex-col rounded-md w-full md:w-1/3"}
           innerTextClass={"border-none disabled:bg-transparent rounded-md"}
+          value={watchMeds[index].frequency}
         />
       </div>
       <HeRadioButtonTrueFalse
@@ -95,28 +102,31 @@ const ViewMed = ({ form, fieldName, index, watchMeds }) => {
         value1={"Yes"}
         value2={"No"}
         disabledStatus={true}
+        value={watchMeds[index].substitutions_allowed}
       />
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full md:w-1/2">
           <HeTextInput
             form={form}
-            fieldName={`medications[${index}].orderReason`}
+            fieldName={`medications[${index}].reason`}
             labelName={`Order/Reason`}
             placeholder={"Notes..."}
             className={"flex flex-col rounded-md"}
             innerTextClass={"border-none disabled:bg-transparent rounded-md"}
             disabledStatus={true}
+            value={watchMeds[index].reason}
           />
         </div>
         <div className="w-full md:w-1/2">
           <HeTextInput
             form={form}
-            fieldName={`medications[${index}].pharmacyNotes`}
+            fieldName={`medications[${index}].pharmacy_notes`}
             labelName={`Pharmacy Notes`}
             placeholder={"Notes..."}
             className={"flex flex-col rounded-md"}
             innerTextClass={"border-none disabled:bg-transparent rounded-md"}
             disabledStatus={true}
+            value={watchMeds[index].pharmacy_notes}
           />
         </div>
       </div>

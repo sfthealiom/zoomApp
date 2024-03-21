@@ -33,6 +33,7 @@ let companyMetaData = {
   accentDisabled: "#21B89A",
   accentSlate: "#94b8a3",
   accentBlack: "#000000",
+  accentBlackLight: "#808080",
   accentWhite: "#FFFFFF",
   accentGray: "#F8F9F9",
   bgColor: "#FFFFFF",
@@ -45,6 +46,7 @@ let companyMetaData = {
   secondary: "#00ACF5",
   aiLight: "#FBF6FF",
   aiDark: "#AF5FFF",
+  aiDeselect: "#C99DFF",
 };
 
 // companyMetaData = await getCompanyJSON(company);

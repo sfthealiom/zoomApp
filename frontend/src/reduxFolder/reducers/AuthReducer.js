@@ -26,6 +26,7 @@ import {
   SET_WEBSOCKET_AI_PREDS,
   SET_ENCOUNTER_NOTES,
   SET_MEETING_ID,
+  SET_AUTOCOMPLETE_RELATIVE_DIAGNOSES_DATA,
 } from "../actions/ActionTypes";
 
 const INITIAL_STATE = {
@@ -38,6 +39,7 @@ const INITIAL_STATE = {
   orgId: "",
   password: "",
   autoCompleteDataDiagnoses: [],
+  autoCompleteRelativeDataDiagnoses: [],
   autoCompleteDataMed: [],
   autoCompleteDataAllergies: [],
   autoCompleteDataLabs: [],
@@ -116,6 +118,8 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return { ...state, password: action.payload };
     case SET_AUTOCOMPLETE_DIAGNOSES_DATA:
       return { ...state, autoCompleteDataDiagnoses: action.payload };
+    case SET_AUTOCOMPLETE_RELATIVE_DIAGNOSES_DATA:
+      return { ...state, autoCompleteRelativeDataDiagnoses: action.payload };
     case SET_AUTOCOMPLETE_MED_DATA:
       return { ...state, autoCompleteDataMed: action.payload };
     case SET_AUTOCOMPLETE_ALLERGY_DATA:

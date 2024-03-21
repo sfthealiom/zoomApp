@@ -2,7 +2,7 @@ import React from "react";
 import { companyMetaData } from "../../../../assets/myCompanyData";
 import { HeHeading3 } from "../../../../heCustomComponents";
 
-const ViewOrder = ({ code, code_value, data }) => {
+const ViewOrder = ({ code, code_value, data, value }) => {
   return (
     <div
       className="w-full flex flex-col gap-2 px-4 py-2 rounded-md"
@@ -14,7 +14,7 @@ const ViewOrder = ({ code, code_value, data }) => {
       </div>
       <div className="text-slate-400">
         <span className="font-semibold">In-clinic? </span>
-        {data === true ? "Yes" : "No"}
+        {value === true ? "Yes" : "No"}
       </div>
     </div>
   );

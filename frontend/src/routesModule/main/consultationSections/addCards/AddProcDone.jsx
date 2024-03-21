@@ -7,7 +7,7 @@ import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const AddProcDone = ({ form, fieldName, index, item }) => {
+const AddProcDone = ({ form, fieldName, index, item, value }) => {
   const [showOrdRea, setShowOrdRea] = useState(false);
 
   return (
@@ -41,6 +41,7 @@ const AddProcDone = ({ form, fieldName, index, item }) => {
             placeholder={"Notes..."}
             className={"flex flex-col gap-2 rounded-md"}
             innerTextClass={"border-none px-2 rounded-md"}
+            value={value}
           />
         ) : (
           <div

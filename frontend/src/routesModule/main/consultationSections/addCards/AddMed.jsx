@@ -51,6 +51,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
+          value={watchMeds[index].quantity_unit}
         />
         <HeTextInput
           form={form}
@@ -60,6 +61,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           type={"number"}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
+          value={watchMeds[index].refills}
         />
         <HeTextInput
           form={form}
@@ -70,6 +72,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
           required={true}
+          value={watchMeds[index].days_supply}
         />
       </div>
       <div className="w-full flex items-start justify-between gap-2">
@@ -86,6 +89,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
           required={true}
+          value={watchMeds[index].dispense_unit}
         />
         <HeSearchableSelect
           form={form}
@@ -100,6 +104,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
           inputTextClass={"h-10 border-none"}
           commandClass={"w-[200px]"}
           required={true}
+          value={watchMeds[index].route}
         />
       </div>
       <HeTextInput
@@ -109,6 +114,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         placeholder={"Take..."}
         className={"flex flex-col gap-2 rounded-md"}
         innerTextClass={"border-none px-2 rounded-md"}
+        value={watchMeds[index].frequency}
       />
       <HeRadioButtonTrueFalse
         form={form}
@@ -117,6 +123,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
         className={"md:w-1/2"}
         value1={"Yes"}
         value2={"No"}
+        value={watchMeds[index].substitutions_allowed}
       />
       <div className="flex flex-col md:flex-row items-start gap-2">
         <div className="w-full md:w-1/2">
@@ -128,6 +135,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
               innerTextClass={"border-none px-2 rounded-md"}
+              value={watchMeds[index].reason}
             />
           ) : (
             <div
@@ -148,6 +156,7 @@ const AddMed = ({ form, fieldName, index, watchMeds }) => {
               placeholder={"Notes..."}
               className={"flex flex-col gap-2 rounded-md"}
               innerTextClass={"border-none px-2 rounded-md"}
+              value={watchMeds[index].pharmacy_notes}
             />
           ) : (
             <div

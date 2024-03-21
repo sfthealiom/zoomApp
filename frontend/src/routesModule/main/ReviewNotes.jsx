@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderSpin } from "../../components/helpers";
 import { setToSessionStore } from "../../reduxFolder/CommonFunctions";
 import { completeEncounter } from "../../reduxFolder/actions/AuthActions";
-import { HeFormSubmitButton } from "../../heCustomComponents";
+import { HeFormSubmitButton, HeHeading2 } from "../../heCustomComponents";
 import {
   CareTaskDirectives,
   Diagnosis,
@@ -17,6 +17,7 @@ import {
   Objective,
   Orders,
   ProceduresDone,
+  RelativeDiagnoses,
   Subjective,
 } from "./reviewSections";
 import { companyMetaData } from "../../assets/myCompanyData";
@@ -79,6 +80,11 @@ const ReviewNotes = () => {
     display: z.string().min(1, "Required"),
     reason: z.string().optional(),
   });
+  const relativeDiagSchema = z.object({
+    code: z.string().min(1, "Required"),
+    display: z.string().min(1, "Required"),
+    reason: z.string().optional(),
+  });
   const workDiagSchema = z.object({
     code: z.string().min(1, "Required"),
     display: z.string().min(1, "Required"),
@@ -92,6 +98,7 @@ const ReviewNotes = () => {
     orders: z.array(ordersSchema).optional(),
     procDone: z.array(procDoneSchema).optional(),
     careTaskNotes: z.string().optional(),
+    relativeDiagnoses: z.array(relativeDiagSchema).optional(),
   });
 
   const form = useForm({
@@ -107,6 +114,7 @@ const ReviewNotes = () => {
       orders: encounter_notes.procedures,
       procDone: encounter_notes.procedures_done,
       careTaskNotes: encounter_notes.care_task_directives?.join(""),
+      relativeDiagnoses: encounter_notes.previous_diagnoses,
     },
   });
 
@@ -126,6 +134,7 @@ const ReviewNotes = () => {
       lab_imaging_comments: null,
       procedures: data.orders,
       procedures_done: data.procDone,
+      previous_diagnoses: data.relativeDiagnoses,
       procedure_comments: null,
       referal_data: [],
       referal_comment: null,
@@ -136,6 +145,8 @@ const ReviewNotes = () => {
       objective_clinical_summary: data?.objective,
       comment: null,
     };
+
+    console.log(notes, "notes");
     dispatch(
       completeEncounter(
         jwtToken,
@@ -179,8 +190,15 @@ const ReviewNotes = () => {
               className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
               style={{ backgroundColor: companyMetaData?.accentWhite }}
             >
+              <HeHeading2
+                title={`ID: ${encounterCallDetails.care_request_id
+                  ?.split("__")[2]
+                  ?.slice(-6)}`}
+                className={`md:text-[18px]`}
+              />
               <Subjective form={form} />
               <Objective form={form} />
+              <RelativeDiagnoses form={form} />
               <Diagnosis form={form} />
               <Medications form={form} />
               <Orders form={form} />

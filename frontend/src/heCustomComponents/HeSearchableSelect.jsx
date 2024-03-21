@@ -36,6 +36,7 @@ const HeSearchableSelect = ({
   commandClass,
   placeholder = "Search...",
   required = false,
+  value,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -60,12 +61,13 @@ const HeSearchableSelect = ({
                 <Button
                   variant="input"
                   disabled={disabledStatus}
+                  value={value}
                   className={`w-full h-8 bg-transparent justify-between rounded-none border-slate-500 text-sm font-semibold placeholder:text-slate-400 p-0 m-0 
-                    ${!field.value && "text-slate-400"} ${buttonClasses}`}
+                    ${!value && "text-slate-400"} ${buttonClasses}`}
                 >
                   <div>
-                    {field.value
-                      ? dataArray.find((item) => item.id === field.value)?.item
+                    {value
+                      ? dataArray.find((item) => item.id === value)?.item
                       : placeholder}
                   </div>
                   {!disabledStatus && (

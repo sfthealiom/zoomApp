@@ -7,7 +7,7 @@ import { companyMetaData } from "../../../../assets/myCompanyData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const EditProcDone = ({ form, fieldName, index, item }) => {
+const EditProcDone = ({ form, fieldName, index, item, value }) => {
   return (
     <div
       className="px-4 py-3 flex flex-col gap-1 rounded-md"
@@ -36,6 +36,7 @@ const EditProcDone = ({ form, fieldName, index, item }) => {
           placeholder={"Notes..."}
           className={"flex flex-col gap-2 rounded-md"}
           innerTextClass={"border-none px-2 rounded-md"}
+          value={value}
         />
       </div>
     </div>

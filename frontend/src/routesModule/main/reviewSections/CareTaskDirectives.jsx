@@ -1,6 +1,6 @@
 /** library imports */
 import React, { useState } from "react";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /** custom imports */
@@ -24,10 +24,16 @@ const CareTaskDirectives = ({ form }) => {
         {!edit ? (
           <FontAwesomeIcon
             icon={faEdit}
-            className="cursor-pointer h-5 w-5 text-slate-300"
+            className="cursor-pointer h-5 w-5 text-gray-500"
             onClick={() => setEdit(true)}
           />
-        ) : null}
+        ) : (
+          <FontAwesomeIcon
+            icon={faCheck}
+            className="cursor-pointer h-5 w-5 text-gray-500"
+            onClick={() => setEdit(false)}
+          />
+        )}
       </div>
 
       <div className="rounded-md">
@@ -38,7 +44,7 @@ const CareTaskDirectives = ({ form }) => {
             disabledStatus={!edit}
             placeholder={"Sometimes I feel..."}
             innerTextClass={
-              "border-slate-300 min-h-[200px] disbled:cursor-not-allowed"
+              "border-slate-300 min-h-[120px] disbled:cursor-not-allowed"
             }
           />
         ) : edit ? (
@@ -47,7 +53,7 @@ const CareTaskDirectives = ({ form }) => {
             fieldName={`careTaskNotes`}
             placeholder={"Sometimes I feel..."}
             disabledStatus={!edit}
-            innerTextClass={"border-slate-300 min-h-[200px]"}
+            innerTextClass={"border-slate-300 min-h-[120px]"}
           />
         ) : (
           <span className="text-sm text-slate-500">

@@ -127,6 +127,7 @@ const Diagnosis = ({ form, aiData }) => {
                     placeholder={"Notes..."}
                     className={"flex flex-col gap-2 rounded-md px-4 pb-2"}
                     innerTextClass={"border-none px-2 rounded-md"}
+                    value={watchDiffDiag[index].reason}
                   />
                 </div>
               );
