@@ -150,8 +150,6 @@ const Welcome = (props) => {
       phone_number: data?.dialCode + " " + data?.mobile?.replaceAll("-", ""),
       password: data?.password,
     };
-    console.log(updatedData);
-    toast.error(JSON.stringify(updatedData));
     setToSessionStore({
       key: "phone_number",
       value: updatedData?.phone_number,
