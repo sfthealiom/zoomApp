@@ -151,6 +151,7 @@ const Welcome = (props) => {
       password: data?.password,
     };
     console.log(updatedData);
+    toast.error(JSON.stringify(updatedData));
     setToSessionStore({
       key: "phone_number",
       value: updatedData?.phone_number,
@@ -315,6 +316,7 @@ const Welcome = (props) => {
                 labelName={"Legal First Name"}
                 placeholder={"John"}
                 required={true}
+                value={form?.first_name}
               />
               <HeTextInput
                 form={form}
@@ -322,6 +324,7 @@ const Welcome = (props) => {
                 labelName={"Last Name"}
                 placeholder={"Doe"}
                 required={true}
+                value={form?.last_name}
               />
             </div>
             <HePhoneNumber
@@ -329,6 +332,7 @@ const Welcome = (props) => {
               labelValue={"Phone"}
               dialCodeField={"dialCode"}
               phoneNumField={"mobile"}
+              value={form?.dialCode}
             />
             <HeTextInput
               form={form}
@@ -337,6 +341,7 @@ const Welcome = (props) => {
               labelName={"Email"}
               placeholder={"john.doe@company.com"}
               required={true}
+              value={form?.email}
             />
             <HeTextInput
               form={form}
@@ -345,6 +350,7 @@ const Welcome = (props) => {
               labelName={"NPI"}
               placeholder={"XXXXX12345"}
               maxLength={10}
+              value={form?.npi}
             />
             <FormField
               control={form.control}
