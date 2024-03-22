@@ -90,7 +90,7 @@ const StartNewConsultation = () => {
             />
             <HeInfoText
               message={
-                "To start, we would like to create an account for you. This allows us to save your information so you don't have to go through this again!"
+                "Start a new recording during your next consultation to have the app automatically transcribe and summarize your conversation and suggest diagnoses and orders."
               }
               className={
                 "max-w-full text-xs text-center md:text-sm mt-2 md:mt-4"

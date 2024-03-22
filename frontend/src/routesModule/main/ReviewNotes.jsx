@@ -106,14 +106,14 @@ const ReviewNotes = () => {
     resolver: zodResolver(FormSchema),
     // put your redux state variables here
     defaultValues: {
-      subjective: encounter_notes.subjective_clinical_summary?.join(""),
-      objective: encounter_notes.objective_clinical_summary?.join(""),
+      subjective: encounter_notes.subjective_clinical_summary,
+      objective: encounter_notes.objective_clinical_summary,
       diffDiag: encounter_notes.diagnoses,
       workDiag: encounter_notes.working_diagnoses,
       medications: encounter_notes.medications,
       orders: encounter_notes.procedures,
       procDone: encounter_notes.procedures_done,
-      careTaskNotes: encounter_notes.care_task_directives?.join(""),
+      careTaskNotes: encounter_notes.care_task_directives,
       relativeDiagnoses: encounter_notes.previous_diagnoses,
     },
   });

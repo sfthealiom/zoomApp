@@ -82,7 +82,7 @@ const RelativeDiagnoses = ({ form }) => {
             </div>
           ) : (
             <p className="text-sm text-slate-500">
-              No Realtive Previous diagnoses added.
+              No Relevant Previous diagnoses added.
             </p>
           )}
         </div>

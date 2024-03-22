@@ -19,7 +19,7 @@ export const getCompanyJSON = async (company) => {
 };
 
 let companyMetaData = {
-  companyName: "healiom",
+  companyName: "Healiom",
   organizationId: "776e17a2-f7cb-45b0-a52a-630e57c7227e",
   companyLogoUrl:
     "https://s3.us-east-2.amazonaws.com/healiomserver/org/healiom/logo.jpeg",

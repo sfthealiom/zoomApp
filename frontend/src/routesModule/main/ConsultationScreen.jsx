@@ -230,9 +230,13 @@ const ConsultationScreen = () => {
 
   const handleData = (data, e) => {
     var updateData_temp = encounterCallDetails;
-
+    // toast.error(JSON.stringify(webSocketAiPreds));
+    // toast.error(
+    //   JSON.stringify(webSocketAiPreds?.subjectiveClinicalSummary?.join(" "))
+    // );
     const notes = {
-      subjective_clinical_summary: webSocketAiPreds?.subjectiveClinicalSummary,
+      subjective_clinical_summary:
+        webSocketAiPreds?.subjectiveClinicalSummary?.join(" "),
       ai_predictions: true,
       patient_location: null,
       diagnoses: data.diffDiag,
@@ -252,8 +256,9 @@ const ConsultationScreen = () => {
       follow_up: {},
       follow_up_comments: null,
       patient_education: {},
-      care_task_directives: webSocketAiPreds?.carePlanSuggested,
-      objective_clinical_summary: webSocketAiPreds?.objectiveClinicalSummary,
+      care_task_directives: webSocketAiPreds?.carePlanSuggested?.join(" "),
+      objective_clinical_summary:
+        webSocketAiPreds?.objectiveClinicalSummary?.join(" "),
       comment: null,
     };
     updateData_temp["encounter_note"] = notes;
@@ -304,7 +309,7 @@ const ConsultationScreen = () => {
           className="w-full flex flex-col gap-2 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
           style={{ backgroundColor: companyMetaData?.accentWhite }}
         >
-          <HeHeading2 title={"Note Builder"} className={`md:text-[18px]`} />
+          <HeHeading2 title={"Transcription"} className={`md:text-[18px]`} />
           <div
             className="rounded-md flex flex-col gap-2"
             style={{ backgroundColor: companyMetaData?.primaryLightest }}

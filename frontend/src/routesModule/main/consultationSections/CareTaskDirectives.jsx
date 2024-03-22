@@ -16,8 +16,8 @@ const CareTaskDirectives = ({ aiData }) => {
       />
       <div className="rounded-md">
         {aiData?.length > 0 ? (
-          <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 py-3 border border-slate-300 rounded-md text-left">
-            {aiData}
+          <p className="h-[120px] overflow-y-scroll text-slate-600 scrollbar px-4 py-3 text-left">
+            {aiData.join(" ")}
           </p>
         ) : (
           <div

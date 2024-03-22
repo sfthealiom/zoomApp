@@ -63,11 +63,13 @@ const ViewPastSessionDetails = () => {
                 className="w-full flex flex-col gap-8 md:gap-12 rounded-xl shadow-md px-4 py-3 md:px-5 md:py-4"
                 style={{ backgroundColor: companyMetaData?.accentWhite }}
               >
+                {/* <div>{JSON.stringify(selHistoryData)}</div> */}
                 <div className="w-full flex flex-col gap-4">
                   <SubjectiveNotes
                     subjectiveData={selHistoryData.subjective_clinical_summary}
                   />
                 </div>
+
                 <ObjectiveNotes
                   objectiveData={selHistoryData?.objective_clinical_summary}
                 />

@@ -13,7 +13,7 @@ const Subjective = ({ subjectiveData }) => {
       </div>
       <div>
         {subjectiveData?.length > 0 ? (
-          <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar text-justify px-4 py-3 border border-slate-300 rounded-md">
+          <p className="h-[200px] overflow-y-scroll text-slate-600 scrollbar py-3 text-left">
             {subjectiveData}
           </p>
         ) : (
